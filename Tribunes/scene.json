@@ -1,0 +1,63 @@
+{
+	"ecs7": true,
+	"runtimeVersion": "7",
+	"display": {
+		"title": "SDK7 Scene Template",
+		"description": "template scene with SDK7",
+		"navmapThumbnail": "images/scene-thumbnail.png",
+		"favicon": "favicon_asset"
+	},
+	"owner": "",
+	"contact": {
+		"name": "SDK",
+		"email": ""
+	},
+	"main": "bin/index.js",
+	"tags": [],
+	"scene": {
+		"parcels": [
+			"-150,105","-149,105","-148,105","-147,105","-146,105","-145,105","-144,105","-143,105","-142,105","-141,105","-140,105","-139,105","-138,105",
+			"-150,104",																															"-138,104",
+			"-150,103",																															"-138,103",
+			"-150,102",																															"-138,102",
+			"-150,101",																															"-138,101",
+			"-150,100",																															"-138,100",
+			"-150,99",																															"-138,99",
+			"-150,98",																															"-138,98",
+			"-150,97",																															"-138,97",
+			"-150,96",																															"-138,96",
+			"-150,95",																															"-138,95"
+		],
+		"base": "-150,95"
+	},
+	"spawnPoints": [
+		{
+			"name": "spawn1",
+			"default": true,
+			"position": {
+				"x": [
+					0,
+					3
+				],
+				"y": [
+					0,
+					0
+				],
+				"z": [
+					0,
+					3
+				]
+			},
+			"cameraTarget": {
+				"x": 8,
+				"y": 1,
+				"z": 8
+			}
+		}
+	],
+	"requiredPermissions": [
+		"ALLOW_TO_TRIGGER_AVATAR_EMOTE",
+		"ALLOW_TO_MOVE_PLAYER_INSIDE_SCENE"
+	],
+	"featureToggles": {}
+}
