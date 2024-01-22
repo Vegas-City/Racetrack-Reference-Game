@@ -44,7 +44,7 @@ export class Scene {
             wheelZ_B: 1.65, 
             wheelY: 0.3,
             carScale: 0.7
-        }, Vector3.create(8.45, 2, 23), 90)
+        }, Vector3.create(8.45, 2, 23), 90) 
     }
 
     static LoadTrack(_trackNumber:number){
