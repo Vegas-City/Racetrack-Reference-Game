@@ -381,7 +381,7 @@ export class DebugUI {
 
 
             <UiEntity 
-                key="SteerRow"
+                key="DecelerationRow"
                 uiTransform={{
                     positionType: 'absolute',
                     position: { 
