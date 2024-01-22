@@ -31,7 +31,7 @@ export class Scene {
             minSpeed: -25*0.5,
             maxSpeed: 35*0.5, 
             steerSpeed: 1.5,
-            grip: 0.3, 
+            grip: 0.3,  
             engineStartAudio: 'audio/engineStart.mp3',
             carGLB: 'models/car.glb',
             carColliderGLB: 'models/carCollider.glb',

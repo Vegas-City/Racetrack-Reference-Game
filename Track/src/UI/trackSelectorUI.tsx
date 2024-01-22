@@ -52,7 +52,7 @@ export class TrackSelectorUI {
                     textureMode: 'stretch',
                     texture: {
                         src: "images/debugUI/track2.png",
-                        wrapMode: 'repeat'
+                        wrapMode: 'repeat' 
                     }
                 }}
                 onMouseDown={() => {
