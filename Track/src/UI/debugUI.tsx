@@ -1,7 +1,8 @@
 import ReactEcs, { Label, UiEntity } from "@dcl/sdk/react-ecs"
-import { Scene } from "./scene"
+import { Scene } from "../scene"
 import { Car } from "@vegascity/racetrack/src/car"
 import { Color4 } from "@dcl/sdk/math"
+import { car } from "@vegascity/racetrack"
 
 export class DebugUI {
 
@@ -774,8 +775,10 @@ export class DebugUI {
     )
 
     static Render(){
-        return [
-            DebugUI.component()
-        ]
+        if(Car.instances.length>0){
+            return [
+                    DebugUI.component()
+            ]
+        }
     }
 }
