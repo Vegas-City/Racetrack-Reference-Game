@@ -20,6 +20,9 @@ export class Scene {
 
         new PhysicsManager()
         new InputManager()
+        new TrackManager(Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+        Scene.LoadCar()
+        Scene.LoadTrack(1) // load first track by default
     }
 
     static LoadCar() {
@@ -50,13 +53,13 @@ export class Scene {
     static LoadTrack(_trackNumber: number) {
         let minimapSrc: string = ""
         switch (_trackNumber) {
-            case 1: new TrackManager(trackConfig1, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+            case 1: TrackManager.Load(trackConfig1)
                 minimapSrc = "images/minimap1.png"
                 break
-            case 2: new TrackManager(trackConfig2, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+            case 2: TrackManager.Load(trackConfig2)
                 minimapSrc = "images/minimap2.png"
                 break
-            case 3: new TrackManager(trackConfig3, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+            case 3: TrackManager.Load(trackConfig3)
                 minimapSrc = "images/minimap3.png"
                 break
         }
@@ -73,6 +76,5 @@ export class Scene {
                 paddingZ: 4
             }
         )
-        Scene.LoadCar()
     }
 } 
