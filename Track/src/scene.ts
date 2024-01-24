@@ -24,12 +24,12 @@ export class Scene {
 
     static LoadCar() {
         CarFactory.create({
-            mass: 150 * 0.5,
-            accelerationF: 6 * 0.5,
-            accelerationB: 4 * 0.5,
-            deceleration: 2 * 0.5,
-            minSpeed: -25 * 0.5,
-            maxSpeed: 35 * 0.5,
+            mass: 150,
+            accelerationF: 12,
+            accelerationB: 12,
+            deceleration: 4,
+            minSpeed: -14,
+            maxSpeed: 25,
             steerSpeed: 1.5,
             grip: 0.3,
             engineStartAudio: 'audio/engineStart.mp3',
@@ -44,57 +44,35 @@ export class Scene {
             wheelZ_B: 1.65,
             wheelY: 0.3,
             carScale: 0.7
-        }, Vector3.create(8.45, 2, 23), 90)
+        }, Vector3.create(8.45, 2, 23.7), 90)
     }
 
     static LoadTrack(_trackNumber: number) {
+        let minimapSrc: string = ""
         switch (_trackNumber) {
             case 1: new TrackManager(trackConfig1, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
-                Minimap.LoadMinimap(
-                    {
-                        src: "images/minimap1.png",
-                        srcWidth: 704,
-                        srcHeight: 576,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        paddingX: 5,
-                        paddingZ: 4
-                    }
-                )
+                minimapSrc = "images/minimap1.png"
                 break
             case 2: new TrackManager(trackConfig2, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
-                Minimap.LoadMinimap(
-                    {
-                        src: "images/minimap2.png",
-                        srcWidth: 704,
-                        srcHeight: 576,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        paddingX: 5,
-                        paddingZ: 4
-                    }
-                )
+                minimapSrc = "images/minimap2.png"
                 break
             case 3: new TrackManager(trackConfig3, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
-                Minimap.LoadMinimap(
-                    {
-                        src: "images/minimap3.png",
-                        srcWidth: 704,
-                        srcHeight: 576,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        paddingX: 5,
-                        paddingZ: 4
-                    }
-                )
+                minimapSrc = "images/minimap3.png"
                 break
         }
+        Minimap.Load(
+            {
+                src: minimapSrc,
+                srcWidth: 704,
+                srcHeight: 576,
+                parcelWidth: 11,
+                parcelHeight: 9,
+                bottomLeftX: -32,
+                bottomLeftZ: 16,
+                paddingX: 5,
+                paddingZ: 4
+            }
+        )
         Scene.LoadCar()
     }
 } 
