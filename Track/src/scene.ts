@@ -1,4 +1,3 @@
-import {engine, Transform, Entity, GltfContainer} from "@dcl/sdk/ecs"
 import { Quaternion, Vector3 } from '@dcl/sdk/math'
 import { CarFactory } from "@vegascity/racetrack/src/car"
 import { PhysicsManager } from "@vegascity/racetrack/src/physics"
@@ -9,11 +8,12 @@ import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
+import { Minimap } from "@vegascity/racetrack/src/ui"
 
 
 export class Scene {
 
-    static LoadScene():void {
+    static LoadScene(): void {
 
         setupUi()
         setup(movePlayerTo, triggerSceneEmote)
@@ -22,16 +22,16 @@ export class Scene {
         new InputManager()
     }
 
-    static LoadCar(){
+    static LoadCar() {
         CarFactory.create({
-            mass: 150*0.5,
-            accelerationF: 6*0.5,  
-            accelerationB: 4*0.5,
-            deceleration: 2*0.5,
-            minSpeed: -25*0.5,
-            maxSpeed: 35*0.5, 
+            mass: 150 * 0.5,
+            accelerationF: 6 * 0.5,
+            accelerationB: 4 * 0.5,
+            deceleration: 2 * 0.5,
+            minSpeed: -25 * 0.5,
+            maxSpeed: 35 * 0.5,
             steerSpeed: 1.5,
-            grip: 0.3,  
+            grip: 0.3,
             engineStartAudio: 'audio/engineStart.mp3',
             carGLB: 'models/car.glb',
             carColliderGLB: 'models/carCollider.glb',
@@ -41,20 +41,59 @@ export class Scene {
             wheelX_L: 1,
             wheelX_R: 1,
             wheelZ_F: 1.3,
-            wheelZ_B: 1.65, 
+            wheelZ_B: 1.65,
             wheelY: 0.3,
             carScale: 0.7
-        }, Vector3.create(8.45, 2, 23), 90) 
+        }, Vector3.create(8.45, 2, 23), 90)
     }
 
-    static LoadTrack(_trackNumber:number){
-        switch(_trackNumber){
-            case 1 : new TrackManager(trackConfig1, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1,1,1), true) 
-            break
-            case 2 : new TrackManager(trackConfig2, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1,1,1), true)
-            break
-            case 3 : new TrackManager(trackConfig3, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1,1,1), true)
-            break
+    static LoadTrack(_trackNumber: number) {
+        switch (_trackNumber) {
+            case 1: new TrackManager(trackConfig1, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+                Minimap.LoadMinimap(
+                    {
+                        src: "images/minimap1.png",
+                        srcWidth: 704,
+                        srcHeight: 576,
+                        parcelWidth: 11,
+                        parcelHeight: 9,
+                        bottomLeftX: -32,
+                        bottomLeftZ: 16,
+                        paddingX: 5,
+                        paddingZ: 4
+                    }
+                )
+                break
+            case 2: new TrackManager(trackConfig2, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+                Minimap.LoadMinimap(
+                    {
+                        src: "images/minimap2.png",
+                        srcWidth: 704,
+                        srcHeight: 576,
+                        parcelWidth: 11,
+                        parcelHeight: 9,
+                        bottomLeftX: -32,
+                        bottomLeftZ: 16,
+                        paddingX: 5,
+                        paddingZ: 4
+                    }
+                )
+                break
+            case 3: new TrackManager(trackConfig3, Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+                Minimap.LoadMinimap(
+                    {
+                        src: "images/minimap3.png",
+                        srcWidth: 704,
+                        srcHeight: 576,
+                        parcelWidth: 11,
+                        parcelHeight: 9,
+                        bottomLeftX: -32,
+                        bottomLeftZ: 16,
+                        paddingX: 5,
+                        paddingZ: 4
+                    }
+                )
+                break
         }
         Scene.LoadCar()
     }
