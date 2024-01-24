@@ -9,10 +9,10 @@ const uiComponent = () => (
   [
     CarUI.Render(),
     LapUI.Render(),
-    DebugUI.Render(),
     TrackSelectorUI.Render(),
     Minimap.Render(),
-    Countdown.Render()
+    Countdown.Render(),
+    DebugUI.Render()
   ]
 )  
 
