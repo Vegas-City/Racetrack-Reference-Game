@@ -11,7 +11,7 @@ export class TrackSelectorUI {
                 positionType: 'absolute',
                 position: {
                     top: 100,
-                    left: 1000,
+                    left: 500,
                 },
                 display: TrackSelectorUI.trackSelectorUIShow ? 'flex' : 'none',
             }}
@@ -34,7 +34,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    TrackSelectorUI.trackSelectorUIShow = false
+                    //TrackSelectorUI.trackSelectorUIShow = false
                     Scene.LoadTrack(1)
                 }}
             ></UiEntity>
@@ -56,7 +56,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    TrackSelectorUI.trackSelectorUIShow = false
+                    //TrackSelectorUI.trackSelectorUIShow = false
                     Scene.LoadTrack(2)
                 }}
             ></UiEntity>
@@ -78,7 +78,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    TrackSelectorUI.trackSelectorUIShow = false
+                    //TrackSelectorUI.trackSelectorUIShow = false
                     Scene.LoadTrack(3)
                 }}
             ></UiEntity>
