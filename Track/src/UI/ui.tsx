@@ -4,6 +4,7 @@ import { Minimap } from '@vegascity/racetrack/src/ui'
 import { DebugUI } from './debugUI'
 import { TrackSelectorUI } from './trackSelectorUI'
 import { Countdown } from '@vegascity/racetrack/src/racetrack'
+import  *  as  ui  from  'dcl-ui-toolkit'
 
 const uiComponent = () => (
   [
@@ -12,7 +13,8 @@ const uiComponent = () => (
     TrackSelectorUI.Render(),
     Minimap.Render(),
     Countdown.Render(),
-    DebugUI.Render()
+    DebugUI.Render(),
+    ui.render()
   ]
 )  
 
