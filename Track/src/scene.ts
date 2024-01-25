@@ -44,9 +44,9 @@ export class Scene {
             steeringWheelGLB: 'models/steering_wheel.glb',
             wheelX_L: 1,
             wheelX_R: 1,
-            wheelZ_F: 1.3,
-            wheelZ_B: 1.65,
-            wheelY: 0.3,
+            wheelZ_F: 1.37,
+            wheelZ_B: 1.57,
+            wheelY: -0.3,
             carScale: 0.7
         }, Vector3.create(8.45, 2, 23.7), 90)
     }
