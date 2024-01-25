@@ -13,9 +13,9 @@ import { Minimap } from "@vegascity/racetrack/src/ui"
 
 export class Scene {
 
-    static LoadScene(): void {
+    static loaded:boolean = false
 
-        setupUi()
+    static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
         new PhysicsManager()
@@ -23,6 +23,7 @@ export class Scene {
         new TrackManager(Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
         Scene.LoadCar()
         Scene.LoadTrack(1) // load first track by default
+        Scene.loaded = true
     }
 
     static LoadCar() {

@@ -1,6 +1,6 @@
 import ReactEcs, { UiEntity } from "@dcl/sdk/react-ecs"
 import { Scene } from "../scene"
-
+ 
 export class TrackSelectorUI {
     static trackSelectorUIShow: boolean = true
 
@@ -13,8 +13,8 @@ export class TrackSelectorUI {
                     top: 100,
                     left: 500,
                 },
-                display: TrackSelectorUI.trackSelectorUIShow ? 'flex' : 'none',
-            }}
+                display: TrackSelectorUI.trackSelectorUIShow && Scene.loaded ? 'flex' : 'none',
+            }} 
         >
             <UiEntity
                 key="Track1Btn"
@@ -25,7 +25,7 @@ export class TrackSelectorUI {
                         left: 0,
                         bottom: 0
                     }
-                }}
+                }} 
                 uiBackground={{
                     textureMode: 'stretch',
                     texture: {
