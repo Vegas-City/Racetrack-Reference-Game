@@ -6,7 +6,7 @@ import { car } from "@vegascity/racetrack"
 
 export class DebugUI {
 
-    static debugUIShow:boolean = true
+    static debugUIShow:boolean = false
 
     private static component = () => (
         <UiEntity

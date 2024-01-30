@@ -4,6 +4,7 @@ import { setupUi } from "./UI/ui";
 import * as utils from '@dcl-sdk/utils'
 import { getRealm } from '~system/Runtime'
 import { executeTask } from "@dcl/ecs";
+import { DebugUI } from "./UI/debugUI";
 
 export function main() {
   setupUi() 
@@ -21,7 +22,7 @@ export function main() {
 
   })
 
-  function showPrompt(){
+  function showPrompt(){ 
     const prompt = ui.createComponent(ui.FillInPrompt, {
       title: 'Enter password',
       onAccept: (value: string) => {
@@ -29,6 +30,12 @@ export function main() {
           prompt.hide()
           utils.timers.setTimeout(function () {
             Scene.LoadScene() 
+          }, 1000)
+        } else if(value.toLocaleLowerCase()=="letsgodev"){
+          prompt.hide()
+          utils.timers.setTimeout(function () {
+            Scene.LoadScene()
+            DebugUI.debugUIShow = true
           }, 1000)
         } 
       },
