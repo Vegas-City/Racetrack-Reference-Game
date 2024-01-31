@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "@dcl/asset-packs": "latest",
-    "@dcl/js-runtime": "7.3.37",
-    "@dcl/sdk": "^7.3.37"
+    "@dcl/js-runtime": "7.3.39",
+    "@dcl/sdk": "^7.3.39"
   },
   "engines": {
     "node": ">=16.0.0",
@@ -25,6 +25,6 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@vegascity/racetrack": "^1.0.29"
+    "@vegascity/racetrack": "^1.0.33"
   }
 }

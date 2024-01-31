@@ -20,7 +20,7 @@ export class Scene {
 
         new PhysicsManager()
         new InputManager()
-        new TrackManager(Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), true)
+        new TrackManager(Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false)
         Scene.LoadCar()
         Scene.LoadTrack(1) // load first track by default
         Scene.loaded = true
@@ -44,9 +44,9 @@ export class Scene {
             steeringWheelGLB: 'models/steering_wheel.glb',
             wheelX_L: 1,
             wheelX_R: 1,
-            wheelZ_F: 1.3,
-            wheelZ_B: 1.65,
-            wheelY: 0.3,
+            wheelZ_F: 1.37,
+            wheelZ_B: 1.57,
+            wheelY: -0.3,
             carScale: 0.7
         }, Vector3.create(8.45, 2, 23.7), 90)
     }
