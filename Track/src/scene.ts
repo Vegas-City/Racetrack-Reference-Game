@@ -18,9 +18,10 @@ export class Scene {
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
-        new PhysicsManager()
+        
         new InputManager()
-        new TrackManager(Vector3.create(-32, 0, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false)
+        new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false)
+        new PhysicsManager()
         Scene.LoadCar()
         Scene.LoadTrack(1) // load first track by default
         Scene.loaded = true
@@ -42,13 +43,16 @@ export class Scene {
             leftWheelGLB: 'models/wheel_left.glb',
             rightWheelGLB: 'models/wheel_right.glb',
             steeringWheelGLB: 'models/steering_wheel.glb',
+            brakeLightsGLB: 'models/brakeLights.glb',
             wheelX_L: 1,
             wheelX_R: 1,
             wheelZ_F: 1.37,
             wheelZ_B: 1.57,
             wheelY: -0.3,
-            carScale: 0.7
-        }, Vector3.create(8.45, 2, 23.7), 90)
+            carScale: 0.7,
+            firstPersonCagePosition: Vector3.create(-0.15, -1.3, 0),
+            thirdPersonCagePosition: Vector3.create(0, 2, -1.5),
+        }, Vector3.create(8.45, 2+1, 23.7), 90)
     }
 
     static LoadTrack(_trackNumber: number) {
