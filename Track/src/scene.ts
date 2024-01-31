@@ -1,7 +1,7 @@
 import { Quaternion, Vector3 } from '@dcl/sdk/math'
 import { CarFactory } from "@vegascity/racetrack/src/car"
 import { PhysicsManager } from "@vegascity/racetrack/src/physics"
-import { InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
+import { GameManager, InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
 import { setup } from "@vegascity/racetrack/src/utils"
 import { setupUi } from "./UI/ui"
 import * as trackConfig1 from "../data/track_01.json"
@@ -56,6 +56,7 @@ export class Scene {
     }
 
     static LoadTrack(_trackNumber: number) {
+        GameManager.reset()
         let minimapSrc: string = ""
         switch (_trackNumber) {
             case 1: TrackManager.Load(trackConfig1)

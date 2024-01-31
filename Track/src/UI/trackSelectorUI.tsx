@@ -1,7 +1,8 @@
 import ReactEcs, { UiEntity } from "@dcl/sdk/react-ecs"
 import { Scene } from "../scene"
- 
+
 export class TrackSelectorUI {
+    private static readonly SCALE: number = 0.6
     static trackSelectorUIShow: boolean = true
 
     private static component = () => (
@@ -10,22 +11,22 @@ export class TrackSelectorUI {
             uiTransform={{
                 positionType: 'absolute',
                 position: {
-                    top: 100,
-                    left: 500,
+                    top: "3%",
+                    left: "15%",
                 },
                 display: TrackSelectorUI.trackSelectorUIShow && Scene.loaded ? 'flex' : 'none',
-            }} 
+            }}
         >
             <UiEntity
                 key="Track1Btn"
                 uiTransform={{
-                    width: 245,
-                    height: 87,
+                    width: 128 * TrackSelectorUI.SCALE,
+                    height: 128 * TrackSelectorUI.SCALE,
                     position: {
                         left: 0,
                         bottom: 0
                     }
-                }} 
+                }}
                 uiBackground={{
                     textureMode: 'stretch',
                     texture: {
@@ -41,10 +42,10 @@ export class TrackSelectorUI {
             <UiEntity
                 key="Track2Btn"
                 uiTransform={{
-                    width: 245, 
-                    height: 87,
-                    position: { 
-                        left: 50,
+                    width: 128 * TrackSelectorUI.SCALE,
+                    height: 128 * TrackSelectorUI.SCALE,
+                    position: {
+                        left: 20,
                         bottom: 0
                     }
                 }}
@@ -52,7 +53,7 @@ export class TrackSelectorUI {
                     textureMode: 'stretch',
                     texture: {
                         src: "images/debugUI/track2.png",
-                        wrapMode: 'repeat' 
+                        wrapMode: 'repeat'
                     }
                 }}
                 onMouseDown={() => {
@@ -63,10 +64,10 @@ export class TrackSelectorUI {
             <UiEntity
                 key="Track3Btn"
                 uiTransform={{
-                    width: 245,
-                    height: 87,
+                    width: 128 * TrackSelectorUI.SCALE,
+                    height: 128 * TrackSelectorUI.SCALE,
                     position: {
-                        left: 100,
+                        left: 40,
                         bottom: 0
                     }
                 }}
