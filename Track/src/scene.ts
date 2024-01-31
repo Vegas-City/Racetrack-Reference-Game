@@ -51,7 +51,7 @@ export class Scene {
             wheelY: -0.3,
             carScale: 0.7,
             firstPersonCagePosition: Vector3.create(-0.15, -1.3, 0),
-            thirdPersonCagePosition: Vector3.create(0, 2, -1.5),
+            thirdPersonCagePosition: Vector3.create(0, -0.2, -1.1),
         }, Vector3.create(8.45, 2+1, 23.7), 90)
     }
 
