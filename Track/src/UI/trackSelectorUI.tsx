@@ -9,7 +9,7 @@ export class TrackSelectorUI {
         <UiEntity
             key="TrackSelectorUI"
             uiTransform={{
-                positionType: 'relative',
+                positionType: 'absolute',
                 position: {
                     top: "3%",
                     left: "15%",
