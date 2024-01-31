@@ -15,6 +15,7 @@ export function main() {
       console.log(`You are in the realm: `, realmInfo.realmName)
       if(realmInfo.isPreview){
         Scene.LoadScene() 
+        DebugUI.debugUIShow = true
       } else {
         showPrompt()
       }
