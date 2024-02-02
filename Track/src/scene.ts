@@ -13,12 +13,12 @@ import { Minimap } from "@vegascity/racetrack/src/ui"
 
 export class Scene {
 
-    static loaded:boolean = false
+    static loaded: boolean = false
 
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
-        
+
         new InputManager()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false)
         new PhysicsManager()
@@ -44,6 +44,8 @@ export class Scene {
             rightWheelGLB: 'models/cars/car1/wheel_right.glb',
             steeringWheelGLB: 'models/cars/car1/steering_wheel.glb',
             brakeLightsGLB: 'models/cars/car1/brakeLights.glb',
+            dashboardGLB: 'models/cars/car1/dashboard.glb',
+            dashboardPosition: Vector3.create(1.25, 0.2, 0.065),
             wheelX_L: 1,
             wheelX_R: 1,
             wheelZ_F: 1.37,
@@ -52,7 +54,7 @@ export class Scene {
             carScale: 0.7,
             firstPersonCagePosition: Vector3.create(-0.15, -1.3, 0),
             thirdPersonCagePosition: Vector3.create(0, -0.2, -1.1),
-        }, Vector3.create(8.45, 2+1, 23.7), 90)
+        }, Vector3.create(8.45, 2 + 1, 23.7), 90)
     }
 
     static LoadTrack(_trackNumber: number) {
