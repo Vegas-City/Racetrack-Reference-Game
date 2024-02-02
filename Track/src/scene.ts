@@ -9,6 +9,7 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
+import { CarSelectionManager } from './CarSelection/carSelectionManager'
 
 
 export class Scene {
@@ -22,39 +23,10 @@ export class Scene {
         new InputManager()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false)
         new PhysicsManager()
-        Scene.LoadCar()
         Scene.LoadTrack(1) // load first track by default
         Scene.loaded = true
-    }
-
-    static LoadCar() {
-        CarFactory.create({
-            mass: 150,
-            accelerationF: 12,
-            accelerationB: 12,
-            deceleration: 4,
-            minSpeed: -14,
-            maxSpeed: 25,
-            steerSpeed: 1.5,
-            grip: 0.3,
-            engineStartAudio: 'audio/engineStart.mp3',
-            carGLB: 'models/cars/car1/car.glb',
-            carColliderGLB: 'models/cars/car1/carCollider.glb',
-            leftWheelGLB: 'models/cars/car1/wheel_left.glb',
-            rightWheelGLB: 'models/cars/car1/wheel_right.glb',
-            steeringWheelGLB: 'models/cars/car1/steering_wheel.glb',
-            brakeLightsGLB: 'models/cars/car1/brakeLights.glb',
-            dashboardGLB: 'models/cars/car1/dashboard.glb',
-            dashboardPosition: Vector3.create(1.25, 0.2, 0.065),
-            wheelX_L: 1,
-            wheelX_R: 1,
-            wheelZ_F: 1.37,
-            wheelZ_B: 1.57,
-            wheelY: -0.3,
-            carScale: 0.7,
-            firstPersonCagePosition: Vector3.create(-0.15, -1.3, 0),
-            thirdPersonCagePosition: Vector3.create(0, -0.2, -1.1),
-        }, Vector3.create(8.45, 2 + 1, 23.7), 90)
+        
+        new CarSelectionManager()
     }
 
     static LoadTrack(_trackNumber: number) {
