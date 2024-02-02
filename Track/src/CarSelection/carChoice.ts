@@ -4,17 +4,17 @@ import { CarFactory } from "@vegascity/racetrack/src/car";
 import { CarSelectionManager } from "./carSelectionManager";
 
 export class CarChoice {
-    entity:Entity
-    originalScale:Vector3 = Vector3.Zero()
+    entity: Entity
+    originalScale: Vector3 = Vector3.Zero()
 
-    constructor(_model:string, _transform:TransformType){
+    constructor(_model: string, _transform: TransformType) {
         this.entity = engine.addEntity()
 
-        GltfContainer.create(this.entity, {src:_model})
-        Transform.create(this.entity,_transform)
+        GltfContainer.create(this.entity, { src: _model })
+        Transform.create(this.entity, _transform)
         this.originalScale = Vector3.clone(_transform.scale)
 
-        let self= this
+        let self = this
 
         pointerEventsSystem.onPointerDown(
             {
@@ -50,6 +50,8 @@ export class CarChoice {
             rightWheelGLB: 'models/cars/car1/wheel_right.glb',
             steeringWheelGLB: 'models/cars/car1/steering_wheel.glb',
             brakeLightsGLB: 'models/cars/car1/brakeLights.glb',
+            dashboardGLB: 'models/cars/car1/dashboard.glb',
+            dashboardPosition: Vector3.create(1.25, 0.2, 0.065),
             wheelX_L: 1,
             wheelX_R: 1,
             wheelZ_F: 1.37,
@@ -58,14 +60,14 @@ export class CarChoice {
             carScale: 0.7,
             firstPersonCagePosition: Vector3.create(-0.15, -1.3, 0),
             thirdPersonCagePosition: Vector3.create(0, -0.2, -1.1),
-        }, Vector3.create(8.45, 2+1, 23.7), 90)
+        }, Vector3.create(8.45, 2 + 1, 23.7), 90)
     }
 
-    show(){
+    show() {
         Transform.getMutable(this.entity).scale = Vector3.clone(this.originalScale)
     }
 
-    hide(){
+    hide() {
         Transform.getMutable(this.entity).scale = Vector3.Zero()
     }
 }
