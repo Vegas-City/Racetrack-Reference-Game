@@ -3,6 +3,7 @@ import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
 import { CarSelectionManager } from "./carSelectionManager";
 import * as carConfiguration from "./carConfiguration.json"
+import { CarSelectionUI } from "../UI/carSelectionUI";
 
 export class CarChoice {
     entity: Entity
@@ -29,6 +30,7 @@ export class CarChoice {
                 self.LoadCar(_carIndex)
                 CarSelectionManager.instance.currentCarIndex = _carIndex
                 CarSelectionManager.hide()
+                CarSelectionUI.CarSelected = true
             }
         )
 

@@ -9,6 +9,7 @@ export class CarSelectionUI {
 
     static SelectionUIShow: boolean = false
     static CarData: JSON
+    static CarSelected: boolean = false
 
     private static component = () => (
         <UiEntity
@@ -98,7 +99,7 @@ export class CarSelectionUI {
     }
 
     static Render() {
-        if(CarSelectionManager.instance!=null){
+        if(CarSelectionManager.instance!=null && this.CarSelected!=true){
             return [
                 CarSelectionUI.component()
             ]
