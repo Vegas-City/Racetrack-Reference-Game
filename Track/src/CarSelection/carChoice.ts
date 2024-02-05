@@ -2,12 +2,13 @@ import { Entity, GltfContainer, InputAction, Transform, TransformType, engine, p
 import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
 import { CarSelectionManager } from "./carSelectionManager";
+import * as carConfiguration from "./carConfiguration.json"
 
 export class CarChoice {
     entity: Entity
     originalScale: Vector3 = Vector3.Zero()
 
-    constructor(_model: string, _transform: TransformType) {
+    constructor(_carIndex:number, _model: string, _transform: TransformType) {
         this.entity = engine.addEntity()
 
         GltfContainer.create(this.entity, { src: _model })
@@ -25,24 +26,26 @@ export class CarChoice {
                 }
             },
             function () {
-                self.LoadCar()
+                self.LoadCar(_carIndex)
                 CarSelectionManager.hide()
             }
         )
-
-
     }
 
-    LoadCar() {
+    LoadCar(_carIndex:number) {
+
+        // Load attributes from the JSON
+        let carStats = carConfiguration.cars[_carIndex-1]
+
         CarFactory.create({
-            mass: 150,
-            accelerationF: 12,
-            accelerationB: 12,
-            deceleration: 4,
-            minSpeed: -14,
-            maxSpeed: 25,
-            steerSpeed: 1.5,
-            grip: 0.3,
+            mass: carStats.attributes.mass,
+            accelerationF: carStats.attributes.accelerationF,
+            accelerationB: carStats.attributes.accelerationB,
+            deceleration: carStats.attributes.deceleration,
+            minSpeed: carStats.attributes.minSpeed,
+            maxSpeed: carStats.attributes.maxSpeed,
+            steerSpeed: carStats.attributes.steerSpeed,
+            grip: carStats.attributes.grip,
             engineStartAudio: 'audio/engineStart.mp3',
             carGLB: 'models/cars/car1/car.glb',
             carColliderGLB: 'models/cars/car1/carCollider.glb',
