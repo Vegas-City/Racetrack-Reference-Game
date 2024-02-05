@@ -3,6 +3,7 @@ import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
 import { CarSelectionManager } from "./carSelectionManager";
 import * as carConfiguration from "./carConfiguration.json"
+import { CarSelectionUI } from "../UI/carSelectionUI";
 
 export class CarChoice {
     entity: Entity
@@ -27,15 +28,19 @@ export class CarChoice {
             },
             function () {
                 self.LoadCar(_carIndex)
+                CarSelectionManager.instance.currentCarIndex = _carIndex
                 CarSelectionManager.hide()
+                CarSelectionUI.CarSelected = true
             }
         )
+
+        this.hide()
     }
 
     LoadCar(_carIndex:number) {
 
         // Load attributes from the JSON
-        let carStats = carConfiguration.cars[_carIndex-1]
+        let carStats = carConfiguration.cars[_carIndex]
 
         CarFactory.create({
             mass: carStats.attributes.mass,
