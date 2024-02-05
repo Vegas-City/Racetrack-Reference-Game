@@ -1,0 +1,46 @@
+{
+    "cars": [
+      {
+        "index": 1,
+        "name": "car1",
+        "attributes": {
+          "mass": 150,
+          "accelerationF": 12,
+          "accelerationB": 12,
+          "deceleration": 4,
+          "minSpeed": -14,
+          "maxSpeed": 25,
+          "steerSpeed": 1.5,
+          "grip": 0.3
+        }
+      },
+      {
+        "index": 2,
+        "name": "car2",
+        "attributes": {
+          "mass": 150,
+          "accelerationF": 10,
+          "accelerationB": 12,
+          "deceleration": 4,
+          "minSpeed": -14,
+          "maxSpeed": 23,
+          "steerSpeed": 1.5,
+          "grip": 0.3
+        }
+      },
+      {
+        "index": 3,
+        "name": "car3",
+        "attributes": {
+          "mass": 150,
+          "accelerationF": 8,
+          "accelerationB": 12,
+          "deceleration": 4,
+          "minSpeed": -14,
+          "maxSpeed": 21,
+          "steerSpeed": 1.5,
+          "grip": 0.3
+        }
+      }
+    ]
+  }
