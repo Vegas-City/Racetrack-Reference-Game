@@ -26,7 +26,7 @@ export class Scene {
         Scene.LoadTrack(1) // load first track by default
         Scene.loaded = true
         
-        new CarSelectionManager()
+        new CarSelectionManager(Vector3.create(7,0.3,11))
     }
 
     static LoadTrack(_trackNumber: number) {

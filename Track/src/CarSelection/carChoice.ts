@@ -30,6 +30,8 @@ export class CarChoice {
                 CarSelectionManager.hide()
             }
         )
+
+        this.hide()
     }
 
     LoadCar(_carIndex:number) {
