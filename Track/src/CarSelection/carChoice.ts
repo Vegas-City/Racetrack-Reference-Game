@@ -51,24 +51,30 @@ export class CarChoice {
             maxSpeed: carStats.attributes.maxSpeed,
             steerSpeed: carStats.attributes.steerSpeed,
             grip: carStats.attributes.grip,
-            engineStartAudio: 'audio/engineStart.mp3',
-            carGLB: 'models/cars/car1/car.glb',
-            carColliderGLB: 'models/cars/car1/carCollider.glb',
-            leftWheelGLB: 'models/cars/car1/wheel_left.glb',
-            rightWheelGLB: 'models/cars/car1/wheel_right.glb',
-            steeringWheelGLB: 'models/cars/car1/steering_wheel.glb',
-            brakeLightsGLB: 'models/cars/car1/brakeLights.glb',
-            dashboardGLB: 'models/cars/car1/dashboard.glb',
-            dashboardPosition: Vector3.create(1.25, 0.2, 0.065),
-            wheelX_L: 1,
-            wheelX_R: 1,
-            wheelZ_F: 1.37,
-            wheelZ_B: 1.57,
-            wheelY: -0.3,
-            carScale: 0.7,
-            firstPersonCagePosition: Vector3.create(-0.2, -1.3, 0),
-            thirdPersonCagePosition: Vector3.create(0, -0.2, -1.1),
+            engineStartAudio: carStats.audio.engineStart,
+            carGLB: carStats.models.car,
+            carColliderGLB: carStats.models.carCollider,
+            leftWheelGLB: carStats.models.leftWheel,
+            rightWheelGLB: carStats.models.rightWheel,
+            steeringWheelGLB: carStats.models.steeringWheel,
+            brakeLightsGLB: carStats.models.brakeLights,
+            dashboardGLB: carStats.models.dashboard,
+            dashboardPosition: this.extractVectorFromString(carStats.positions.dashboardPosition),
+            wheelX_L: carStats.positions.wheelX_L,
+            wheelX_R: carStats.positions.wheelX_R,
+            wheelZ_F: carStats.positions.wheelZ_F,
+            wheelZ_B: carStats.positions.wheelZ_B,
+            wheelY: carStats.positions.wheelY,
+            carScale: carStats.positions.carScale,
+            firstPersonCagePosition: this.extractVectorFromString(carStats.positions.firstPersonCagePosition),
+            thirdPersonCagePosition: this.extractVectorFromString(carStats.positions.thirdPersonCagePosition),
         }, Vector3.create(8.45, 2 + 1, 23.7), 90)
+    }
+
+    extractVectorFromString(_data:string):Vector3{
+        return Vector3.create(Number.parseFloat(_data.split(",")[0]),
+                              Number.parseFloat(_data.split(",")[1]),
+                              Number.parseFloat(_data.split(",")[2]))
     }
 
     show() {
