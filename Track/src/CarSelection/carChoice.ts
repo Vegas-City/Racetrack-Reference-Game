@@ -27,6 +27,7 @@ export class CarChoice {
             },
             function () {
                 self.LoadCar(_carIndex)
+                CarSelectionManager.instance.currentCarIndex = _carIndex
                 CarSelectionManager.hide()
             }
         )
@@ -37,7 +38,7 @@ export class CarChoice {
     LoadCar(_carIndex:number) {
 
         // Load attributes from the JSON
-        let carStats = carConfiguration.cars[_carIndex-1]
+        let carStats = carConfiguration.cars[_carIndex]
 
         CarFactory.create({
             mass: carStats.attributes.mass,
