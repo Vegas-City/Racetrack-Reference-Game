@@ -25,6 +25,6 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@vegascity/racetrack": "^1.0.46"
+    "@vegascity/racetrack": "^1.0.48"
   }
 }

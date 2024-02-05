@@ -1,5 +1,5 @@
 import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
-import { SpeedometerUI, LapUI } from '@vegascity/racetrack/src/ui'
+import { SpeedometerUI, LapUI, CarChoiceUI } from '@vegascity/racetrack/src/ui'
 import { Minimap } from '@vegascity/racetrack/src/ui'
 import { DebugUI } from './debugUI'
 import { TrackSelectorUI } from './trackSelectorUI'
@@ -17,7 +17,8 @@ const uiComponent = () => (
     Countdown.Render(),
     DebugUI.Render(),
     ui.render(),
-    CarSelectionUI.Render()
+    CarSelectionUI.Render(),
+    CarChoiceUI.Render()
   ]
 )  
 
@@ -39,4 +40,4 @@ export let UIDimensions:any = {
   height:0,
   minScale: 0,
   scaler: 0
-}
+} 

@@ -109,6 +109,6 @@ export class CarSelectionUI {
     static CarStats(){
         let carStats = carConfiguration.cars[CarSelectionManager.instance.currentCarIndex]
 
-        return carStats.name + "\nTop speed:" + carStats.attributes.maxSpeed*4 + "\nAcceleration: " + carStats.attributes.accelerationF
+        return carStats.name + "\nTop speed: " + carStats.attributes.maxSpeed*4 + "MPH\nAcceleration: " + carStats.attributes.accelerationF
     }
 }
