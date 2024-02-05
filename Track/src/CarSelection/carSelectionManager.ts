@@ -67,7 +67,7 @@ export class CarSelectionManager {
         });
     }
 
-    static hide(){
+    static hide() {
         CarSelectionManager.instance.carChoices.forEach(car => {
             car.hide()
         });
