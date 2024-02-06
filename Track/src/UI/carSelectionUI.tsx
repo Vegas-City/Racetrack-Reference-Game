@@ -15,31 +15,31 @@ export class CarSelectionUI {
         <UiEntity
             key="CarSelectionUI"
             uiBackground={{
-                color: Color4.create(0,0,0,0.5)
+                color: Color4.fromInts(165,185,203,255)
             }}
             uiTransform={{
                 position: {
-                    right: 500*UIDimensions.scaler,
-                    top: 600*UIDimensions.scaler
+                    right: 50*UIDimensions.scaler,
+                    top: 200*UIDimensions.scaler
                 },
                 width: (1344 / 2)*UIDimensions.scaler,
                 height: (750 / 2)*UIDimensions.scaler,
                 positionType: 'absolute',
                 display: this.SelectionUIShow ? 'flex' : 'none',
 
-            }}
+            }} 
         >
             <Label 
                 key="carName"
                 value={this.CarStats()}
-                color= {Color4.fromInts(74, 220, 246, 255)}
+                color= {Color4.fromInts(255, 255, 255, 255)}
                 fontSize={this.getFontSize(60)}
                 font="monospace"
                 textAlign="top-left"
                 uiTransform={{
                     position: {
                         top: 0,
-                        right: 0
+                        right: -50*UIDimensions.scaler
                     },
                     positionType: "relative",
                 }}>
