@@ -71,7 +71,7 @@
         },
         "positions":{
           "dashboardPosition": "1.25,0.2,0.065",
-          "steeringWheelPosition" : "0,0,0",
+          "steeringWheelPosition" : "0.80,0.17,0.57",
           "wheelX_L": 1, 
           "wheelX_R": 1,
           "wheelZ_F": 1.37,
@@ -112,7 +112,7 @@
         },
         "positions":{
           "dashboardPosition": "1.25,0.2,0.065",
-          "steeringWheelPosition" : "0,0,0",
+          "steeringWheelPosition" : "0.80,0.17,0.57",
           "wheelX_L": 1,
           "wheelX_R": 1,
           "wheelZ_F": 1.37,
