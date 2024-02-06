@@ -39,7 +39,7 @@ export class CarSelectionUI {
                 uiTransform={{
                     position: {
                         top: 0,
-                        right: 0
+                        right: -50*UIDimensions.scaler
                     },
                     positionType: "relative",
                 }}>
