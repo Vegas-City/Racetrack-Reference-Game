@@ -30,6 +30,7 @@ export class ServerComms {
     }
 
     public static getLeaderboardData() {
+        /*
         return executeTask(async () => {
             try {
                 let response = await signedFetch({
@@ -51,5 +52,6 @@ export class ServerComms {
                 console.log("Error " + error)
             }
         })
+        */
     }
 }
