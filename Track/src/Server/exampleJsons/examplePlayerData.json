@@ -1,0 +1,42 @@
+{
+  "result": {
+    "cars": [
+      {
+        "name": "Lambo",
+        "guid": "3135795d-de03-4fd5-a604-784d81a41107"
+      }
+    ],
+    "name": "Bob",
+    "tracks": [
+      {
+        "pb": 60000,
+        "name": "PracticeTrack",
+        "targetTimeToUnlockNextTrack": 60000,
+        "checkpoints": 10,
+        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541906"
+      },
+      {
+        "pb": 58000,
+        "name": "Track1",
+        "targetTimeToUnlockNextTrack": 70000,
+        "checkpoints": 9,
+        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541907"
+      },
+      {
+        "pb": 47000,
+        "name": "Track2",
+        "targetTimeToUnlockNextTrack": 65000,
+        "checkpoints": 13,
+        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541908"
+      },
+      {
+        "pb": 67000,
+        "name": "Track3",
+        "targetTimeToUnlockNextTrack": 55000,
+        "checkpoints": 12,
+        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541909"
+      }
+    ],
+    "points": 0
+  }
+}
