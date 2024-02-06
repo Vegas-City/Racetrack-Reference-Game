@@ -59,6 +59,7 @@ export class CarChoice {
             steeringWheelGLB: carStats.models.steeringWheel,
             brakeLightsGLB: carStats.models.brakeLights,
             dashboardGLB: carStats.models.dashboard,
+            steeringWheelPosition: this.extractVectorFromString(carStats.positions.steeringWheelPosition),
             dashboardPosition: this.extractVectorFromString(carStats.positions.dashboardPosition),
             wheelX_L: carStats.positions.wheelX_L,
             wheelX_R: carStats.positions.wheelX_R,
