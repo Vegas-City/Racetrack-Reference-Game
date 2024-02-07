@@ -61,7 +61,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -110,7 +110,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -147,7 +147,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -196,7 +196,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -232,7 +232,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -281,7 +281,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -317,7 +317,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -366,7 +366,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -404,7 +404,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -453,7 +453,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -489,7 +489,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -538,7 +538,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -574,7 +574,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -623,7 +623,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -659,7 +659,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/minus.png",
+                            src: "images/ui/debugUI/minus.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -708,7 +708,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
@@ -756,7 +756,7 @@ export class DebugUI {
                     uiBackground={{
                         textureMode: 'stretch',
                         texture: {
-                            src: "images/debugUI/add.png",
+                            src: "images/ui/debugUI/add.png",
                             wrapMode: 'repeat'
                         }
                     }}
