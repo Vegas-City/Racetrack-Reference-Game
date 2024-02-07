@@ -70,7 +70,7 @@ export class CarChoice {
             firstPersonCagePosition: this.extractVectorFromString(carStats.positions.firstPersonCagePosition),
             thirdPersonCagePosition: this.extractVectorFromString(carStats.positions.thirdPersonCagePosition),
             carIcon: carStats.images.carIcon
-        }, Vector3.create(8.45, 2 + 1, 23.7), 90)
+        }, Vector3.create(8.45, 1.4, 23.7), 90)
     }
 
     extractVectorFromString(_data: string): Vector3 {
