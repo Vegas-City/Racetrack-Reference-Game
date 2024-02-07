@@ -16,7 +16,7 @@ export function main() {
   })
 
   setupUi()
-
+ 
   // wait for the realm and user data to be available
   vegascity.core.Helper.init(() => {
     vegascity.core.UserData.getUserData(() => {
