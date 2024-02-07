@@ -9,6 +9,7 @@ import { ServerComms } from './Server/serverComms'
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
+import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 
 export class Scene {
 
@@ -50,7 +51,15 @@ export class Scene {
         Scene.LoadTrack(1) // load first track by default
         Scene.loaded = true
 
-        new CarSelectionManager(Vector3.create(7, 0.3, 11))
+        new CarSelectionManager(Vector3.create(7, 1.3, 11))
+
+        // Scene parcels
+        let sceneParcels:Entity = engine.addEntity()
+        GltfContainer.create(sceneParcels,{src:"models/SceneParcels.glb"})
+        Transform.create(sceneParcels, {
+            position: Vector3.create(-32,1,16),
+            rotation:Quaternion.fromEulerDegrees(0,180,0)
+        })
     }
 
     static LoadTrack(_trackNumber: number) {
