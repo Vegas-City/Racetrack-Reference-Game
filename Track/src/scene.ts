@@ -30,20 +30,19 @@ export class Scene {
                 })
             },
             () => {
-                console.log("TIME: " + Lap.timeElapsed)
                 ServerComms.recordAttempt({
                     car: "",
                     track: "",
-                    checkpoint: 0,
-                    time: 0
+                    checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
+                    time: Math.round(Lap.timeElapsed * 1000)
                 })
             },
             () => {
                 ServerComms.recordAttempt({
                     car: "",
                     track: "",
-                    checkpoint: Lap.checkpointIndex * (Lap.lapsCompleted + 1),
-                    time: 0
+                    checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
+                    time: Math.round(Lap.timeElapsed * 1000)
                 })
             }
         )
