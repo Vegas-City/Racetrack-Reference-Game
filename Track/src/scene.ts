@@ -86,6 +86,8 @@ export class Scene {
                 bottomLeftZ: 16,
                 offsetX: 7,
                 offsetZ: 6,
+                checkpointOffsetX: 9.5,
+                checkpointOffsetZ: 9.5,
                 srcPaddingX: 35,
                 srcPaddingZ: 29
             }
