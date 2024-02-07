@@ -3,23 +3,16 @@ import { setupUi } from "./UI/ui";
 import { getRealm } from '~system/Runtime'
 import { executeTask } from "@dcl/ecs";
 import { DebugUI } from "./UI/debugUI";
-import { Logger } from "@vegascity/vegas-city-logger"
-import * as vegascity from "@vegascity/vegas-city-library/index"
-import * as ecs from "@dcl/sdk/ecs"
 import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
+import { Helper, UserData } from "./Server/Helper";
 
 export function main() {
-  vegascity.setup({
-    ecs: ecs,
-    Logger: Logger
-  })
-
   setupUi()
 
   // wait for the realm and user data to be available
-  vegascity.core.Helper.init(() => {
-    vegascity.core.UserData.getUserData(() => {
+  Helper.init(() => {
+    UserData.getUserData(() => {
       executeTask(async () => {
         const { realmInfo } = await getRealm({})
         if (realmInfo != undefined) {

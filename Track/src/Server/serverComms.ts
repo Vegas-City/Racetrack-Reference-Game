@@ -1,10 +1,10 @@
-import { EnvironmentType } from "@vegascity/vegas-city-library/src/core/EnvironmentType"
-import { Helper, UserData } from "@vegascity/vegas-city-library/src/core/Helper"
-import { signedFetch } from "~system/SignedFetch"
-import { executeTask } from "@dcl/sdk/ecs"
+import { EnvironmentType } from "./EnvironmentType"
+import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 
 export class ServerComms {
+    private static readonly TEST_MODE: boolean = true
+
     constructor() {
         console.log("SERVER COMMS")
         console.log("SC : " + UserData.cachedData?.displayName)
@@ -26,32 +26,42 @@ export class ServerComms {
     }
 
     public static recordAttempt(_data: RecordAttemptData): void {
-        console.log("recording attempt")
+        if (ServerComms.TEST_MODE) {
+            console.log("Recording attempt:\nCheckpoint: " + _data.checkpoint + "\nTime: " + _data.time)
+        }
+        else {
+
+        }
     }
 
     public static getLeaderboardData() {
-        /*
-        return executeTask(async () => {
-            try {
-                let response = await signedFetch({
-                    url: ServerComms.getServerUrl() + "/api/crazygolf/topten?",
-                    init: {
-                        headers: { "Content-Type": "application/json" },
-                        method: "GET"
-                    }
-                })
+        if (ServerComms.TEST_MODE) {
 
-                let json = await JSON.parse(response.body)
-                if (json != null && json != undefined) {
-                    console.log(json)
-                    
-                } else {
-                    //log("Null json returned for Top 10")
+        }
+        else {
+            /*
+            return executeTask(async () => {
+                try {
+                    let response = await signedFetch({
+                        url: ServerComms.getServerUrl() + "/api/crazygolf/topten?",
+                        init: {
+                            headers: { "Content-Type": "application/json" },
+                            method: "GET"
+                        }
+                    })
+    
+                    let json = await JSON.parse(response.body)
+                    if (json != null && json != undefined) {
+                        console.log(json)
+                        
+                    } else {
+                        //log("Null json returned for Top 10")
+                    }
+                } catch (error) {
+                    console.log("Error " + error)
                 }
-            } catch (error) {
-                console.log("Error " + error)
-            }
-        })
-        */
+            })
+            */
+        }
     }
 }
