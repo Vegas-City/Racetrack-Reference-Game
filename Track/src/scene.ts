@@ -66,26 +66,28 @@ export class Scene {
         let minimapSrc: string = ""
         switch (_trackNumber) {
             case 1: TrackManager.Load(trackConfig1)
-                minimapSrc = "images/minimap1.png"
+                minimapSrc = "images/ui/minimapUI/minimap1.png"
                 break
             case 2: TrackManager.Load(trackConfig2)
-                minimapSrc = "images/minimap2.png"
+                minimapSrc = "images/ui/minimapUI/minimap2.png"
                 break
             case 3: TrackManager.Load(trackConfig3)
-                minimapSrc = "images/minimap3.png"
+                minimapSrc = "images/ui/minimapUI/minimap3.png"
                 break
         }
         Minimap.Load(
             {
                 src: minimapSrc,
-                srcWidth: 704,
-                srcHeight: 576,
+                srcWidth: 739,
+                srcHeight: 605,
                 parcelWidth: 11,
                 parcelHeight: 9,
                 bottomLeftX: -32,
                 bottomLeftZ: 16,
-                paddingX: 5,
-                paddingZ: 4
+                offsetX: 7,
+                offsetZ: 6,
+                srcPaddingX: 35,
+                srcPaddingZ: 29
             }
         )
     }

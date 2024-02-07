@@ -58,7 +58,7 @@ export class CarSelectionUI {
                     }}
                     uiBackground={{
                         textureMode: "stretch",
-                        texture: { src: "images/selectionUI/previous.png" },
+                        texture: { src: "images/ui/selectionUI/previous.png" },
                     }}
                     onMouseDown={() => {
                         CarSelectionManager.loadPreviousCar()
@@ -77,7 +77,7 @@ export class CarSelectionUI {
                     }}
                     uiBackground={{
                         textureMode: "stretch",
-                        texture: { src: "images/selectionUI/next.png" },
+                        texture: { src: "images/ui/selectionUI/next.png" },
                     }}
                     onMouseDown={() => {
                         CarSelectionManager.loadNextCar()
