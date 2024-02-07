@@ -21,8 +21,30 @@ export class Scene {
         new ServerComms()
         new InputManager()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false,
-            () => { },
-            () => { console.log("TIME: " + Lap.timeElapsed) }
+            () => {
+                ServerComms.recordAttempt({
+                    car: "",
+                    track: "",
+                    checkpoint: 0,
+                    time: 0
+                })
+            },
+            () => {
+                ServerComms.recordAttempt({
+                    car: "",
+                    track: "",
+                    checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
+                    time: Math.round(Lap.timeElapsed * 1000)
+                })
+            },
+            () => {
+                ServerComms.recordAttempt({
+                    car: "",
+                    track: "",
+                    checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
+                    time: Math.round(Lap.timeElapsed * 1000)
+                })
+            }
         )
         new PhysicsManager()
         Scene.LoadTrack(1) // load first track by default
