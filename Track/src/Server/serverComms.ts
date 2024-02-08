@@ -5,9 +5,14 @@ import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
 import { CarData } from "./types/carData"
 import { TrackData } from "./types/trackData"
+import { PlayerData } from "./types/playerData"
+import { LeaderboardData } from "./types/leaderboardData"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = true
+
+    static player: PlayerData
+    static leaderboard: LeaderboardData
 
     constructor() {
         console.log("SERVER COMMS")
