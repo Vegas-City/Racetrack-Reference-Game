@@ -2,14 +2,14 @@ import { Entity, GltfContainer, InputAction, Transform, TransformType, engine, p
 import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
 import { CarSelectionManager } from "./carSelectionManager";
-import * as carConfiguration from "./carConfiguration.json"
 import { CarSelectionUI } from "../UI/carSelectionUI";
+import * as carConfiguration from "./carConfiguration.json"
 
 export class CarChoice {
     entity: Entity
     originalScale: Vector3 = Vector3.Zero()
 
-    constructor(_carIndex:number, _model: string, _transform: TransformType) {
+    constructor(_carIndex: number, _model: string, _transform: TransformType) {
         this.entity = engine.addEntity()
 
         GltfContainer.create(this.entity, { src: _model })
@@ -37,7 +37,7 @@ export class CarChoice {
         this.hide()
     }
 
-    LoadCar(_carIndex:number) {
+    LoadCar(_carIndex: number) {
 
         // Load attributes from the JSON
         let carStats = carConfiguration.cars[_carIndex]
@@ -70,13 +70,13 @@ export class CarChoice {
             firstPersonCagePosition: this.extractVectorFromString(carStats.positions.firstPersonCagePosition),
             thirdPersonCagePosition: this.extractVectorFromString(carStats.positions.thirdPersonCagePosition),
             carIcon: carStats.images.carIcon
-        }, Vector3.create(8.45, 2 + 1, 23.7), 90)
+        }, Vector3.create(8.45, 1.4, 23.7), 90)
     }
 
-    extractVectorFromString(_data:string):Vector3{
+    extractVectorFromString(_data: string): Vector3 {
         return Vector3.create(Number.parseFloat(_data.split(",")[0]),
-                              Number.parseFloat(_data.split(",")[1]),
-                              Number.parseFloat(_data.split(",")[2]))
+            Number.parseFloat(_data.split(",")[1]),
+            Number.parseFloat(_data.split(",")[2]))
     }
 
     show() {

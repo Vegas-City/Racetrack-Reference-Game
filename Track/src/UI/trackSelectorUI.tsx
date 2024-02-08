@@ -30,7 +30,7 @@ export class TrackSelectorUI {
                 uiBackground={{
                     textureMode: 'stretch',
                     texture: {
-                        src: "images/debugUI/track1.png",
+                        src: "images/ui/debugUI/track1.png",
                         wrapMode: 'repeat'
                     }
                 }}
@@ -52,7 +52,7 @@ export class TrackSelectorUI {
                 uiBackground={{
                     textureMode: 'stretch',
                     texture: {
-                        src: "images/debugUI/track2.png",
+                        src: "images/ui/debugUI/track2.png",
                         wrapMode: 'repeat'
                     }
                 }}
@@ -74,7 +74,7 @@ export class TrackSelectorUI {
                 uiBackground={{
                     textureMode: 'stretch',
                     texture: {
-                        src: "images/debugUI/track3.png",
+                        src: "images/ui/debugUI/track3.png",
                         wrapMode: 'repeat'
                     }
                 }}
