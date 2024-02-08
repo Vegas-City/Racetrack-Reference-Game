@@ -6,6 +6,7 @@ import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
 import { CarSelectionManager } from './CarSelection/carSelectionManager'
 import { ServerComms } from './Server/serverComms'
+import * as trackConfig0 from "../data/track_00.json"
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
@@ -77,7 +78,7 @@ export class Scene {
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
         switch (_trackNumber) {
-            case 0: TrackManager.Load(trackConfig1)
+            case 0: TrackManager.Load(trackConfig0)
                 Minimap.Load(
                     {
                         src: "images/ui/minimapUI/minimap1.png",
