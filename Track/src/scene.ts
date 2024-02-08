@@ -70,6 +70,7 @@ export class Scene {
 
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
+        TrackManager.trackID = _trackNumber
         switch (_trackNumber) {
             case 0: TrackManager.Load(trackConfig0)
                 Minimap.Load(
