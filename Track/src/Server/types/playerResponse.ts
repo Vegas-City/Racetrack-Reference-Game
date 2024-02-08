@@ -1,15 +1,5 @@
-export type CarData = {
-    guid: string
-    name: string
-}
-
-export type TrackData = {
-    guid: string
-    name: string
-    pb: number,
-    checkpoints: number,
-    targetTimeToUnlockNextTrack: number
-}
+import { CarData } from "./carData"
+import { TrackData } from "./trackData"
 
 export type PlayerResponse = {
     name: string

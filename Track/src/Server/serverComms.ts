@@ -3,7 +3,8 @@ import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
-import { CarData, TrackData } from "./types/playerResponse"
+import { CarData } from "./types/carData"
+import { TrackData } from "./types/trackData"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = true
@@ -151,7 +152,7 @@ export class ServerComms {
                 }
             })
         } catch (ex) {
-            console.log("Save ghost data error: " + ex)
+            console.log("Error saving ghost data: " + ex)
         }
     }
 }
