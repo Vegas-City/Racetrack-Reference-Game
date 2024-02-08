@@ -10,6 +10,7 @@ import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
+import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 
 export class Scene {
 
@@ -36,6 +37,11 @@ export class Scene {
                     checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
                     time: Math.round(Lap.timeElapsed * 1000)
                 })
+
+                // Send the ghost to the server at game end
+                if(GhostRecorder.instance!=null){
+                    ServerComms.recordGhostData(GhostRecorder.instance.getGhostData())
+                }
             },
             () => {
                 ServerComms.recordAttempt({
@@ -44,6 +50,13 @@ export class Scene {
                     checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
                     time: Math.round(Lap.timeElapsed * 1000)
                 })
+
+                if(Lap.checkpointIndex == 0 && Lap.lapsCompleted > 0){
+                    // Send the ghost to the server for every complete lap
+                    if(GhostRecorder.instance!=null){
+                        ServerComms.recordGhostData(GhostRecorder.instance.getGhostData())
+                    }
+                }
             }
         )
         new PhysicsManager()

@@ -1,6 +1,8 @@
+import { GhostData } from "@vegascity/racetrack/src/ghostCar"
 import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
+import { signedFetch } from "~system/SignedFetch"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = true
@@ -32,6 +34,36 @@ export class ServerComms {
         else {
 
         }
+    }
+
+    public static async recordGhostData(_data: GhostData){
+        let publicKey = UserData.cachedData.publicKey || "GUEST_" + UserData.cachedData.userId
+
+        try{
+            let response = await signedFetch({
+                url: ServerComms.getServerUrl() + "racetrack/api/saveghost",
+                init: {
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        walletAddress: publicKey,
+                        trackID: _data.track,
+                        carID: _data.car,
+                        createDate: _data.createDate,
+                        duration: _data.duration,
+                        frequency: _data.frequecy,
+                        points: _data.getPointJSON()
+                    })
+                }
+            })
+        } catch(error){
+            console.log("Save ghost data error: " + error)
+        }
+    }
+
+    public static getGhostData() : GhostData{
+        // Do something eventually
+        return new GhostData()
     }
 
     public static getLeaderboardData() {
