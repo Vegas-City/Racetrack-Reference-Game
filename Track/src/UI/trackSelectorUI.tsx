@@ -18,12 +18,34 @@ export class TrackSelectorUI {
             }}
         >
             <UiEntity
-                key="Track1Btn"
+                key="Track0Btn"
                 uiTransform={{
                     width: 128 * TrackSelectorUI.SCALE,
                     height: 128 * TrackSelectorUI.SCALE,
                     position: {
                         left: 0,
+                        bottom: 0
+                    }
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/debugUI/track0.png",
+                        wrapMode: 'repeat'
+                    }
+                }}
+                onMouseDown={() => {
+                    //TrackSelectorUI.trackSelectorUIShow = false
+                    Scene.LoadTrack(0)
+                }}
+            ></UiEntity>
+            <UiEntity
+                key="Track1Btn"
+                uiTransform={{
+                    width: 128 * TrackSelectorUI.SCALE,
+                    height: 128 * TrackSelectorUI.SCALE,
+                    position: {
+                        left: 20,
                         bottom: 0
                     }
                 }}
@@ -45,7 +67,7 @@ export class TrackSelectorUI {
                     width: 128 * TrackSelectorUI.SCALE,
                     height: 128 * TrackSelectorUI.SCALE,
                     position: {
-                        left: 20,
+                        left: 40,
                         bottom: 0
                     }
                 }}
@@ -67,7 +89,7 @@ export class TrackSelectorUI {
                     width: 128 * TrackSelectorUI.SCALE,
                     height: 128 * TrackSelectorUI.SCALE,
                     position: {
-                        left: 40,
+                        left: 60,
                         bottom: 0
                     }
                 }}
