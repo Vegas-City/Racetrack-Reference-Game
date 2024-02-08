@@ -6,6 +6,7 @@ import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
 import { CarSelectionManager } from './CarSelection/carSelectionManager'
 import { ServerComms } from './Server/serverComms'
+import * as trackConfig0 from "../data/track_00.json"
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
@@ -39,7 +40,7 @@ export class Scene {
                 })
 
                 // Send the ghost to the server at game end
-                if(GhostRecorder.instance!=null){
+                if (GhostRecorder.instance != null) {
                     ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                 }
             },
@@ -51,16 +52,16 @@ export class Scene {
                     time: Math.round(Lap.timeElapsed * 1000)
                 })
 
-                if(Lap.checkpointIndex == 0 && Lap.lapsCompleted > 0){
+                if (Lap.checkpointIndex == 0 && Lap.lapsCompleted > 0) {
                     // Send the ghost to the server for every complete lap
-                    if(GhostRecorder.instance!=null){
+                    if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
                 }
             }
         )
         new PhysicsManager()
-        Scene.LoadTrack(1) // load first track by default
+        Scene.LoadTrack(0) // load practice track by default
         Scene.loaded = true
 
         new CarSelectionManager(Vector3.create(7, 1.3, 11))
@@ -76,8 +77,26 @@ export class Scene {
 
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
-        let minimapSrc: string = ""
         switch (_trackNumber) {
+            case 0: TrackManager.Load(trackConfig0)
+                Minimap.Load(
+                    {
+                        src: "images/ui/minimapUI/minimap1.png",
+                        srcWidth: 739,
+                        srcHeight: 605,
+                        parcelWidth: 11,
+                        parcelHeight: 9,
+                        bottomLeftX: -32,
+                        bottomLeftZ: 16,
+                        offsetX: 7,
+                        offsetZ: 6,
+                        checkpointOffsetX: 9.5,
+                        checkpointOffsetZ: 9.5,
+                        srcPaddingX: 35,
+                        srcPaddingZ: 29
+                    }
+                )
+                break
             case 1: TrackManager.Load(trackConfig1)
                 Minimap.Load(
                     {
