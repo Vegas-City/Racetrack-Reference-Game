@@ -12,7 +12,7 @@
                 }
             ],
             "guid": "010d7826-c3fc-41cd-bb48-5cdd5793a5f2",
-            "trackName": "Track 1"
+            "trackName": "Track 0"
         },
         {
             "scores": [
@@ -22,17 +22,17 @@
                 }
             ],
             "guid": "be36fea3-da89-41a3-bb2f-d8f3869319a9",
-            "trackName": "Track 2"
+            "trackName": "Track 1"
         },
         {
             "scores": [],
             "guid": "f556412d-f1da-4853-a05f-3ca90beba0a3",
-            "trackName": "Track 3"
+            "trackName": "Track 2"
         },
         {
             "scores": [],
             "guid": "6388c743-72b0-4555-a762-68450e300d5d",
-            "trackName": "Track 4"
+            "trackName": "Track 3"
         }
     ]
 }

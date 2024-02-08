@@ -4,37 +4,45 @@
       {
         "name": "Lambo",
         "guid": "3135795d-de03-4fd5-a604-784d81a41107"
+      },
+      {
+        "name": "Ferrari",
+        "guid": "3135795d-de03-4fd5-a604-784d81a41108"
+      },
+      {
+        "name": "McLaren",
+        "guid": "3135795d-de03-4fd5-a604-784d81a41109"
       }
     ],
     "name": "Bob",
     "tracks": [
       {
         "pb": 60000,
-        "name": "PracticeTrack",
+        "name": "Track 0",
         "targetTimeToUnlockNextTrack": 60000,
         "checkpoints": 10,
-        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541906"
+        "guid": "010d7826-c3fc-41cd-bb48-5cdd5793a5f2"
       },
       {
         "pb": 58000,
-        "name": "Track1",
+        "name": "Track 1",
         "targetTimeToUnlockNextTrack": 70000,
         "checkpoints": 9,
-        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541907"
+        "guid": "be36fea3-da89-41a3-bb2f-d8f3869319a9"
       },
       {
         "pb": 47000,
-        "name": "Track2",
+        "name": "Track 2",
         "targetTimeToUnlockNextTrack": 65000,
         "checkpoints": 13,
-        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541908"
+        "guid": "f556412d-f1da-4853-a05f-3ca90beba0a3"
       },
       {
         "pb": 67000,
-        "name": "Track3",
+        "name": "Track 3",
         "targetTimeToUnlockNextTrack": 55000,
         "checkpoints": 12,
-        "guid": "14f0cb37-9bbd-4b09-8e12-3b40c5541909"
+        "guid": "6388c743-72b0-4555-a762-68450e300d5d"
       }
     ],
     "points": 0
