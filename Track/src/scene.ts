@@ -40,7 +40,7 @@ export class Scene {
 
                 // Send the ghost to the server at game end
                 if(GhostRecorder.instance!=null){
-                    ServerComms.recordGhostData(GhostRecorder.instance.getGhostData())
+                    ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                 }
             },
             () => {
@@ -54,7 +54,7 @@ export class Scene {
                 if(Lap.checkpointIndex == 0 && Lap.lapsCompleted > 0){
                     // Send the ghost to the server for every complete lap
                     if(GhostRecorder.instance!=null){
-                        ServerComms.recordGhostData(GhostRecorder.instance.getGhostData())
+                        ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
                 }
             }
