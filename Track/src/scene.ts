@@ -77,83 +77,40 @@ export class Scene {
 
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
+        let minimapSrc = ""
         switch (_trackNumber) {
             case 0: TrackManager.Load(trackConfig0)
-                Minimap.Load(
-                    {
-                        src: "images/ui/minimapUI/minimap1.png",
-                        srcWidth: 739,
-                        srcHeight: 605,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        offsetX: 7,
-                        offsetZ: 6,
-                        checkpointOffsetX: 9.5,
-                        checkpointOffsetZ: 9.5,
-                        srcPaddingX: 35,
-                        srcPaddingZ: 29
-                    }
-                )
+                minimapSrc = "images/ui/minimapUI/TRACK_0.png"
                 break
             case 1: TrackManager.Load(trackConfig1)
-                Minimap.Load(
-                    {
-                        src: "images/ui/minimapUI/minimap1.png",
-                        srcWidth: 739,
-                        srcHeight: 605,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        offsetX: 7,
-                        offsetZ: 6,
-                        checkpointOffsetX: 9.5,
-                        checkpointOffsetZ: 9.5,
-                        srcPaddingX: 35,
-                        srcPaddingZ: 29
-                    }
-                )
+                minimapSrc = "images/ui/minimapUI/TRACK_1.png"
                 break
             case 2: TrackManager.Load(trackConfig2)
-                Minimap.Load(
-                    {
-                        src: "images/ui/minimapUI/minimap2.png",
-                        srcWidth: 704,
-                        srcHeight: 576,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        offsetX: 5,
-                        offsetZ: 4,
-                        checkpointOffsetX: 5,
-                        checkpointOffsetZ: 4,
-                        checkpointLength: 15,
-                        checkpointWidth: 4
-                    }
-                )
+                minimapSrc = "images/ui/minimapUI/TRACK_2.png"
                 break
             case 3: TrackManager.Load(trackConfig3)
-                Minimap.Load(
-                    {
-                        src: "images/ui/minimapUI/minimap3.png",
-                        srcWidth: 704,
-                        srcHeight: 576,
-                        parcelWidth: 11,
-                        parcelHeight: 9,
-                        bottomLeftX: -32,
-                        bottomLeftZ: 16,
-                        offsetX: 5,
-                        offsetZ: 4,
-                        checkpointOffsetX: 5,
-                        checkpointOffsetZ: 4,
-                        checkpointLength: 15,
-                        checkpointWidth: 4
-                    }
-                )
+                minimapSrc = "images/ui/minimapUI/TRACK_3.png"
                 break
         }
+        Minimap.Load(
+            {
+                src: minimapSrc,
+                srcWidth: 992,
+                srcHeight: 815,
+                parcelWidth: 11,
+                parcelHeight: 9,
+                bottomLeftX: -32,
+                bottomLeftZ: 16,
+                offsetX: 0.75,
+                offsetZ: 0.75,
+                paddingBottom: 51,
+                paddingTop: 45,
+                paddingLeft: 60,
+                paddingRight: 50,
+                checkpointLength: 22,
+                checkpointWidth: 6,
+                scale: 0.3
+            }
+        )
     }
 } 
