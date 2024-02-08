@@ -51,13 +51,6 @@ export class Scene {
                     checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
                     time: Math.round(Lap.timeElapsed * 1000)
                 })
-
-                if (Lap.checkpointIndex == 0 && Lap.lapsCompleted > 0) {
-                    // Send the ghost to the server for every complete lap
-                    if (GhostRecorder.instance != null) {
-                        ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
-                    }
-                }
             }
         )
         new PhysicsManager()
@@ -77,6 +70,7 @@ export class Scene {
 
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
+        TrackManager.trackID = _trackNumber
         let minimapSrc = ""
         switch (_trackNumber) {
             case 0: TrackManager.Load(trackConfig0)
