@@ -1,13 +1,14 @@
-export type TrackBestTime = {
-    guid: string
-    pb: number
+export type PlayerPB = {
+    user: string
+    time: number
 }
 
-export type PlayerBestTimes = {
-    name: string
-    trackPbs: TrackBestTime[]
+export type TrackPBs = {
+    guid: string
+    trackName: string
+    scores: PlayerPB[]
 }
 
 export type LeaderboardResponse = {
-    result: PlayerBestTimes[]
+    result: TrackPBs[]
 }
