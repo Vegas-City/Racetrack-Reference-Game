@@ -66,6 +66,33 @@ export class Scene {
             position: Vector3.create(-32, 1, 16),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0)
         })
+
+        Minimap.InitialiseAssets({
+            lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
+            minimapImages: ["images/ui/minimapUI/TRACK_0.png", "images/ui/minimapUI/TRACK_1.png", "images/ui/minimapUI/TRACK_2.png", "images/ui/minimapUI/TRACK_3.png"],
+            checkpointImages: [
+                [
+                    "images/ui/minimapUI/checkpoints/0_0.png",
+                    "images/ui/minimapUI/checkpoints/0_1.png",
+                    "images/ui/minimapUI/checkpoints/0_2.png",
+                    "images/ui/minimapUI/checkpoints/0_3.png",
+                    "images/ui/minimapUI/checkpoints/0_4.png",
+                    "images/ui/minimapUI/checkpoints/0_5.png",
+                    "images/ui/minimapUI/checkpoints/0_6.png",
+                    "images/ui/minimapUI/checkpoints/0_7.png"
+                ],
+                [
+                    "images/ui/minimapUI/checkpoints/1_0.png",
+                    "images/ui/minimapUI/checkpoints/1_1.png",
+                    "images/ui/minimapUI/checkpoints/1_2.png",
+                    "images/ui/minimapUI/checkpoints/1_3.png",
+                    "images/ui/minimapUI/checkpoints/1_4.png",
+                    "images/ui/minimapUI/checkpoints/1_5.png",
+                    "images/ui/minimapUI/checkpoints/1_6.png",
+                    "images/ui/minimapUI/checkpoints/1_7.png"
+                ]
+            ]
+        })
     }
 
     static LoadTrack(_trackNumber: number) {
@@ -88,7 +115,6 @@ export class Scene {
         }
         Minimap.Load(
             {
-                src: minimapSrc,
                 srcWidth: 992,
                 srcHeight: 815,
                 parcelWidth: 11,
@@ -101,8 +127,6 @@ export class Scene {
                 paddingTop: 45,
                 paddingLeft: 60,
                 paddingRight: 50,
-                checkpointLength: 22,
-                checkpointWidth: 6,
                 scale: 0.3
             }
         )
