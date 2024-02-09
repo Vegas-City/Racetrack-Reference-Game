@@ -90,6 +90,31 @@ export class Scene {
                     "images/ui/minimapUI/checkpoints/1_5.png",
                     "images/ui/minimapUI/checkpoints/1_6.png",
                     "images/ui/minimapUI/checkpoints/1_7.png"
+                ],
+                [
+                    "images/ui/minimapUI/checkpoints/2_0.png",
+                    "images/ui/minimapUI/checkpoints/2_1.png",
+                    "images/ui/minimapUI/checkpoints/2_2.png",
+                    "images/ui/minimapUI/checkpoints/2_3.png",
+                    "images/ui/minimapUI/checkpoints/2_4.png",
+                    "images/ui/minimapUI/checkpoints/2_5.png",
+                    "images/ui/minimapUI/checkpoints/2_6.png",
+                    "images/ui/minimapUI/checkpoints/2_7.png",
+                    "images/ui/minimapUI/checkpoints/2_8.png"
+                ],
+                [
+                    "images/ui/minimapUI/checkpoints/3_0.png",
+                    "images/ui/minimapUI/checkpoints/3_1.png",
+                    "images/ui/minimapUI/checkpoints/3_2.png",
+                    "images/ui/minimapUI/checkpoints/3_3.png",
+                    "images/ui/minimapUI/checkpoints/3_4.png",
+                    "images/ui/minimapUI/checkpoints/3_5.png",
+                    "images/ui/minimapUI/checkpoints/3_6.png",
+                    "images/ui/minimapUI/checkpoints/3_7.png",
+                    "images/ui/minimapUI/checkpoints/3_8.png",
+                    "images/ui/minimapUI/checkpoints/3_9.png",
+                    "images/ui/minimapUI/checkpoints/3_10.png",
+                    "images/ui/minimapUI/checkpoints/3_11.png"
                 ]
             ]
         })
