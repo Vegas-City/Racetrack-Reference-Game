@@ -14,7 +14,13 @@
         "grip": 0.3
       },
       "audio": {
-        "engineStart": "audio/engineStart.mp3"
+        "engineStart": "audio/engineStart.mp3",
+        "brakeAudio": "",
+        "skidAudio": "",
+        "crashAudio": "",
+        "checkPointAudio": "audio/checkpoint.mp3",
+        "countDownAudio": "audio/countdown.mp3",
+        "startRaceAudio": "audio/countdown_finish.mp3"
       },
       "models": {
         "car": "models/cars/car1/car.glb",
@@ -55,7 +61,13 @@
         "grip": 0.3
       },
       "audio": {
-        "engineStart": "audio/engineStart.mp3"
+        "engineStart": "audio/engineStart.mp3",
+        "brakeAudio": "",
+        "skidAudio": "",
+        "crashAudio": "",
+        "checkPointAudio": "audio/checkpoint.mp3",
+        "countDownAudio": "audio/countdown.mp3",
+        "startRaceAudio": "audio/countdown_finish.mp3"
       },
       "models": {
         "car": "models/cars/car2/car.glb",
@@ -96,7 +108,13 @@
         "grip": 0.3
       },
       "audio": {
-        "engineStart": "audio/engineStart.mp3"
+        "engineStart": "audio/engineStart.mp3",
+        "brakeAudio": "",
+        "skidAudio": "",
+        "crashAudio": "",
+        "checkPointAudio": "audio/checkpoint.mp3",
+        "countDownAudio": "audio/countdown.mp3",
+        "startRaceAudio": "audio/countdown_finish.mp3"
       },
       "models": {
         "car": "models/cars/car3/car.glb",
