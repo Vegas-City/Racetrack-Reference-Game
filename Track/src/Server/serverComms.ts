@@ -85,7 +85,7 @@ export class ServerComms {
                 console.log("Error getting leaderboard data: " + ex)
             }
         }
-        //LeaderboardUI.update()
+        LeaderboardUI.update()
     }
 
     public static getPlayerData() {

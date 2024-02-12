@@ -224,10 +224,14 @@ export class LeaderboardUI {
     }
 
     private static formatTime(_time: number): string {
-        let date = new Date(0)
-        date.setMilliseconds(Math.round(_time))
+        // cap at 99:59
+        let roundedTime = Math.round(Math.min(_time / 1000, 5999))
+        let sec = roundedTime % 60
+        let min = (roundedTime - sec) / 60
 
-        let timeString = date.toISOString().substring(11, 19)
-        return timeString
+        let secStr = (sec < 10 ? "0" : "") + sec.toString()
+        let minStr = (min < 10 ? "0" : "") + min.toString()
+        let timeStr = minStr + ":" + secStr
+        return timeStr
     }
 }
