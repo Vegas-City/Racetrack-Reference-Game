@@ -8,9 +8,9 @@ export class LeaderboardUI {
     private static readonly VERTICAL_SPACING: number = 1.5
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
-        position: Vector3.create(20, 10, 20),
-        rotation: Quaternion.fromEulerDegrees(0, 0, 0),
-        scale: Vector3.create(1, 1, 1)
+        position: Vector3.create(16, 4, 15),
+        rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+        scale: Vector3.create(0.3, 0.3, 0.3)
     }
 
     private static trackNames: string[] = []
