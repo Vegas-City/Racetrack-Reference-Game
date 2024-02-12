@@ -6,10 +6,10 @@ import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
 import { CarSelectionManager } from './CarSelection/carSelectionManager'
 import { ServerComms } from './Server/serverComms'
-import * as trackConfig0 from "../data/track_00.json"
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
+import * as trackConfig4 from "../data/track_04.json"
 import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 
@@ -54,7 +54,7 @@ export class Scene {
             }
         )
         new PhysicsManager()
-        Scene.LoadTrack(0) // load practice track by default
+        Scene.LoadTrack(1) // load 1st track by default
         Scene.loaded = true
 
         new CarSelectionManager(Vector3.create(7, 1.3, 11))
@@ -69,7 +69,7 @@ export class Scene {
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
-            minimapImages: ["images/ui/minimapUI/TRACK_0.png", "images/ui/minimapUI/TRACK_1.png", "images/ui/minimapUI/TRACK_2.png", "images/ui/minimapUI/TRACK_3.png"],
+            minimapImages: ["images/ui/minimapUI/TRACK_1.png", "images/ui/minimapUI/TRACK_2.png", "images/ui/minimapUI/TRACK_3.png", "images/ui/minimapUI/TRACK_4.png"],
             checkpointImages: [
                 [
                     "images/ui/minimapUI/checkpoints/0_0.png",
@@ -123,19 +123,14 @@ export class Scene {
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
         TrackManager.trackID = _trackNumber
-        let minimapSrc = ""
         switch (_trackNumber) {
-            case 0: TrackManager.Load(trackConfig0)
-                minimapSrc = "images/ui/minimapUI/TRACK_0.png"
+            case 0: TrackManager.Load(trackConfig1)
                 break
-            case 1: TrackManager.Load(trackConfig1)
-                minimapSrc = "images/ui/minimapUI/TRACK_1.png"
+            case 1: TrackManager.Load(trackConfig2)
                 break
-            case 2: TrackManager.Load(trackConfig2)
-                minimapSrc = "images/ui/minimapUI/TRACK_2.png"
+            case 2: TrackManager.Load(trackConfig3)
                 break
-            case 3: TrackManager.Load(trackConfig3)
-                minimapSrc = "images/ui/minimapUI/TRACK_3.png"
+            case 3: TrackManager.Load(trackConfig4)
                 break
         }
         Minimap.Load(

@@ -36,7 +36,7 @@ export class TrackSelectorUI {
                 }}
                 onMouseDown={() => {
                     //TrackSelectorUI.trackSelectorUIShow = false
-                    Scene.LoadTrack(0)
+                    Scene.LoadTrack(1)
                 }}
             ></UiEntity>
             <UiEntity
@@ -58,7 +58,7 @@ export class TrackSelectorUI {
                 }}
                 onMouseDown={() => {
                     //TrackSelectorUI.trackSelectorUIShow = false
-                    Scene.LoadTrack(1)
+                    Scene.LoadTrack(2)
                 }}
             ></UiEntity>
             <UiEntity
@@ -80,7 +80,7 @@ export class TrackSelectorUI {
                 }}
                 onMouseDown={() => {
                     //TrackSelectorUI.trackSelectorUIShow = false
-                    Scene.LoadTrack(2)
+                    Scene.LoadTrack(3)
                 }}
             ></UiEntity>
             <UiEntity
@@ -102,7 +102,7 @@ export class TrackSelectorUI {
                 }}
                 onMouseDown={() => {
                     //TrackSelectorUI.trackSelectorUIShow = false
-                    Scene.LoadTrack(3)
+                    Scene.LoadTrack(4)
                 }}
             ></UiEntity>
 
