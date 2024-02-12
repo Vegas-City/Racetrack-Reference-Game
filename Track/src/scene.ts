@@ -54,7 +54,7 @@ export class Scene {
             }
         )
         new PhysicsManager()
-        Scene.LoadTrack(1) // load 1st track by default
+        Scene.LoadTrack(0) // load practice track by default
         Scene.loaded = true
 
         new CarSelectionManager(Vector3.create(7, 1.3, 11))
@@ -122,17 +122,31 @@ export class Scene {
 
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
-        TrackManager.trackID = _trackNumber
         switch (_trackNumber) {
-            case 0: TrackManager.Load(trackConfig1)
+            case 0: TrackManager.trackID = 1
+                TrackManager.isPractice = true
+                TrackManager.Load(trackConfig1)
+                Lap.totalLaps = 1
                 break
-            case 1: TrackManager.Load(trackConfig1)
+            case 1: TrackManager.trackID = 1
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig1)
+                Lap.totalLaps = 2
                 break
-            case 2: TrackManager.Load(trackConfig2)
+            case 2: TrackManager.trackID = 2
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig2)
+                Lap.totalLaps = 2
                 break
-            case 3: TrackManager.Load(trackConfig3)
+            case 3: TrackManager.trackID = 3
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig3)
+                Lap.totalLaps = 2
                 break
-            case 4: TrackManager.Load(trackConfig4)
+            case 4: TrackManager.trackID = 4
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig4)
+                Lap.totalLaps = 2
                 break
         }
         Minimap.Load(

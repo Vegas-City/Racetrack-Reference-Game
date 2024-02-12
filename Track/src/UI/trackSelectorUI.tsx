@@ -35,7 +35,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    Scene.LoadTrack(1)
+                    Scene.LoadTrack(0)
                 }}
             ></UiEntity>
             <UiEntity
