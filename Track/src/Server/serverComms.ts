@@ -7,6 +7,9 @@ import { CarData } from "./types/carData"
 import { TrackData } from "./types/trackData"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
+import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
+import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
+import { LeaderboardUI } from "../UI/leaderboardUI"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = true
@@ -61,40 +64,51 @@ export class ServerComms {
     }
 
     public static getLeaderboardData() {
-        try {
-            signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/leaderboard",
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'GET'
-                }
-            }).then(async response => await JSON.parse(response.body)).then(
-                data => {
-                    console.log(data.result)
-                }
-
-            )
-        } catch (ex) {
-            console.log("Error getting leaderboard data: " + ex)
+        if (ServerComms.TEST_MODE) {
+            ServerComms.leaderboard = Object.assign(new LeaderboardData(), JSON.parse(JSON.stringify(exampleLeaderboardData)))
         }
+        else {
+            try {
+                signedFetch({
+                    url: this.getServerUrl() + "/api/racetrack/leaderboard",
+                    init: {
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET'
+                    }
+                }).then(async response => await JSON.parse(response.body)).then(
+                    data => {
+                        ServerComms.leaderboard = Object.assign(new LeaderboardData(), data.result)
+                    }
+
+                )
+            } catch (ex) {
+                console.log("Error getting leaderboard data: " + ex)
+            }
+        }
+        LeaderboardUI.update()
     }
 
     public static getPlayerData() {
-        try {
-            signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'GET'
-                }
-            }).then(async response => await JSON.parse(response.body)).then(
-                data => {
-                    console.log(data.result)
-                }
+        if (ServerComms.TEST_MODE) {
+            ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData)))
+        }
+        else {
+            try {
+                signedFetch({
+                    url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
+                    init: {
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET'
+                    }
+                }).then(async response => await JSON.parse(response.body)).then(
+                    data => {
+                        ServerComms.player = Object.assign(new PlayerData(), data.result)
+                    }
 
-            )
-        } catch (ex) {
-            console.log("Error getting player data: " + ex)
+                )
+            } catch (ex) {
+                console.log("Error getting player data: " + ex)
+            }
         }
     }
 
@@ -136,7 +150,7 @@ export class ServerComms {
 
     public static async sendGhostCarData(_data: GhostData) {
         let publicKey = UserData.cachedData.publicKey || "GUEST_" + UserData.cachedData.userId
-        
+
         try {
             let response = await signedFetch({
                 url: this.getServerUrl() + "/api/racetrack/ghostcardata",
