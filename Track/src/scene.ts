@@ -126,11 +126,13 @@ export class Scene {
         switch (_trackNumber) {
             case 0: TrackManager.Load(trackConfig1)
                 break
-            case 1: TrackManager.Load(trackConfig2)
+            case 1: TrackManager.Load(trackConfig1)
                 break
-            case 2: TrackManager.Load(trackConfig3)
+            case 2: TrackManager.Load(trackConfig2)
                 break
-            case 3: TrackManager.Load(trackConfig4)
+            case 3: TrackManager.Load(trackConfig3)
+                break
+            case 4: TrackManager.Load(trackConfig4)
                 break
         }
         Minimap.Load(

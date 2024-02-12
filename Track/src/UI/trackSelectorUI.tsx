@@ -18,7 +18,7 @@ export class TrackSelectorUI {
             }}
         >
             <UiEntity
-                key="Track0Btn"
+                key="TrackPBtn"
                 uiTransform={{
                     width: 128 * TrackSelectorUI.SCALE,
                     height: 128 * TrackSelectorUI.SCALE,
@@ -30,12 +30,11 @@ export class TrackSelectorUI {
                 uiBackground={{
                     textureMode: 'stretch',
                     texture: {
-                        src: "images/ui/debugUI/track0.png",
+                        src: "images/ui/debugUI/trackP.png",
                         wrapMode: 'repeat'
                     }
                 }}
                 onMouseDown={() => {
-                    //TrackSelectorUI.trackSelectorUIShow = false
                     Scene.LoadTrack(1)
                 }}
             ></UiEntity>
@@ -57,8 +56,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    //TrackSelectorUI.trackSelectorUIShow = false
-                    Scene.LoadTrack(2)
+                    Scene.LoadTrack(1)
                 }}
             ></UiEntity>
             <UiEntity
@@ -79,8 +77,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    //TrackSelectorUI.trackSelectorUIShow = false
-                    Scene.LoadTrack(3)
+                    Scene.LoadTrack(2)
                 }}
             ></UiEntity>
             <UiEntity
@@ -101,11 +98,30 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    //TrackSelectorUI.trackSelectorUIShow = false
+                    Scene.LoadTrack(3)
+                }}
+            ></UiEntity>
+            <UiEntity
+                key="Track4Btn"
+                uiTransform={{
+                    width: 128 * TrackSelectorUI.SCALE,
+                    height: 128 * TrackSelectorUI.SCALE,
+                    position: {
+                        left: 80,
+                        bottom: 0
+                    }
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/debugUI/track4.png",
+                        wrapMode: 'repeat'
+                    }
+                }}
+                onMouseDown={() => {
                     Scene.LoadTrack(4)
                 }}
             ></UiEntity>
-
         </UiEntity>
     )
 
