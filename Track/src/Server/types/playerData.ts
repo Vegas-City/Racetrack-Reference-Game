@@ -1,7 +1,7 @@
 import { CarData } from "./carData"
 import { TrackData } from "./trackData"
 
-export type PlayerData = {
+export class PlayerData {
     name: string
     points: number
     cars: CarData[]

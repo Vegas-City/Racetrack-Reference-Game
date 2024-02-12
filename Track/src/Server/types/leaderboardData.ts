@@ -9,6 +9,6 @@ export type TrackPBs = {
     scores: PlayerPB[]
 }
 
-export type LeaderboardData = {
+export class LeaderboardData {
     result: TrackPBs[]
 }
