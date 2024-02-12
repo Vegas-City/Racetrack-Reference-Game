@@ -6,10 +6,10 @@ import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
 import { CarSelectionManager } from './CarSelection/carSelectionManager'
 import { ServerComms } from './Server/serverComms'
-import * as trackConfig0 from "../data/track_00.json"
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
+import * as trackConfig4 from "../data/track_04.json"
 import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 
@@ -69,7 +69,7 @@ export class Scene {
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
-            minimapImages: ["images/ui/minimapUI/TRACK_0.png", "images/ui/minimapUI/TRACK_1.png", "images/ui/minimapUI/TRACK_2.png", "images/ui/minimapUI/TRACK_3.png"],
+            minimapImages: ["images/ui/minimapUI/TRACK_1.png", "images/ui/minimapUI/TRACK_2.png", "images/ui/minimapUI/TRACK_3.png", "images/ui/minimapUI/TRACK_4.png"],
             checkpointImages: [
                 [
                     "images/ui/minimapUI/checkpoints/0_0.png",
@@ -122,20 +122,31 @@ export class Scene {
 
     static LoadTrack(_trackNumber: number) {
         GameManager.reset()
-        TrackManager.trackID = _trackNumber
-        let minimapSrc = ""
         switch (_trackNumber) {
-            case 0: TrackManager.Load(trackConfig0)
-                minimapSrc = "images/ui/minimapUI/TRACK_0.png"
+            case 0: TrackManager.trackID = 1
+                TrackManager.isPractice = true
+                TrackManager.Load(trackConfig1)
+                Lap.totalLaps = 1
                 break
-            case 1: TrackManager.Load(trackConfig1)
-                minimapSrc = "images/ui/minimapUI/TRACK_1.png"
+            case 1: TrackManager.trackID = 1
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig1)
+                Lap.totalLaps = 2
                 break
-            case 2: TrackManager.Load(trackConfig2)
-                minimapSrc = "images/ui/minimapUI/TRACK_2.png"
+            case 2: TrackManager.trackID = 2
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig2)
+                Lap.totalLaps = 2
                 break
-            case 3: TrackManager.Load(trackConfig3)
-                minimapSrc = "images/ui/minimapUI/TRACK_3.png"
+            case 3: TrackManager.trackID = 3
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig3)
+                Lap.totalLaps = 2
+                break
+            case 4: TrackManager.trackID = 4
+                TrackManager.isPractice = false
+                TrackManager.Load(trackConfig4)
+                Lap.totalLaps = 2
                 break
         }
         Minimap.Load(

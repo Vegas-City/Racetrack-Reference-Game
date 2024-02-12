@@ -3,7 +3,7 @@
         {
             "scores": [
                 {
-                    "time": 60000,
+                    "time": 62200,
                     "user": "Bob"
                 },
                 {
@@ -11,15 +11,15 @@
                     "user": "NigelMansell"
                 },
                 {
-                    "time": 45000,
+                    "time": 45876,
                     "user": "Karim"
                 },
                 {
-                    "time": 61000,
+                    "time": 428000,
                     "user": "John"
                 },
                 {
-                    "time": 57000,
+                    "time": 57486,
                     "user": "Anna"
                 }
             ],
