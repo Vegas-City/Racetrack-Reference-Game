@@ -1,10 +1,10 @@
-import { Entity, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
-import { Quaternion, Vector3 } from "@dcl/sdk/math";
+import { Entity, Material, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
+import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { ServerComms } from "../Server/serverComms";
 
 export class LeaderboardUI {
     private static readonly MAX_ROWS: number = 10
-    private static readonly HORIZONTAL_SPACING: number = 8
+    private static readonly HORIZONTAL_SPACING: number = 6
     private static readonly VERTICAL_SPACING: number = 1.5
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
@@ -46,11 +46,12 @@ export class LeaderboardUI {
                 let nameEntity = engine.addEntity()
                 Transform.create(nameEntity, {
                     parent: LeaderboardUI.container,
-                    position: Vector3.create(LeaderboardUI.HORIZONTAL_SPACING + (index * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
+                    position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
                 })
                 TextShape.create(nameEntity, {
                     text: track.toUpperCase(),
-                    textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                    textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
+                    textColor: Color4.create(0.1, 0.8, 0.2, 1)
                 })
                 LeaderboardUI.trackNameEntities.push(nameEntity)
             }
@@ -62,11 +63,14 @@ export class LeaderboardUI {
             if (LeaderboardUI.totalTextEntity === undefined) {
                 Transform.create(LeaderboardUI.totalTextEntity, {
                     parent: LeaderboardUI.container,
-                    position: Vector3.create(LeaderboardUI.HORIZONTAL_SPACING + (index * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
+                    position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
                 })
                 TextShape.create(LeaderboardUI.totalTextEntity, {
                     text: "TOTAL",
-                    textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                    textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
+                    outlineWidth: 0.2,
+                    textColor: Color4.create(0.1, 0.8, 0.2, 1),
+                    outlineColor: Color4.create(0.1, 0.8, 0.2, 1)
                 })
             }
             else {
@@ -90,7 +94,7 @@ export class LeaderboardUI {
                 let nameEntity = engine.addEntity()
                 Transform.create(nameEntity, {
                     parent: LeaderboardUI.container,
-                    position: Vector3.create(0, -LeaderboardUI.VERTICAL_SPACING - (index * LeaderboardUI.VERTICAL_SPACING), 0)
+                    position: Vector3.create(0, -(LeaderboardUI.VERTICAL_SPACING * 1.3) - (index * LeaderboardUI.VERTICAL_SPACING), 0)
                 })
                 TextShape.create(nameEntity, {
                     text: player.substring(0, 12),
@@ -117,7 +121,7 @@ export class LeaderboardUI {
                     let scoreEntity = engine.addEntity()
                     Transform.create(scoreEntity, {
                         parent: LeaderboardUI.container,
-                        position: Vector3.create(LeaderboardUI.HORIZONTAL_SPACING + (index * LeaderboardUI.HORIZONTAL_SPACING), -LeaderboardUI.VERTICAL_SPACING - (subIndex * LeaderboardUI.VERTICAL_SPACING), 0)
+                        position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING), -(LeaderboardUI.VERTICAL_SPACING * 1.3) - (subIndex * LeaderboardUI.VERTICAL_SPACING), 0)
                     })
                     TextShape.create(scoreEntity, {
                         text: LeaderboardUI.formatTime(LeaderboardUI.playerScores.get(player).get(track)),
@@ -146,11 +150,14 @@ export class LeaderboardUI {
                     let totalScoreEntity = engine.addEntity()
                     Transform.create(totalScoreEntity, {
                         parent: LeaderboardUI.container,
-                        position: Vector3.create(LeaderboardUI.HORIZONTAL_SPACING + (LeaderboardUI.trackNames.length * LeaderboardUI.HORIZONTAL_SPACING), -LeaderboardUI.VERTICAL_SPACING - (index * LeaderboardUI.VERTICAL_SPACING), 0)
+                        position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (LeaderboardUI.trackNames.length * LeaderboardUI.HORIZONTAL_SPACING), -(LeaderboardUI.VERTICAL_SPACING * 1.3) - (index * LeaderboardUI.VERTICAL_SPACING), 0)
                     })
                     TextShape.create(totalScoreEntity, {
                         text: LeaderboardUI.formatTime(totalScore),
-                        textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                        textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
+                        outlineWidth: 0.2,
+                        textColor: Color4.create(0.3, 0.5, 0.8, 1),
+                        outlineColor: Color4.create(0.3, 0.5, 0.8, 1)
                     })
                     LeaderboardUI.totalScoreEntities.push(totalScoreEntity)
                 }
@@ -175,7 +182,19 @@ export class LeaderboardUI {
         })
         TextShape.create(playerTextEntity, {
             text: "PLAYER",
-            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
+            textColor: Color4.create(0.8, 0.2, 0.2, 1)
+        })
+
+        let bgEntity = engine.addEntity()
+        Transform.create(bgEntity, {
+            parent: LeaderboardUI.container,
+            position: Vector3.create(14.5, -3.8, 0.1),
+            scale: Vector3.create(32, 10, 10)
+        })
+        MeshRenderer.setPlane(bgEntity)
+        Material.setPbrMaterial(bgEntity, {
+            albedoColor: Color4.Black()
         })
     }
 
