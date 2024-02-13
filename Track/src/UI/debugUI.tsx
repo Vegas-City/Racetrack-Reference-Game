@@ -15,7 +15,7 @@ export class DebugUI {
                     top: 100,
                     right: 0,
                 },
-                display: DebugUI.debugUIShow ? 'none' : 'none',
+                display: DebugUI.debugUIShow ? 'none' : 'none', // disabled by Karim
 
             }}
         >
@@ -29,7 +29,6 @@ export class DebugUI {
                     },
                     width: "430",
                     height: "700",
-                    display: DebugUI.debugUIShow ? 'flex' : 'none',
 
                 }}
                 uiBackground={{

@@ -12,6 +12,7 @@ import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
+import { EventUI } from './UI/eventUI'
 
 export class Scene {
 
@@ -23,34 +24,46 @@ export class Scene {
         new ServerComms()
         new InputManager()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false,
-            () => {
-                ServerComms.recordAttempt({
-                    car: "",
-                    track: "",
-                    checkpoint: 0,
-                    time: 0
-                })
-            },
-            () => {
-                ServerComms.recordAttempt({
-                    car: "",
-                    track: "",
-                    checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
-                    time: Math.round(Lap.timeElapsed * 1000)
-                })
+            {
+                onStartEvent: () => {
+                    ServerComms.recordAttempt({
+                        car: "",
+                        track: "",
+                        checkpoint: 0,
+                        time: 0
+                    })
+                },
+                onEndEvent: () => {
+                    EventUI.triggerEndEvent()
+                    ServerComms.recordAttempt({
+                        car: "",
+                        track: "",
+                        checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
+                        time: Math.round(Lap.timeElapsed * 1000)
+                    })
 
-                // Send the ghost to the server at game end
-                if (GhostRecorder.instance != null) {
-                    ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
+                    // Send the ghost to the server at game end
+                    if (GhostRecorder.instance != null) {
+                        ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
+                    }
+                },
+                onCheckpointEvent: () => {
+                    ServerComms.recordAttempt({
+                        car: "",
+                        track: "",
+                        checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
+                        time: Math.round(Lap.timeElapsed * 1000)
+                    })
+                },
+                onLapCompleteEvent: () => {
+                    EventUI.triggerLapEvent()
+                    ServerComms.recordAttempt({
+                        car: "",
+                        track: "",
+                        checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
+                        time: Math.round(Lap.timeElapsed * 1000)
+                    })
                 }
-            },
-            () => {
-                ServerComms.recordAttempt({
-                    car: "",
-                    track: "",
-                    checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
-                    time: Math.round(Lap.timeElapsed * 1000)
-                })
             }
         )
         new PhysicsManager()
