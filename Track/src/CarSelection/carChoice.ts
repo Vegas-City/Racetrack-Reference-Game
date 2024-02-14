@@ -58,6 +58,8 @@ export class CarChoice {
             checkPointAudio: carStats.audio.checkPointAudio,
             countDownAudio: carStats.audio.countDownAudio,
             startRaceAudio: carStats.audio.startRaceAudio,
+            endRaceAudio: carStats.audio.endRaceAudio,
+            lapAudio: carStats.audio.lapAudio,
             carGLB: carStats.models.car,
             carColliderGLB: carStats.models.carCollider,
             leftWheelGLB: carStats.models.leftWheel,

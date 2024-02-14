@@ -5,6 +5,7 @@ import { DebugUI } from './debugUI'
 import { TrackSelectorUI } from './trackSelectorUI'
 import { UiCanvasInformation, engine } from '@dcl/sdk/ecs'
 import { CarSelectionUI } from './carSelectionUI'
+import { EventUI } from './eventUI'
 import * as  ui from 'dcl-ui-toolkit'
 
 const uiComponent = () => (
@@ -17,6 +18,7 @@ const uiComponent = () => (
     CarSelectionUI.Render(),
     CarChoiceUI.Render(),
     Minimap.Render(),
+    EventUI.Render(),
     ui.render()
   ]
 )
