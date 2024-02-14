@@ -3,58 +3,240 @@ import { CarChoice } from "./carChoice";
 import { Quaternion, Vector3 } from "@dcl/ecs-math";
 import { Entity, GltfContainer, engine } from "@dcl/sdk/ecs";
 import { CarSelectionUI } from "../UI/carSelectionUI";
+import { MenuButton } from "./menuButton";
 
 export class RaceMenuManager {
-    podium: Entity
+    static instance: RaceMenuManager
+
+    basePodium: Entity
+    carPodium: Entity
+    carContainer: Entity
     podiumSpinSpeed: number = 10
     podiumRotation: number = 0
 
     carChoices: CarChoice[] = []
-    static instance: RaceMenuManager
     currentCarIndex: number = 0
+
+    menuTitles: Entity
+
+    practiceButton: MenuButton
+    competitionButton: MenuButton
+
+    trackButton1: MenuButton
+    trackButton2: MenuButton
+    trackButton3: MenuButton
+
+    carButton1: MenuButton
+    carButton2: MenuButton
+    carButton3: MenuButton
+
+    raceButton: MenuButton
 
     constructor(_position: Vector3) {
         RaceMenuManager.instance = this
 
-        this.podium = engine.addEntity()
-        Transform.create(this.podium, {
-            position: _position
-        })
-        GltfContainer.create(this.podium, { src: "models/selection/podium.glb" })
-
-        this.carChoices.push(new CarChoice(0, "models/selection/car1.glb", {
-            parent: this.podium,
-            position: Vector3.create(0, 0, 0),
+        this.basePodium = engine.addEntity()
+        Transform.create(this.basePodium, {
+            position: _position,
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.75, 0.75, 0.75)
+            scale: Vector3.create(0.8, 0.8, 0.8)
+        })
+        GltfContainer.create(this.basePodium, { src: "models/selection/baseBig.glb" })
+
+        this.carPodium = engine.addEntity()
+        Transform.create(this.carPodium, {
+            parent: this.basePodium
+        })
+        GltfContainer.create(this.carPodium, { src: "models/selection/baseSmall.glb" })
+
+        this.carContainer = engine.addEntity()
+        Transform.create(this.carContainer, {
+            parent: this.basePodium
+        })
+
+        this.initialiseMenu()
+        this.initialiseCars()
+
+        engine.addSystem(this.update.bind(this))
+    }
+
+    private initialiseMenu(): void {
+        this.menuTitles = engine.addEntity()
+        Transform.create(this.menuTitles, {
+            parent: this.basePodium
+        })
+        GltfContainer.create(this.menuTitles, { src: "models/selection/menuTitles.glb" })
+
+        this.initialiseGameModeMenu()
+        this.initialiseTrackMenu()
+        this.initialiseCarMenu()
+        this.initialiseRaceMenu()
+    }
+
+    private initialiseGameModeMenu(): void {
+        this.practiceButton = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(5.05, 2.58, -4.8),
+            rotation: Quaternion.fromEulerDegrees(0, 43, 0),
+            scale: Vector3.create(0.1, 0.5, 3.8),
+            src: "models/selection/practice.glb",
+            srcSelected: "models/selection/practice_selected.glb",
+            startSelected: true,
+            onSelectCallback: this.deselectAllGameModes.bind(this)
+        })
+
+        this.competitionButton = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(5.05, 1.92, -4.8),
+            rotation: Quaternion.fromEulerDegrees(0, 43, 0),
+            scale: Vector3.create(0.1, 0.5, 3.8),
+            src: "models/selection/competition.glb",
+            srcSelected: "models/selection/competition_selected.glb",
+            onSelectCallback: this.deselectAllGameModes.bind(this)
+        })
+    }
+
+    private initialiseTrackMenu(): void {
+        this.trackButton1 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(1.7, 2.58, -6.9),
+            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
+            scale: Vector3.create(0.1, 0.5, 2.85),
+            src: "models/selection/track1.glb",
+            srcSelected: "models/selection/track1_selected.glb",
+            srcLock: "models/selection/track1_lock.glb",
+            srcWhiteCup: "models/selection/track1_whitecup.glb",
+            srcGoldCup: "models/selection/track1_goldcup.glb",
+            startSelected: true,
+            onSelectCallback: this.deselectAllTracks.bind(this)
+        })
+
+        this.trackButton2 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(1.7, 1.92, -6.9),
+            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
+            scale: Vector3.create(0.1, 0.5, 2.85),
+            src: "models/selection/track2.glb",
+            srcSelected: "models/selection/track2_selected.glb",
+            srcLock: "models/selection/track2_lock.glb",
+            srcWhiteCup: "models/selection/track2_whitecup.glb",
+            srcGoldCup: "models/selection/track2_goldcup.glb",
+            startLocked: true,
+            onSelectCallback: this.deselectAllTracks.bind(this)
+        })
+
+        this.trackButton3 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(1.7, 1.26, -6.9),
+            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
+            scale: Vector3.create(0.1, 0.5, 2.85),
+            src: "models/selection/track3.glb",
+            srcSelected: "models/selection/track3_selected.glb",
+            srcLock: "models/selection/track3_lock.glb",
+            srcWhiteCup: "models/selection/track3_whitecup.glb",
+            srcGoldCup: "models/selection/track3_goldcup.glb",
+            startLocked: true,
+            onSelectCallback: this.deselectAllTracks.bind(this)
+        })
+    }
+
+    private initialiseCarMenu(): void {
+        this.carButton1 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(-3.92, 2.58, -5.9),
+            rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
+            scale: Vector3.create(0.1, 0.5, 3.55),
+            src: "models/selection/car1b.glb",
+            srcSelected: "models/selection/car1b_selected.glb",
+            srcLock: "models/selection/car1b_lock.glb",
+            startSelected: true,
+            onSelectCallback: this.deselectAllCars.bind(this)
+        })
+
+        this.carButton2 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(-3.92, 1.92, -5.9),
+            rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
+            scale: Vector3.create(0.1, 0.5, 3.55),
+            src: "models/selection/car2b.glb",
+            srcSelected: "models/selection/car2b_selected.glb",
+            srcLock: "models/selection/car2b_lock.glb",
+            startLocked: true,
+            onSelectCallback: this.deselectAllCars.bind(this)
+        })
+
+        this.carButton3 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(-3.92, 1.26, -5.9),
+            rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
+            scale: Vector3.create(0.1, 0.5, 3.55),
+            src: "models/selection/car3b.glb",
+            srcSelected: "models/selection/car3b_selected.glb",
+            srcLock: "models/selection/car3b_lock.glb",
+            startLocked: true,
+            onSelectCallback: this.deselectAllCars.bind(this)
+        })
+    }
+
+    private initialiseRaceMenu(): void {
+        this.raceButton = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(-6.55, 2.25, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 157.5, 0),
+            scale: Vector3.create(0.1, 1.18, 3.55),
+            src: "models/selection/race.glb"
+        })
+    }
+
+    private initialiseCars(): void {
+        this.carChoices.push(new CarChoice(0, "models/selection/car1.glb", {
+            parent: this.carContainer,
+            position: Vector3.create(0, 0.4, 0),
+            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
+            scale: Vector3.create(0.95, 0.95, 0.95)
         }))
 
         this.carChoices.push(new CarChoice(1, "models/selection/car2.glb", {
-            parent: this.podium,
-            position: Vector3.create(0, 0, 0),
+            parent: this.carContainer,
+            position: Vector3.create(0, 0.4, 0),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.75, 0.75, 0.75)
+            scale: Vector3.create(0.95, 0.95, 0.95)
         }))
 
         this.carChoices.push(new CarChoice(2, "models/selection/car3.glb", {
-            parent: this.podium,
-            position: Vector3.create(0, 0, 0),
+            parent: this.carContainer,
+            position: Vector3.create(0, 0.4, 0),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.75, 0.75, 0.75)
+            scale: Vector3.create(0.95, 0.95, 0.95)
         }))
 
         this.carChoices[0].show()
+    }
 
-        engine.addSystem(this.update.bind(this))
+    private deselectAllGameModes(): void {
+        this.practiceButton.deselect()
+        this.competitionButton.deselect()
+    }
+
+    private deselectAllTracks(): void {
+        this.trackButton1.deselect()
+        this.trackButton2.deselect()
+        this.trackButton3.deselect()
+    }
+
+    private deselectAllCars(): void {
+        this.carButton1.deselect()
+        this.carButton2.deselect()
+        this.carButton3.deselect()
     }
 
     update(_dt: number) {
         this.podiumRotation += _dt * this.podiumSpinSpeed
         if (this.podiumRotation > 360) { this.podiumRotation -= 360 }
-        Transform.getMutable(this.podium).rotation = Quaternion.fromEulerDegrees(0, this.podiumRotation, 0)
+        Transform.getMutable(this.carContainer).rotation = Quaternion.fromEulerDegrees(0, this.podiumRotation, 0)
 
         // Show Car selection UI based on how close we are to the podium
-        if (Vector3.distance(Transform.get(engine.PlayerEntity).position, Transform.get(this.podium).position) < 6) {
+        if (Vector3.distance(Transform.get(engine.PlayerEntity).position, Transform.get(this.carContainer).position) < 6) {
             CarSelectionUI.ShowUI(RaceMenuManager.instance.currentCarIndex)
         } else {
             CarSelectionUI.HideUI()

@@ -70,7 +70,7 @@ export class Scene {
         Scene.LoadTrack(0) // load practice track by default
         Scene.loaded = true
 
-        new RaceMenuManager(Vector3.create(7, 1.3, 11))
+        new RaceMenuManager(Vector3.create(8, 0.9, 11))
 
         // Scene parcels
         let sceneParcels: Entity = engine.addEntity()
