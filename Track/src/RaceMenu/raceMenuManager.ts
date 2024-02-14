@@ -133,6 +133,9 @@ export class RaceMenuManager {
             onSelectCallback: (() => {
                 this.deselectAllGameModes()
                 TrackManager.isPractice = true
+                this.trackButton2.hide()
+                this.trackButton3.hide()
+                this.trackButton1.select()
             }).bind(this)
         })
 
@@ -146,6 +149,8 @@ export class RaceMenuManager {
             onSelectCallback: (() => {
                 this.deselectAllGameModes()
                 TrackManager.isPractice = false
+                this.trackButton2.show()
+                this.trackButton3.show()
             }).bind(this)
         })
     }
@@ -213,6 +218,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
             }).bind(this)
         })
+        
+        this.trackButton2.hide()
+        this.trackButton3.hide()
     }
 
     private initialiseCarMenu(): void {
@@ -328,7 +336,7 @@ export class RaceMenuManager {
     }
 
     private startRace(): void {
-        RaceMenuManager.LoadTrack(this.currentTrackIndex)
+        RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
         RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
         CarPerspectives.enterCar(Car.instances[0].data)
     }

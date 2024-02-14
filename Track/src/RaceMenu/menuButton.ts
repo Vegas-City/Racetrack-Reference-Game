@@ -21,6 +21,7 @@ export type MenuConfig = {
 export class MenuButton {
     private static readonly SHOW_BUTTON_MESH: boolean = false
 
+    parentEntity: Entity
     buttonEntity: Entity
     entity: Entity
     entitySelected?: Entity
@@ -38,9 +39,14 @@ export class MenuButton {
     constructor(_config: MenuConfig) {
         if (_config.onSelectCallback) this.onSelectCallback = _config.onSelectCallback
 
+        this.parentEntity = engine.addEntity()
+        Transform.create(this.parentEntity, {
+            parent: _config.parent
+        })
+
         this.buttonEntity = engine.addEntity()
         Transform.create(this.buttonEntity, {
-            parent: _config.parent,
+            parent: this.parentEntity,
             position: _config.position,
             rotation: _config.rotation,
             scale: _config.scale
@@ -50,14 +56,14 @@ export class MenuButton {
 
         this.entity = engine.addEntity()
         Transform.create(this.entity, {
-            parent: _config.parent,
+            parent: this.parentEntity,
         })
         GltfContainer.create(this.entity, { src: _config.src })
 
         if (_config.srcSelected) {
             this.entitySelected = engine.addEntity()
             Transform.create(this.entitySelected, {
-                parent: _config.parent,
+                parent: this.parentEntity,
                 scale: Vector3.Zero()
             })
             GltfContainer.create(this.entitySelected, { src: _config.srcSelected })
@@ -66,7 +72,7 @@ export class MenuButton {
         if (_config.srcLock) {
             this.lockIcon = engine.addEntity()
             Transform.create(this.lockIcon, {
-                parent: _config.parent,
+                parent: this.parentEntity,
                 scale: Vector3.Zero()
             })
             GltfContainer.create(this.lockIcon, { src: _config.srcLock })
@@ -75,7 +81,7 @@ export class MenuButton {
         if (_config.srcWhiteCup) {
             this.whiteCup = engine.addEntity()
             Transform.create(this.whiteCup, {
-                parent: _config.parent,
+                parent: this.parentEntity,
                 scale: Vector3.One()
             })
             GltfContainer.create(this.whiteCup, { src: _config.srcWhiteCup })
@@ -84,7 +90,7 @@ export class MenuButton {
         if (_config.srcGoldCup) {
             this.goldCup = engine.addEntity()
             Transform.create(this.goldCup, {
-                parent: _config.parent,
+                parent: this.parentEntity,
                 scale: Vector3.Zero()
             })
             GltfContainer.create(this.goldCup, { src: _config.srcGoldCup })
@@ -109,10 +115,24 @@ export class MenuButton {
                     }
                 },
                 function () {
-                    self.onSelectCallback()
-                    self.toggleSelection()
+                    self.select()
                 }
             )
+        }
+    }
+
+    show(): void {
+        Transform.getMutable(this.parentEntity).scale = Vector3.One()
+    }
+
+    hide(): void {
+        Transform.getMutable(this.parentEntity).scale = Vector3.Zero()
+    }
+
+    select(): void {
+        if (!this.selected) {
+            this.onSelectCallback()
+            this.toggleSelection()
         }
     }
 
@@ -199,7 +219,7 @@ export class MenuButton {
 
     private toggleSelection(): void {
         this.selected = !this.selected
-        if(!this.entitySelected) return
+        if (!this.entitySelected) return
 
         if (this.selected) {
             Transform.getMutable(this.entitySelected).scale = Vector3.One()
