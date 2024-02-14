@@ -4,7 +4,6 @@ import { Minimap } from '@vegascity/racetrack/src/ui'
 import { DebugUI } from './debugUI'
 import { TrackSelectorUI } from './trackSelectorUI'
 import { UiCanvasInformation, engine } from '@dcl/sdk/ecs'
-import { CarSelectionUI } from './carSelectionUI'
 import { EventUI } from './eventUI'
 import * as  ui from 'dcl-ui-toolkit'
 
@@ -12,10 +11,9 @@ const uiComponent = () => (
   [
     SpeedometerUI.Render(),
     TimeUI.Render(),
-    TrackSelectorUI.Render(),
+    //TrackSelectorUI.Render(),
     Countdown.Render(),
-    DebugUI.Render(),
-    CarSelectionUI.Render(),
+    //DebugUI.Render(),
     CarChoiceUI.Render(),
     Minimap.Render(),
     EventUI.Render(),

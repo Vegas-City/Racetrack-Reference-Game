@@ -1,5 +1,6 @@
 import ReactEcs, { UiEntity } from "@dcl/sdk/react-ecs"
 import { Scene } from "../scene"
+import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
 
 export class TrackSelectorUI {
     private static readonly SCALE: number = 0.6
@@ -35,7 +36,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    Scene.LoadTrack(0)
+                    RaceMenuManager.LoadTrack(0)
                 }}
             ></UiEntity>
             <UiEntity
@@ -56,7 +57,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    Scene.LoadTrack(1)
+                    RaceMenuManager.LoadTrack(1)
                 }}
             ></UiEntity>
             <UiEntity
@@ -77,7 +78,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    Scene.LoadTrack(2)
+                    RaceMenuManager.LoadTrack(2)
                 }}
             ></UiEntity>
             <UiEntity
@@ -98,7 +99,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    Scene.LoadTrack(3)
+                    RaceMenuManager.LoadTrack(3)
                 }}
             ></UiEntity>
             <UiEntity
@@ -119,7 +120,7 @@ export class TrackSelectorUI {
                     }
                 }}
                 onMouseDown={() => {
-                    Scene.LoadTrack(4)
+                    RaceMenuManager.LoadTrack(4)
                 }}
             ></UiEntity>
         </UiEntity>

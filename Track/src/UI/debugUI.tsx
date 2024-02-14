@@ -15,7 +15,7 @@ export class DebugUI {
                     top: 100,
                     right: 0,
                 },
-                display: DebugUI.debugUIShow ? 'none' : 'none', // disabled by Karim
+                display: DebugUI.debugUIShow ? 'flex' : 'none',
 
             }}
         >
