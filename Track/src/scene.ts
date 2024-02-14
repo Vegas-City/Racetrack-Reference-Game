@@ -4,7 +4,7 @@ import { GameManager, InputManager, Lap, TrackManager } from "@vegascity/racetra
 import { setup } from "@vegascity/racetrack/src/utils"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
-import { CarSelectionManager } from './CarSelection/carSelectionManager'
+import { RaceMenuManager } from './RaceMenu/raceMenuManager'
 import { ServerComms } from './Server/serverComms'
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
@@ -70,7 +70,7 @@ export class Scene {
         Scene.LoadTrack(0) // load practice track by default
         Scene.loaded = true
 
-        new CarSelectionManager(Vector3.create(7, 1.3, 11))
+        new RaceMenuManager(Vector3.create(7, 1.3, 11))
 
         // Scene parcels
         let sceneParcels: Entity = engine.addEntity()

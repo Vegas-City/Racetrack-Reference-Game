@@ -1,8 +1,8 @@
 import ReactEcs, { Label, UiEntity } from "@dcl/sdk/react-ecs"
 import { Color4 } from "@dcl/sdk/math"
 import { UIDimensions } from "./ui"
-import * as carConfiguration from "./../CarSelection/carConfiguration.json"
-import { CarSelectionManager } from "../CarSelection/carSelectionManager"
+import * as carConfiguration from "../RaceMenu/carConfiguration.json"
+import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
 
 
 export class CarSelectionUI {
@@ -61,7 +61,7 @@ export class CarSelectionUI {
                         texture: { src: "images/ui/selectionUI/previous.png" },
                     }}
                     onMouseDown={() => {
-                        CarSelectionManager.loadPreviousCar()
+                        RaceMenuManager.loadPreviousCar()
                     }} />
                 <UiEntity
                     key="preveiousCarBtn"
@@ -80,7 +80,7 @@ export class CarSelectionUI {
                         texture: { src: "images/ui/selectionUI/next.png" },
                     }}
                     onMouseDown={() => {
-                        CarSelectionManager.loadNextCar()
+                        RaceMenuManager.loadNextCar()
                     }} />
         </UiEntity>
     )
@@ -99,7 +99,7 @@ export class CarSelectionUI {
     }
 
     static Render() {
-        if(CarSelectionManager.instance!=null && this.CarSelected!=true){
+        if(RaceMenuManager.instance!=null && this.CarSelected!=true){
             return [
                 CarSelectionUI.component()
             ]
@@ -107,7 +107,7 @@ export class CarSelectionUI {
     }
 
     static CarStats(){
-        let carStats = carConfiguration.cars[CarSelectionManager.instance.currentCarIndex]
+        let carStats = carConfiguration.cars[RaceMenuManager.instance.currentCarIndex]
 
         return carStats.name + "\nTop speed: " + carStats.attributes.maxSpeed*4 + "MPH\nAcceleration: " + carStats.attributes.accelerationF
     }
