@@ -11,9 +11,9 @@ const uiComponent = () => (
   [
     SpeedometerUI.Render(),
     TimeUI.Render(),
-    TrackSelectorUI.Render(),
+    //TrackSelectorUI.Render(),
     Countdown.Render(),
-    DebugUI.Render(),
+    //DebugUI.Render(),
     CarChoiceUI.Render(),
     Minimap.Render(),
     EventUI.Render(),
