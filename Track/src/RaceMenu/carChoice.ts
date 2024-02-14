@@ -1,46 +1,27 @@
-import { Entity, GltfContainer, InputAction, Transform, TransformType, engine, pointerEventsSystem } from "@dcl/ecs";
+import { Entity, GltfContainer, Transform, TransformType, engine} from "@dcl/ecs";
 import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
-import { RaceMenuManager } from "./raceMenuManager";
-import { CarSelectionUI } from "../UI/carSelectionUI";
 import * as carConfiguration from "./carConfiguration.json"
 
 export class CarChoice {
     entity: Entity
     originalScale: Vector3 = Vector3.Zero()
+    carIndex: number = 0
 
     constructor(_carIndex: number, _model: string, _transform: TransformType) {
+        this.carIndex = _carIndex
         this.entity = engine.addEntity()
 
         GltfContainer.create(this.entity, { src: _model })
         Transform.create(this.entity, _transform)
         this.originalScale = Vector3.clone(_transform.scale)
-
-        let self = this
-
-        pointerEventsSystem.onPointerDown(
-            {
-                entity: this.entity,
-                opts: {
-                    button: InputAction.IA_POINTER,
-                    hoverText: "Select"
-                }
-            },
-            function () {
-                self.LoadCar(_carIndex)
-                RaceMenuManager.instance.currentCarIndex = _carIndex
-                RaceMenuManager.hide()
-                CarSelectionUI.CarSelected = true
-            }
-        )
-
         this.hide()
     }
 
-    LoadCar(_carIndex: number) {
+    LoadCar() {
 
         // Load attributes from the JSON
-        let carStats = carConfiguration.cars[_carIndex]
+        let carStats = carConfiguration.cars[this.carIndex]
 
         CarFactory.create({
             mass: carStats.attributes.mass,
