@@ -6,7 +6,6 @@ import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
 import { RaceMenuManager } from './RaceMenu/raceMenuManager'
 import { ServerComms } from './Server/serverComms'
-import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 import { EventUI } from './UI/eventUI'
 import { Buildings } from './Buildings/Buildings'
@@ -68,7 +67,9 @@ export class Scene {
                         time: Math.round(Lap.timeElapsed * 1000)
                     })
                 }
-            }
+            },
+            Vector3.create(5.5, 2.1, 1.1),
+            Vector3.create(5.5, 2.1, 5)
         )
         new PhysicsManager()
         RaceMenuManager.LoadTrack(0) // load practice track by default
