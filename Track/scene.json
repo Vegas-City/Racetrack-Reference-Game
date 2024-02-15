@@ -37,16 +37,16 @@
 			"default": true,
 			"position": {
 				"x": [
-					6,
-					6
+					0,
+					0
 				],
 				"y": [
 					3,
 					3
 				],
 				"z": [
-					5.7,
-					5.7
+					0.8,
+					0.8
 				]
 			},
 			"cameraTarget": {
