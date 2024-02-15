@@ -164,7 +164,6 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.5, 2.85),
             src: "models/selection/track1.glb",
             srcSelected: "models/selection/track1_selected.glb",
-            srcLock: "models/selection/track1_lock.glb",
             srcWhiteCup: "models/selection/track1_whitecup.glb",
             srcGoldCup: "models/selection/track1_goldcup.glb",
             startSelected: true,
@@ -232,7 +231,6 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.5, 3.55),
             src: "models/selection/car1b.glb",
             srcSelected: "models/selection/car1b_selected.glb",
-            srcLock: "models/selection/car1b_lock.glb",
             startSelected: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
