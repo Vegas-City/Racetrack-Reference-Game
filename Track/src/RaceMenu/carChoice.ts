@@ -1,8 +1,8 @@
 import { Entity, GltfContainer, Transform, TransformType, engine} from "@dcl/ecs";
 import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
-import * as carConfiguration from "./carConfiguration.json"
 import { ServerComms } from "../Server/serverComms";
+import * as carConfiguration from "./carConfiguration.json"
 
 export class CarChoice {
     entity: Entity
@@ -20,7 +20,6 @@ export class CarChoice {
     }
 
     LoadCar() {
-
         // Load attributes from the JSON
         let carStats = carConfiguration.cars[this.carIndex]
         ServerComms.currentCar = carStats.guid
