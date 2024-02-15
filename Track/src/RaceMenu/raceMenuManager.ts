@@ -23,7 +23,7 @@ export class RaceMenuManager {
 
     carChoices: CarChoice[] = []
     currentCarIndex: number = 0
-    currentTrackIndex: number = 0
+    currentTrackIndex: number = 1
 
     menuTitles: Entity
 
