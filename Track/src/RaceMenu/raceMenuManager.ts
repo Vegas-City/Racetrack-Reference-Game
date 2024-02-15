@@ -10,6 +10,7 @@ import * as trackConfig2 from "../../data/track_02.json"
 import * as trackConfig3 from "../../data/track_03.json"
 import * as trackConfig4 from "../../data/track_04.json"
 import { Minimap } from "@vegascity/racetrack/src/ui";
+import { ServerComms } from "../Server/serverComms";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -347,26 +348,31 @@ export class RaceMenuManager {
             case 0: TrackManager.trackID = 1
                 TrackManager.isPractice = true
                 TrackManager.Load(trackConfig1)
+                ServerComms.setTrack("6a0a3950-bcfb-4eb4-9166-61edc233b82b")
                 Lap.totalLaps = 1
                 break
             case 1: TrackManager.trackID = 1
                 TrackManager.isPractice = false
                 TrackManager.Load(trackConfig1)
+                ServerComms.setTrack("6a0a3950-bcfb-4eb4-9166-61edc233b82b")
                 Lap.totalLaps = 2
                 break
             case 2: TrackManager.trackID = 2
                 TrackManager.isPractice = false
                 TrackManager.Load(trackConfig2)
+                ServerComms.setTrack("17e75c78-7f17-4b7f-8a13-9d1832ec1231")
                 Lap.totalLaps = 2
                 break
             case 3: TrackManager.trackID = 3
                 TrackManager.isPractice = false
                 TrackManager.Load(trackConfig3)
+                ServerComms.setTrack("ec2a8c30-678a-4d07-b56e-7505ce8f941a")
                 Lap.totalLaps = 2
                 break
             case 4: TrackManager.trackID = 4
                 TrackManager.isPractice = false
                 TrackManager.Load(trackConfig4)
+                ServerComms.setTrack("a8ceec44-5a8f-4c31-b026-274c865ca689")
                 Lap.totalLaps = 2
                 break
         }
