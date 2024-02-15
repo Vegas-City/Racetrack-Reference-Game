@@ -398,22 +398,4 @@ export class RaceMenuManager {
             car.hide()
         });
     }
-
-    static loadNextCar(): void {
-        this.instance.currentCarIndex++
-        if (this.instance.currentCarIndex > this.instance.carChoices.length - 1) {
-            this.instance.currentCarIndex = 0
-        }
-        RaceMenuManager.hideAllCars()
-        RaceMenuManager.instance.carChoices[this.instance.currentCarIndex].show()
-    }
-
-    static loadPreviousCar(): void {
-        this.instance.currentCarIndex--
-        if (this.instance.currentCarIndex < 0) {
-            this.instance.currentCarIndex = this.instance.carChoices.length - 1
-        }
-        RaceMenuManager.hideAllCars()
-        RaceMenuManager.instance.carChoices[this.instance.currentCarIndex].show()
-    }
 }
