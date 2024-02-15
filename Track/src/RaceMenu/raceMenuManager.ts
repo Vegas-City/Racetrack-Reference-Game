@@ -164,7 +164,6 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.5, 2.85),
             src: "models/selection/track1.glb",
             srcSelected: "models/selection/track1_selected.glb",
-            srcLock: "models/selection/track1_lock.glb",
             srcWhiteCup: "models/selection/track1_whitecup.glb",
             srcGoldCup: "models/selection/track1_goldcup.glb",
             startSelected: true,
@@ -233,8 +232,7 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.5, 3.55),
             src: "models/selection/car1b.glb",
             srcSelected: "models/selection/car1b_selected.glb",
-            srcLock: "models/selection/car1b_lock.glb",
-            startLocked: true,
+            startSelected: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
                 this.selectCar(2)
@@ -402,23 +400,5 @@ export class RaceMenuManager {
         RaceMenuManager.instance.carChoices.forEach(car => {
             car.hide()
         });
-    }
-
-    static loadNextCar(): void {
-        this.instance.currentCarIndex++
-        if (this.instance.currentCarIndex > this.instance.carChoices.length - 1) {
-            this.instance.currentCarIndex = 0
-        }
-        RaceMenuManager.hideAllCars()
-        RaceMenuManager.instance.carChoices[this.instance.currentCarIndex].show()
-    }
-
-    static loadPreviousCar(): void {
-        this.instance.currentCarIndex--
-        if (this.instance.currentCarIndex < 0) {
-            this.instance.currentCarIndex = this.instance.carChoices.length - 1
-        }
-        RaceMenuManager.hideAllCars()
-        RaceMenuManager.instance.carChoices[this.instance.currentCarIndex].show()
     }
 }

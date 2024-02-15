@@ -10,6 +10,8 @@ import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 import { EventUI } from './UI/eventUI'
 import { Buildings } from './Buildings/Buildings'
+import { Car } from '@vegascity/racetrack/src/car'
+import * as utils from '@dcl-sdk/utils'
 
 export class Scene {
 
@@ -44,6 +46,10 @@ export class Scene {
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
+
+                    utils.timers.setTimeout(() => {
+                        Car.unload()
+                    }, 5000)
                 },
                 onCheckpointEvent: () => {
                     ServerComms.recordAttempt({
