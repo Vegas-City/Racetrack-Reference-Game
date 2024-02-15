@@ -75,7 +75,7 @@ export class RaceMenuManager {
     }
 
     private initialiseMinimaps(): void {
-        this.minimap1 = engine.addEntity()
+        this.minimap1 = engine.addEntity() 
         Transform.create(this.minimap1, {
             parent: this.basePodium
         })
@@ -225,7 +225,7 @@ export class RaceMenuManager {
 
     private initialiseCarMenu(): void {
 
-        this.carButton3 = new MenuButton({
+        this.carButton1 = new MenuButton({
             parent: this.basePodium,
             position: Vector3.create(-3.92, 2.58, -5.9),
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
@@ -235,7 +235,7 @@ export class RaceMenuManager {
             startSelected: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
-                this.selectCar(2)
+                this.selectCar(0)
             }).bind(this)
         })
 
@@ -243,7 +243,7 @@ export class RaceMenuManager {
             parent: this.basePodium,
             position: Vector3.create(-3.92, 1.92, -5.9),
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
-            scale: Vector3.create(0.1, 0.5, 3.55),
+            scale: Vector3.create(0.1, 0.5, 3.55), 
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb", 
             srcLock: "models/selection/car2b_lock.glb",
@@ -253,8 +253,8 @@ export class RaceMenuManager {
                 this.selectCar(1) 
             }).bind(this)
         })
-
-        this.carButton1 = new MenuButton({
+ 
+        this.carButton3 = new MenuButton({
             parent: this.basePodium,
             position: Vector3.create(-3.92, 1.26, -5.9), 
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
@@ -262,10 +262,10 @@ export class RaceMenuManager {
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/car3b_lock.glb",
-            startSelected: true,
+            startLocked: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
-                this.selectCar(0)
+                this.selectCar(2)
             }).bind(this)
         })
 
