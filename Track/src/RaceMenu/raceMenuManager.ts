@@ -225,7 +225,8 @@ export class RaceMenuManager {
     }
 
     private initialiseCarMenu(): void {
-        this.carButton1 = new MenuButton({
+
+        this.carButton3 = new MenuButton({
             parent: this.basePodium,
             position: Vector3.create(-3.92, 2.58, -5.9),
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
@@ -233,10 +234,10 @@ export class RaceMenuManager {
             src: "models/selection/car1b.glb",
             srcSelected: "models/selection/car1b_selected.glb",
             srcLock: "models/selection/car1b_lock.glb",
-            startSelected: true,
+            startLocked: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
-                this.selectCar(0)
+                this.selectCar(2)
             }).bind(this)
         })
 
@@ -246,29 +247,31 @@ export class RaceMenuManager {
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
             scale: Vector3.create(0.1, 0.5, 3.55),
             src: "models/selection/car2b.glb",
-            srcSelected: "models/selection/car2b_selected.glb",
+            srcSelected: "models/selection/car2b_selected.glb", 
             srcLock: "models/selection/car2b_lock.glb",
             startLocked: true,
             onSelectCallback: (() => {
-                this.deselectAllCars()
-                this.selectCar(1)
+                this.deselectAllCars() 
+                this.selectCar(1) 
             }).bind(this)
         })
 
-        this.carButton3 = new MenuButton({
+        this.carButton1 = new MenuButton({
             parent: this.basePodium,
-            position: Vector3.create(-3.92, 1.26, -5.9),
+            position: Vector3.create(-3.92, 1.26, -5.9), 
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
             scale: Vector3.create(0.1, 0.5, 3.55),
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/car3b_lock.glb",
-            startLocked: true,
+            startSelected: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
-                this.selectCar(2)
+                this.selectCar(0)
             }).bind(this)
         })
+
+
     }
 
     private initialiseRaceMenu(): void {
@@ -283,7 +286,7 @@ export class RaceMenuManager {
     }
 
     private initialiseCars(): void {
-        this.carChoices.push(new CarChoice(0, "models/selection/car1.glb", {
+        this.carChoices.push(new CarChoice(0, "models/selection/car3.glb", {
             parent: this.carContainer,
             position: Vector3.create(0, 0.4, 0),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -297,7 +300,7 @@ export class RaceMenuManager {
             scale: Vector3.create(0.95, 0.95, 0.95)
         }))
 
-        this.carChoices.push(new CarChoice(2, "models/selection/car3.glb", {
+        this.carChoices.push(new CarChoice(2, "models/selection/car1.glb", {
             parent: this.carContainer,
             position: Vector3.create(0, 0.4, 0),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
