@@ -23,8 +23,8 @@ export class Scene {
             {
                 onStartEvent: () => {
                     ServerComms.recordAttempt({
-                        car: "",
-                        track: "",
+                        car: ServerComms.currentCar,
+                        track: ServerComms.currentTrack,
                         checkpoint: 0,
                         time: 0
                     })
@@ -32,8 +32,8 @@ export class Scene {
                 onEndEvent: () => {
                     EventUI.triggerEndEvent()
                     ServerComms.recordAttempt({
-                        car: "",
-                        track: "",
+                        car: ServerComms.currentCar,
+                        track: ServerComms.currentTrack,
                         checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
                         time: Math.round(Lap.timeElapsed * 1000)
                     })
@@ -45,8 +45,8 @@ export class Scene {
                 },
                 onCheckpointEvent: () => {
                     ServerComms.recordAttempt({
-                        car: "",
-                        track: "",
+                        car: ServerComms.currentCar,
+                        track: ServerComms.currentTrack,
                         checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
                         time: Math.round(Lap.timeElapsed * 1000)
                     })
@@ -54,8 +54,8 @@ export class Scene {
                 onLapCompleteEvent: () => {
                     EventUI.triggerLapEvent()
                     ServerComms.recordAttempt({
-                        car: "",
-                        track: "",
+                        car: ServerComms.currentCar,
+                        track: ServerComms.currentTrack,
                         checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
                         time: Math.round(Lap.timeElapsed * 1000)
                     })
