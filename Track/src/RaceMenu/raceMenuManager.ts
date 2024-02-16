@@ -34,6 +34,7 @@ export class RaceMenuManager {
     trackButton1: MenuButton
     trackButton2: MenuButton
     trackButton3: MenuButton
+    trackButton4: MenuButton
 
     carButton1: MenuButton
     carButton2: MenuButton
@@ -131,6 +132,7 @@ export class RaceMenuManager {
                 TrackManager.isPractice = true
                 this.trackButton2.hide()
                 this.trackButton3.hide()
+                this.trackButton4.hide()
                 this.trackButton1.select()
             }).bind(this)
         })
@@ -147,6 +149,7 @@ export class RaceMenuManager {
                 TrackManager.isPractice = false
                 this.trackButton2.show()
                 this.trackButton3.show()
+                this.trackButton4.show()
             }).bind(this)
         })
     }
@@ -214,8 +217,30 @@ export class RaceMenuManager {
             }).bind(this)
         })
 
+        this.trackButton4 = new MenuButton({
+            parent: this.basePodium,
+            position: Vector3.create(1.7, 0.6, -6.9),
+            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
+            scale: Vector3.create(0.1, 0.5, 2.85),
+            src: "models/selection/track4.glb",
+            srcSelected: "models/selection/track4_selected.glb",
+            srcLock: "models/selection/track4_lock.glb",
+            srcWhiteCup: "models/selection/track4_whitecup.glb",
+            srcGoldCup: "models/selection/track4_goldcup.glb",
+            startLocked: true,
+            deselectAllCallback: this.deselectAllTracks.bind(this),
+            onSelectCallback: (() => {
+                this.currentTrackIndex = 4
+                Transform.getMutable(this.minimap1).scale = Vector3.Zero()
+                Transform.getMutable(this.minimap2).scale = Vector3.Zero()
+                Transform.getMutable(this.minimap3).scale = Vector3.Zero()
+                Transform.getMutable(this.minimap4).scale = Vector3.One()
+            }).bind(this)
+        })
+
         this.trackButton2.hide()
         this.trackButton3.hide()
+        this.trackButton4.hide()
     }
 
     private initialiseCarMenu(): void {
@@ -313,6 +338,7 @@ export class RaceMenuManager {
         this.trackButton1.deselect()
         this.trackButton2.deselect()
         this.trackButton3.deselect()
+        this.trackButton4.deselect()
     }
 
     private deselectAllCars(): void {
@@ -363,6 +389,7 @@ export class RaceMenuManager {
 
         RaceMenuManager.instance.trackButton2.lock()
         RaceMenuManager.instance.trackButton3.lock()
+        RaceMenuManager.instance.trackButton4.lock()
         RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
@@ -376,12 +403,12 @@ export class RaceMenuManager {
                         RaceMenuManager.instance.trackButton3.unlock()
                     }
                     else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
-                        // TODO once we have the 4th track button
+                        RaceMenuManager.instance.trackButton4.unlock()
                     }
                 }
             })
 
-            if (track.pb < track.targetTimeToUnlockNextTrack) {
+            if (track.pb > 0 && track.pb < track.targetTimeToUnlockNextTrack) {
                 if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
                     RaceMenuManager.instance.trackButton1.setQualified()
                 }
@@ -392,13 +419,14 @@ export class RaceMenuManager {
                     RaceMenuManager.instance.trackButton3.setQualified()
                 }
                 else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
-                    // TODO once we have the 4th track button
+                    RaceMenuManager.instance.trackButton4.setQualified()
                 }
             }
         })
 
-        if (RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked
-            || RaceMenuManager.instance.trackButton3.selected && RaceMenuManager.instance.trackButton3.locked) {
+        if ((RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked)
+            || (RaceMenuManager.instance.trackButton3.selected && RaceMenuManager.instance.trackButton3.locked)
+            || (RaceMenuManager.instance.trackButton4.selected && RaceMenuManager.instance.trackButton4.locked)) {
             RaceMenuManager.instance.trackButton1.select()
         }
     }

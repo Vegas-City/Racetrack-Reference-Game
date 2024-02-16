@@ -3,7 +3,6 @@ import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
-import { CarData } from "./types/carData"
 import { TrackData } from "./types/trackData"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
@@ -28,7 +27,7 @@ export class ServerComms {
         console.log("SC : " + UserData.cachedData?.publicKey)
 
         utils.timers.setTimeout(() => {
-            //ServerComms.getLeaderboardData()
+            ServerComms.getLeaderboardData()
             ServerComms.getPlayerData()
         }, 2000)
     }
@@ -36,7 +35,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `http://localhost:8080`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -74,6 +73,7 @@ export class ServerComms {
     public static getLeaderboardData() {
         if (ServerComms.TEST_MODE) {
             ServerComms.leaderboard = Object.assign(new LeaderboardData(), JSON.parse(JSON.stringify(exampleLeaderboardData)))
+            LeaderboardUI.update()
         }
         else {
             try {
@@ -85,7 +85,8 @@ export class ServerComms {
                     }
                 }).then(async response => await JSON.parse(response.body)).then(
                     data => {
-                        ServerComms.leaderboard = Object.assign(new LeaderboardData(), data.result)
+                        ServerComms.leaderboard = Object.assign(new LeaderboardData(), data)
+                        LeaderboardUI.update()
                     }
 
                 )
@@ -93,7 +94,6 @@ export class ServerComms {
                 console.log("Error getting leaderboard data: " + ex)
             }
         }
-        LeaderboardUI.update()
     }
 
     public static async getPlayerData() {

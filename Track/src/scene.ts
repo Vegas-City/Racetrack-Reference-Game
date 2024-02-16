@@ -89,7 +89,6 @@ export class Scene {
         )
         new PhysicsManager()
         RaceMenuManager.LoadTrack(0) // load practice track by default
-        Scene.loaded = true
 
         new NPCManager()
 
@@ -146,5 +145,7 @@ export class Scene {
                 ]
             ]
         })
+        
+        Scene.loaded = true
     }
 } 

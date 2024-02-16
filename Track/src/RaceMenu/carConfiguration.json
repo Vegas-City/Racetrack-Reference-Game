@@ -109,7 +109,7 @@
         "accelerationF": 12,
         "accelerationB": 12,
         "deceleration": 4,
-        "minSpeed": -14, 
+        "minSpeed": -14,
         "maxSpeed": 25,
         "steerSpeed": 1.5,
         "grip": 0.3
