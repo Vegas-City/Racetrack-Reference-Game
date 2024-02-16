@@ -1,0 +1,74 @@
+{
+  "result": {
+    "cars": [
+      {
+        "name": "Zenith Pax",
+        "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
+      },
+      {
+        "name": "Zenith Nova",
+        "guid": "78818ce7-fec2-4b22-8e85-fda733a79eae"
+      }
+    ],
+    "name": "Shaun",
+    "tracks": [
+      {
+        "cars": [
+          {
+            "name": "Zenith Pax",
+            "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
+          },
+          {
+            "name": "Zenith Nova",
+            "guid": "78818ce7-fec2-4b22-8e85-fda733a79eae"
+          }
+        ],
+        "pb": 100,
+        "name": "Track 1",
+        "targetTimeToUnlockNextTrack": 60000,
+        "checkpoints": 1,
+        "guid": "6a0a3950-bcfb-4eb4-9166-61edc233b82b"
+      },
+      {
+        "cars": [
+          {
+            "name": "Zenith Pax",
+            "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
+          }
+        ],
+        "pb": 65000,
+        "name": "Track 2",
+        "targetTimeToUnlockNextTrack": 60000,
+        "checkpoints": 1,
+        "guid": "17e75c78-7f17-4b7f-8a13-9d1832ec1231"
+      },
+      {
+        "cars": [
+          {
+            "name": "Zenith Pax",
+            "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
+          }
+        ],
+        "pb": 5000,
+        "name": "Track 3",
+        "targetTimeToUnlockNextTrack": 60000,
+        "checkpoints": 1,
+        "guid": "ec2a8c30-678a-4d07-b56e-7505ce8f941a"
+      },
+      {
+        "cars": [
+          {
+            "name": "Zenith Pax",
+            "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
+          }
+        ],
+        "pb": 5000,
+        "name": "Track 4",
+        "targetTimeToUnlockNextTrack": 60000,
+        "checkpoints": 1,
+        "guid": "a8ceec44-5a8f-4c31-b026-274c865ca689"
+      }
+    ],
+    "points": 489
+  }
+}
