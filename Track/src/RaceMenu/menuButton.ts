@@ -131,8 +131,8 @@ export class MenuButton {
 
     select(): void {
         if (!this.selected) {
-            this.onSelectCallback()
             this.toggleSelection()
+            this.onSelectCallback()
         }
     }
 

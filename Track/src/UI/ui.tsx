@@ -1,9 +1,9 @@
 import { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
-import { SpeedometerUI, TimeUI, Countdown } from '@vegascity/racetrack/src/ui'
+import { SpeedometerUI, TimeUI, Countdown, ExitCarUI } from '@vegascity/racetrack/src/ui'
 import { Minimap } from '@vegascity/racetrack/src/ui'
 import { UiCanvasInformation, engine } from '@dcl/sdk/ecs'
 import { EventUI } from './eventUI'
-import * as  ui from 'dcl-ui-toolkit'
+import * as ui from 'dcl-ui-toolkit'
 
 const uiComponent = () => (
   [
@@ -12,6 +12,7 @@ const uiComponent = () => (
     Countdown.Render(),
     Minimap.Render(),
     EventUI.Render(),
+    ExitCarUI.Render(),
     ui.render()
   ]
 )

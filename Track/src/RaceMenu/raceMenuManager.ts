@@ -341,6 +341,7 @@ export class RaceMenuManager {
         RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
         RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
         CarPerspectives.enterCar(Car.instances[0].data)
+        this.raceButton.deselect()
     }
 
     static LoadTrack(_trackNumber: number) {
