@@ -3,7 +3,6 @@ import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
-import { CarData } from "./types/carData"
 import { TrackData } from "./types/trackData"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
@@ -36,7 +35,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `http://localhost:8080`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:

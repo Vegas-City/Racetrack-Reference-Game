@@ -408,7 +408,7 @@ export class RaceMenuManager {
                 }
             })
 
-            if (track.pb < track.targetTimeToUnlockNextTrack) {
+            if (track.pb > 0 && track.pb < track.targetTimeToUnlockNextTrack) {
                 if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
                     RaceMenuManager.instance.trackButton1.setQualified()
                 }
