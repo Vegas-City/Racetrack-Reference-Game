@@ -7,13 +7,15 @@ import { CarData } from "./types/carData"
 import { TrackData } from "./types/trackData"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
-import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
-import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
 import { LeaderboardUI } from "../UI/leaderboardUI"
 import { TimeUI } from "@vegascity/racetrack/src/ui/timeUI"
+import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
+import * as utils from '@dcl-sdk/utils'
+import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
+import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
 
 export class ServerComms {
-    private static readonly TEST_MODE: boolean = false
+    private static readonly TEST_MODE: boolean = true
 
     static player: PlayerData
     static leaderboard: LeaderboardData
@@ -24,8 +26,11 @@ export class ServerComms {
         console.log("SERVER COMMS")
         console.log("SC : " + UserData.cachedData?.displayName)
         console.log("SC : " + UserData.cachedData?.publicKey)
-        //ServerComms.getLeaderboardData()
-        ServerComms.getPlayerData()
+
+        utils.timers.setTimeout(() => {
+            //ServerComms.getLeaderboardData()
+            ServerComms.getPlayerData()
+        }, 2000)
     }
 
     public static getServerUrl(): string {
@@ -93,7 +98,8 @@ export class ServerComms {
 
     public static async getPlayerData() {
         if (ServerComms.TEST_MODE) {
-            ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData)))
+            ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
+            RaceMenuManager.update()
         }
         else {
             try {
@@ -107,6 +113,7 @@ export class ServerComms {
                     data => {
                         console.log(data.result)
                         ServerComms.player = Object.assign(new PlayerData(), data.result)
+                        RaceMenuManager.update()
                     }
 
                 )
@@ -179,13 +186,13 @@ export class ServerComms {
         }
     }
 
-    public static setTrack(guid:string){
+    public static setTrack(guid: string) {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = guid
             let track = ServerComms.player.tracks.find(track => track.guid === guid)
             console.log(track)
             let bool = track.pb == 0
-            TimeUI.showQualOrPbTime(bool ? "Qualification":"PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+            TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
         })
     }
 }

@@ -15,6 +15,7 @@ export type MenuConfig = {
 
     startSelected?: boolean
     startLocked?: boolean
+    deselectAllCallback?: Function
     onSelectCallback?: Function
 }
 
@@ -34,9 +35,11 @@ export class MenuButton {
     locked: boolean = false
     qualified: boolean = false
 
+    deselectAllCallback: Function = () => { }
     onSelectCallback: Function = () => { }
 
     constructor(_config: MenuConfig) {
+        if (_config.deselectAllCallback) this.deselectAllCallback = _config.deselectAllCallback
         if (_config.onSelectCallback) this.onSelectCallback = _config.onSelectCallback
 
         this.parentEntity = engine.addEntity()
@@ -131,6 +134,7 @@ export class MenuButton {
 
     select(): void {
         if (!this.selected) {
+            this.deselectAllCallback()
             this.toggleSelection()
             this.onSelectCallback()
         }
@@ -181,8 +185,7 @@ export class MenuButton {
                 }
             },
             function () {
-                self.onSelectCallback()
-                self.toggleSelection()
+                self.select()
             }
         )
     }

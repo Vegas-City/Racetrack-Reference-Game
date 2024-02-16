@@ -20,8 +20,8 @@ export class Scene {
         setup(movePlayerTo, triggerSceneEmote)
 
         new Buildings()
-        new ServerComms()
         new InputManager()
+        new ServerComms()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false,
             {
                 onStartEvent: () => {
@@ -45,6 +45,11 @@ export class Scene {
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
+
+                    // update player data after completing a race
+                    utils.timers.setTimeout(() => {
+                        ServerComms.getPlayerData()
+                    }, 4000)
 
                     utils.timers.setTimeout(() => {
                         Car.unload()

@@ -2,11 +2,11 @@
   "result": {
     "cars": [
       {
-        "name": "Lambo",
+        "name": "Zenith Pax",
         "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
       },
       {
-        "name": "Lada",
+        "name": "Zenith Nova",
         "guid": "78818ce7-fec2-4b22-8e85-fda733a79eae"
       }
     ],
@@ -15,11 +15,11 @@
       {
         "cars": [
           {
-            "name": "Lambo",
+            "name": "Zenith Pax",
             "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
           },
           {
-            "name": "Lada",
+            "name": "Zenith Nova",
             "guid": "78818ce7-fec2-4b22-8e85-fda733a79eae"
           }
         ],
@@ -32,12 +32,8 @@
       {
         "cars": [
           {
-            "name": "Lambo",
+            "name": "Zenith Pax",
             "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
-          },
-          {
-            "name": "Lada",
-            "guid": "78818ce7-fec2-4b22-8e85-fda733a79eae"
           }
         ],
         "pb": 5000,
@@ -49,7 +45,7 @@
       {
         "cars": [
           {
-            "name": "Lambo",
+            "name": "Zenith Pax",
             "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
           }
         ],
@@ -62,7 +58,7 @@
       {
         "cars": [
           {
-            "name": "Lambo",
+            "name": "Zenith Pax",
             "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
           }
         ],
