@@ -88,7 +88,6 @@ export class Scene {
         )
         new PhysicsManager()
         RaceMenuManager.LoadTrack(0) // load practice track by default
-        Scene.loaded = true
 
         new RaceMenuManager(Vector3.create(8, 0.9, 5))
 
@@ -143,5 +142,7 @@ export class Scene {
                 ]
             ]
         })
+        
+        Scene.loaded = true
     }
 } 
