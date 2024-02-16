@@ -3,7 +3,9 @@ import { SpeedometerUI, TimeUI, Countdown, ExitCarUI } from '@vegascity/racetrac
 import { Minimap } from '@vegascity/racetrack/src/ui'
 import { UiCanvasInformation, engine } from '@dcl/sdk/ecs'
 import { EventUI } from './eventUI'
-import * as ui from 'dcl-ui-toolkit'
+import * as  ui from 'dcl-ui-toolkit'
+import { PointsUi } from './pointsUi'
+import { popup, shopUI } from '../utils/ui-provider'
 
 const uiComponent = () => (
   [
@@ -12,6 +14,9 @@ const uiComponent = () => (
     Countdown.Render(),
     Minimap.Render(),
     EventUI.Render(),
+    popup.render(),
+    shopUI.render(),
+    PointsUi.Render(),
     ExitCarUI.Render(),
     ui.render()
   ]

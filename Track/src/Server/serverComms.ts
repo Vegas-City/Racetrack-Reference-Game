@@ -31,7 +31,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `https://uat.vegascity.live/services/racetrack`
+                return `http://localhost:8080`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -116,21 +116,34 @@ export class ServerComms {
         }
     }
 
-    public static async makePurchase(_data: CarData) {
-        try {
-            let response = await signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/purchase",
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'POST',
-                    body: JSON.stringify({
-                        guid: _data.guid
-                    })
-                }
+    static async canClaimWearable(_wearableId:number):Promise<any>{
+        let player = UserData.cachedData
+
+        return await signedFetch({
+            url:this.getServerUrl() + "/api/missions/canspend",
+            init: {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({
+                user: player.publicKey || "GUEST_" + player.userId,
+                wearableId: _wearableId,
             })
-        } catch (ex) {
-            console.log("Error make purchase: " + ex)
-        }
+        }})
+    }
+
+    static async claimWearable(_wearableId:number){
+        let player = UserData.cachedData
+
+        let response = await signedFetch({
+            url: this.getServerUrl() + "/api/missions/spend", 
+            init:{
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({
+                user: player.publicKey || "GUEST_" + player.userId,
+                wearableId: _wearableId,
+            })
+        }})
     }
 
     public static getGhostCarData(_data: TrackData) {

@@ -8,6 +8,8 @@ import { RaceMenuManager } from './RaceMenu/raceMenuManager'
 import { ServerComms } from './Server/serverComms'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 import { EventUI } from './UI/eventUI'
+import { ShopController } from './shop/shop-controller'
+import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
 import * as utils from '@dcl-sdk/utils'
@@ -15,12 +17,18 @@ import * as utils from '@dcl-sdk/utils'
 export class Scene {
 
     static loaded: boolean = false
-
+    static shopController: ShopController
+    
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
         new Buildings()
         new ServerComms()
+
+        Scene.shopController = new ShopController()
+        Scene.shopController.updateCollection(UserData.cachedData.publicKey)
+        Scene.shopController.setupClickables()
+
         new InputManager()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false,
             {
@@ -39,6 +47,8 @@ export class Scene {
                         track: ServerComms.currentTrack,
                         checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
                         time: Math.round(Lap.timeElapsed * 1000)
+                    }).then(() => {
+                        ServerComms.setTrack(ServerComms.currentTrack)
                     })
 
                     // Send the ghost to the server at game end
