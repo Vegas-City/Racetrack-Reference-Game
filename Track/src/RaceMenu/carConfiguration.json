@@ -3,7 +3,7 @@
     {
       "index": 0,
       "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946",
-      "name": "Car One",
+      "name": "Zenith Pax",
       "attributes": {
         "mass": 150,
         "accelerationF": 8,
@@ -53,7 +53,7 @@
     {
       "index": 1,
       "guid": "78818ce7-fec2-4b22-8e85-fda733a79eae",
-      "name": "Car Two",
+      "name": "Zenith Nova",
       "attributes": {
         "mass": 150,
         "accelerationF": 10,
@@ -103,7 +103,7 @@
     {
       "index": 2,
       "guid": "18aa1cfa-2803-47f0-85b9-d9bee154f920",
-      "name": "Car Three",
+      "name": "Zenith Apex",
       "attributes": {
         "mass": 150,
         "accelerationF": 12,
