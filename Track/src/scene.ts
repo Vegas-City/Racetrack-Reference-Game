@@ -13,6 +13,7 @@ import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
 import * as utils from '@dcl-sdk/utils'
+import { NPCManager } from './NPCs/NPCManager'
 
 export class Scene {
 
@@ -88,6 +89,8 @@ export class Scene {
         )
         new PhysicsManager()
         RaceMenuManager.LoadTrack(0) // load practice track by default
+
+        new NPCManager()
 
         new RaceMenuManager(Vector3.create(8, 0.9, 5))
 
