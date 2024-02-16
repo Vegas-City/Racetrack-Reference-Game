@@ -1,10 +1,9 @@
 import { Color4 } from '@dcl/sdk/math';
 import ReactEcs, { UiEntity } from '@dcl/sdk/react-ecs'
 import Wearable from '../utils/interfaces/wearable';
-import { popup, wallet } from '../utils/ui-provider';
+import { popup } from '../utils/ui-provider';
 import { InputAction, PointerEventType, engine, inputSystem } from '@dcl/sdk/ecs';
 import { Scene } from '../scene';
-import Wallet from './ui-wallet';
 import { ServerComms } from '../Server/serverComms';
 
 
@@ -84,6 +83,7 @@ export default class ShopUI {
                 width: "100%",
                 justifyContent: 'center',
                 alignItems: 'center',
+                display: Scene.loaded ? 'flex' : 'none'
             }}
         >
             <UiEntity
@@ -103,8 +103,7 @@ export default class ShopUI {
                         positionType: "absolute",
                         position: { top: 200 },
                         justifyContent: 'center',
-                        alignItems: 'center',
-                        display: this.visible ? 'flex' : 'none'
+                        alignItems: 'center'
                     }}
                     uiText={{
                         value: "Would you like to exchange\n" + this.data.price + " Points for\n" + this.data.name + "?",
@@ -128,9 +127,7 @@ export default class ShopUI {
                         uiTransform={{
                             width: 348 / 1.4,
                             height: 92 / 1.4,
-                            justifyContent: 'space-between',
-                            // alignItems: 'center',
-                            display: this.visible ? 'flex' : 'none'
+                            justifyContent: 'space-between'
                         }}
                         uiBackground={{ textureMode: "stretch", texture: { src: 'textures/ui/button1-variant2.png' } }}
                         onMouseDown={this.hide.bind(this)}
@@ -167,9 +164,7 @@ export default class ShopUI {
                         uiTransform={{
                             width: 348 / 1.4,
                             height: 92 / 1.4,
-                            justifyContent: 'space-between',
-                            // alignItems: 'center',
-                            display: this.visible ? 'flex' : 'none'
+                            justifyContent: 'space-between'
                         }}
                         uiBackground={{ textureMode: "stretch", texture: { src: 'textures/ui/button1-variant2.png' } }}
                         onMouseDown={this.buyClick.bind(this)}                 
