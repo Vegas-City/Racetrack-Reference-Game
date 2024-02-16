@@ -1,11 +1,12 @@
 import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, Transform, engine, pointerEventsSystem } from "@dcl/sdk/ecs"
 import { popup, shopUI, wallet } from "../utils/ui-provider"
-import { getWearableData, setWearableData, wearable_boxes, wearable_models } from "./wearables"
+import { getWearableData,wearable_boxes } from "./wearables"
 import { Quaternion, Vector3 } from "@dcl/sdk/math"
 import Wearable from "../utils/interfaces/wearable"
 import { signedFetch } from "~system/SignedFetch"
 import { ServerComms } from "../Server/serverComms"
 import { Logger } from "@vegascity/vegas-city-logger"
+import * as utils from '@dcl-sdk/utils'
 
 export class ShopController {
     static logger: Logger = new Logger("AI_FAIR_SOPHIAVERSE", engine, Transform)
@@ -41,7 +42,14 @@ export class ShopController {
             rotation: Quaternion.fromEulerDegrees(model.rotation.x, model.rotation.y, model.rotation.z)
         })
 
-        MeshCollider.setCylinder(plinth)
+        const collider = engine.addEntity()
+        Transform.create(collider, {
+            parent: plinth,
+            position: Vector3.create(0, 1, 0),
+            scale: Vector3.create(2,3.5,2)
+        })
+
+        MeshCollider.setCylinder(collider)
         GltfContainer.create(plinth, {
             src: "models/AIFairShopDispenser.glb"
         })
@@ -49,13 +57,17 @@ export class ShopController {
         const linkEntity = engine.addEntity()
         Transform.create(linkEntity, {
             parent: plinth,
-            position: Vector3.create(0,2,0)
+            position: Vector3.create(0,data.posy,0)
         })
-        MeshCollider.setBox(linkEntity)
+        GltfContainer.create(linkEntity, {
+            src: data.image_path
+        })
 
+        // make collectables spin to draw attention
+        utils.perpetualMotions.startRotation(linkEntity, Quaternion.fromEulerDegrees(0, 45, 0))   
 
         pointerEventsSystem.onPointerDown({
-            entity: linkEntity,
+            entity: collider,
             opts: { button: InputAction.IA_POINTER, hoverText: `BUY`, maxDistance: 10 }
         }, () => {
             shopUI.show(data)

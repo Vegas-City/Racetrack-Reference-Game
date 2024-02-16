@@ -11,5 +11,6 @@ export default interface Wearable {
     numericalId: number,
     active: boolean,
     collection: string,
-    stock: number
+    stock: number,
+    posy: number
 }

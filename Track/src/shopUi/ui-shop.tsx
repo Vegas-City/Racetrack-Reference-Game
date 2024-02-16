@@ -20,7 +20,8 @@ export default class ShopUI {
         numericalId: -1,
         active: true,
         collection: "store",
-        stock: 0
+        stock: 0,
+        posy: 0
     }
 
     constructor() {

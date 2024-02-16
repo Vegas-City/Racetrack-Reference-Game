@@ -3,18 +3,20 @@ import { Label, ReactEcs,UiEntity } from "@dcl/react-ecs"
 import { ServerComms } from "../Server/serverComms"
 
 export class PointsUi{
+    private static readonly SCALE: number = 0.25
 
     private static component = () => (
         <UiEntity
-        key="EventUI"
+        key="PointsUI"
+        
         uiTransform={{
             positionType: 'absolute',
             position: {
                 top: '30%',
-                right: '50%',
+                left: '1%',
             },
-            display: 'flex',
-
+            width: 1208 * PointsUi.SCALE,
+            height: 256 * PointsUi.SCALE,
         }}
         uiBackground={{
             textureMode: 'stretch',
@@ -27,21 +29,21 @@ export class PointsUi{
               <Label
                     value={"Points"}
                     color={Color4.White()}
-                    fontSize={22}
+                    fontSize={20}
                     font="sans-serif"
                     textAlign="top-center"
                     uiTransform={{
-                        position: { left: '0px', top: '6px' }
+                        position: { left: '160px', top: '10px' }
                     }}
                 />
                 <Label
                     value={ServerComms.player ? ServerComms.player.points.toString() : "0"}
                     color={Color4.White()}
-                    fontSize={30}
+                    fontSize={22}
                     font="sans-serif"
                     textAlign= "top-center"
                     uiTransform={{
-                        position: { left:'80px', top: '0px' }
+                        position: { left:'230px', top: '10px' }
                     }}
                 />
         </UiEntity>
