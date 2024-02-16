@@ -27,7 +27,7 @@ export class ServerComms {
         console.log("SC : " + UserData.cachedData?.publicKey)
 
         utils.timers.setTimeout(() => {
-            //ServerComms.getLeaderboardData()
+            ServerComms.getLeaderboardData()
             ServerComms.getPlayerData()
         }, 2000)
     }
@@ -73,6 +73,7 @@ export class ServerComms {
     public static getLeaderboardData() {
         if (ServerComms.TEST_MODE) {
             ServerComms.leaderboard = Object.assign(new LeaderboardData(), JSON.parse(JSON.stringify(exampleLeaderboardData)))
+            LeaderboardUI.update()
         }
         else {
             try {
@@ -84,7 +85,8 @@ export class ServerComms {
                     }
                 }).then(async response => await JSON.parse(response.body)).then(
                     data => {
-                        ServerComms.leaderboard = Object.assign(new LeaderboardData(), data.result)
+                        ServerComms.leaderboard = Object.assign(new LeaderboardData(), data)
+                        LeaderboardUI.update()
                     }
 
                 )
@@ -92,7 +94,6 @@ export class ServerComms {
                 console.log("Error getting leaderboard data: " + ex)
             }
         }
-        LeaderboardUI.update()
     }
 
     public static async getPlayerData() {

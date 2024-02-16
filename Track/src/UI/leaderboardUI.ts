@@ -8,8 +8,8 @@ export class LeaderboardUI {
     private static readonly VERTICAL_SPACING: number = 1.5
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
-        position: Vector3.create(16, 4, 15),
-        rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+        position: Vector3.create(8, 5, -4),
+        rotation: Quaternion.fromEulerDegrees(0, 180, 0),
         scale: Vector3.create(0.3, 0.3, 0.3)
     }
 
@@ -189,8 +189,8 @@ export class LeaderboardUI {
         let bgEntity = engine.addEntity()
         Transform.create(bgEntity, {
             parent: LeaderboardUI.container,
-            position: Vector3.create(14.5, -3.8, 0.1),
-            scale: Vector3.create(32, 10, 10)
+            position: Vector3.create(17.5, -3.8, 0.1),
+            scale: Vector3.create(38, 10, 10)
         })
         MeshRenderer.setPlane(bgEntity)
         Material.setPbrMaterial(bgEntity, {
