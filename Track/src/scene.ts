@@ -23,13 +23,13 @@ export class Scene {
         setup(movePlayerTo, triggerSceneEmote)
 
         new Buildings()
+        new InputManager()
         new ServerComms()
 
         Scene.shopController = new ShopController()
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
 
-        new InputManager()
         new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false,
             {
                 onStartEvent: () => {
@@ -55,6 +55,11 @@ export class Scene {
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
+
+                    // update player data after completing a race
+                    utils.timers.setTimeout(() => {
+                        ServerComms.getPlayerData()
+                    }, 4000)
 
                     utils.timers.setTimeout(() => {
                         Car.unload()
