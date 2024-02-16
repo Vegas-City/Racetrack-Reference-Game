@@ -6,11 +6,13 @@ import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
 import { RaceMenuManager } from './RaceMenu/raceMenuManager'
 import { ServerComms } from './Server/serverComms'
-import { Entity, GltfContainer, Transform, engine } from '@dcl/sdk/ecs'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 import { EventUI } from './UI/eventUI'
 import { ShopController } from './shop/shop-controller'
 import { UserData } from './Server/Helper'
+import { Buildings } from './Buildings/Buildings'
+import { Car } from '@vegascity/racetrack/src/car'
+import * as utils from '@dcl-sdk/utils'
 
 export class Scene {
 
@@ -20,6 +22,7 @@ export class Scene {
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
+        new Buildings()
         new ServerComms()
 
         Scene.shopController = new ShopController()
@@ -52,7 +55,10 @@ export class Scene {
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
-            
+
+                    utils.timers.setTimeout(() => {
+                        Car.unload()
+                    }, 5000)
                 },
                 onCheckpointEvent: () => {
                     ServerComms.recordAttempt({
@@ -71,21 +77,15 @@ export class Scene {
                         time: Math.round(Lap.timeElapsed * 1000)
                     })
                 }
-            }
+            },
+            Vector3.create(5.5, 2.1, 1.1),
+            Vector3.create(5.5, 2.1, 5)
         )
         new PhysicsManager()
         RaceMenuManager.LoadTrack(0) // load practice track by default
         Scene.loaded = true
 
-        new RaceMenuManager(Vector3.create(8, 0.9, 11))
-
-        // Scene parcels
-        let sceneParcels: Entity = engine.addEntity()
-        GltfContainer.create(sceneParcels, { src: "models/SceneParcels.glb" })
-        Transform.create(sceneParcels, {
-            position: Vector3.create(-32, 1, 16),
-            rotation: Quaternion.fromEulerDegrees(0, 180, 0)
-        })
+        new RaceMenuManager(Vector3.create(8, 0.9, 5))
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],

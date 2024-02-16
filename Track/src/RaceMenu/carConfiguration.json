@@ -6,11 +6,11 @@
       "name": "Car One",
       "attributes": {
         "mass": 150,
-        "accelerationF": 12,
+        "accelerationF": 8,
         "accelerationB": 12,
         "deceleration": 4,
         "minSpeed": -14,
-        "maxSpeed": 25,
+        "maxSpeed": 21,
         "steerSpeed": 1.5,
         "grip": 0.3
       },
@@ -26,19 +26,19 @@
         "lapAudio": "audio/lapComplete.mp3"
       },
       "models": {
-        "car": "models/cars/car1/car.glb",
-        "carCollider": "models/cars/car1/carCollider.glb",
-        "leftWheel": "models/cars/car1/wheel_left.glb",
-        "rightWheel": "models/cars/car1/wheel_right.glb",
-        "steeringWheel": "models/cars/car1/steering_wheel.glb",
-        "brakeLights": "models/cars/car1/brakeLights.glb",
-        "dashboard": "models/cars/car1/dashboard.glb"
+        "car": "models/cars/car3/car.glb",
+        "carCollider": "models/cars/car3/carCollider.glb",
+        "leftWheel": "models/cars/car3/wheel_left.glb",
+        "rightWheel": "models/cars/car3/wheel_right.glb",
+        "steeringWheel": "models/cars/car3/steering_wheel.glb",
+        "brakeLights": "models/cars/car3/brakeLights.glb",
+        "dashboard": "models/cars/car3/dashboard.glb"
       },
       "images": {
-        "carIcon": "images/ui/selectionUI/car1.png"
+        "carIcon": "images/ui/selectionUI/car3.png"
       },
       "positions": {
-        "dashboardPosition": "1.2,0.14,0.065",
+        "dashboardPosition": "1.25,0.2,0.065",
         "steeringWheelPosition": "0.80,0.17,0.57",
         "wheelX_L": 1,
         "wheelX_R": 1,
@@ -106,11 +106,11 @@
       "name": "Car Three",
       "attributes": {
         "mass": 150,
-        "accelerationF": 8,
+        "accelerationF": 12,
         "accelerationB": 12,
         "deceleration": 4,
-        "minSpeed": -14,
-        "maxSpeed": 21,
+        "minSpeed": -14, 
+        "maxSpeed": 25,
         "steerSpeed": 1.5,
         "grip": 0.3
       },
@@ -126,19 +126,19 @@
         "lapAudio": "audio/lapComplete.mp3"
       },
       "models": {
-        "car": "models/cars/car3/car.glb",
-        "carCollider": "models/cars/car3/carCollider.glb",
-        "leftWheel": "models/cars/car3/wheel_left.glb",
-        "rightWheel": "models/cars/car3/wheel_right.glb",
-        "steeringWheel": "models/cars/car3/steering_wheel.glb",
-        "brakeLights": "models/cars/car3/brakeLights.glb",
-        "dashboard": "models/cars/car3/dashboard.glb"
+        "car": "models/cars/car1/car.glb",
+        "carCollider": "models/cars/car1/carCollider.glb",
+        "leftWheel": "models/cars/car1/wheel_left.glb",
+        "rightWheel": "models/cars/car1/wheel_right.glb",
+        "steeringWheel": "models/cars/car1/steering_wheel.glb",
+        "brakeLights": "models/cars/car1/brakeLights.glb",
+        "dashboard": "models/cars/car1/dashboard.glb"
       },
       "images": {
-        "carIcon": "images/ui/selectionUI/car3.png"
+        "carIcon": "images/ui/selectionUI/car1.png"
       },
       "positions": {
-        "dashboardPosition": "1.25,0.2,0.065",
+        "dashboardPosition": "1.2,0.14,0.065",
         "steeringWheelPosition": "0.80,0.17,0.57",
         "wheelX_L": 1,
         "wheelX_R": 1,

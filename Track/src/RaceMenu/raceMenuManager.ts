@@ -75,7 +75,7 @@ export class RaceMenuManager {
     }
 
     private initialiseMinimaps(): void {
-        this.minimap1 = engine.addEntity()
+        this.minimap1 = engine.addEntity() 
         Transform.create(this.minimap1, {
             parent: this.basePodium
         })
@@ -164,7 +164,6 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.5, 2.85),
             src: "models/selection/track1.glb",
             srcSelected: "models/selection/track1_selected.glb",
-            srcLock: "models/selection/track1_lock.glb",
             srcWhiteCup: "models/selection/track1_whitecup.glb",
             srcGoldCup: "models/selection/track1_goldcup.glb",
             startSelected: true,
@@ -225,6 +224,7 @@ export class RaceMenuManager {
     }
 
     private initialiseCarMenu(): void {
+
         this.carButton1 = new MenuButton({
             parent: this.basePodium,
             position: Vector3.create(-3.92, 2.58, -5.9),
@@ -232,7 +232,6 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.5, 3.55),
             src: "models/selection/car1b.glb",
             srcSelected: "models/selection/car1b_selected.glb",
-            srcLock: "models/selection/car1b_lock.glb",
             startSelected: true,
             onSelectCallback: (() => {
                 this.deselectAllCars()
@@ -244,20 +243,20 @@ export class RaceMenuManager {
             parent: this.basePodium,
             position: Vector3.create(-3.92, 1.92, -5.9),
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
-            scale: Vector3.create(0.1, 0.5, 3.55),
+            scale: Vector3.create(0.1, 0.5, 3.55), 
             src: "models/selection/car2b.glb",
-            srcSelected: "models/selection/car2b_selected.glb",
+            srcSelected: "models/selection/car2b_selected.glb", 
             srcLock: "models/selection/car2b_lock.glb",
             startLocked: true,
             onSelectCallback: (() => {
-                this.deselectAllCars()
-                this.selectCar(1)
+                this.deselectAllCars() 
+                this.selectCar(1) 
             }).bind(this)
         })
-
+ 
         this.carButton3 = new MenuButton({
             parent: this.basePodium,
-            position: Vector3.create(-3.92, 1.26, -5.9),
+            position: Vector3.create(-3.92, 1.26, -5.9), 
             rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
             scale: Vector3.create(0.1, 0.5, 3.55),
             src: "models/selection/car3b.glb",
@@ -269,6 +268,8 @@ export class RaceMenuManager {
                 this.selectCar(2)
             }).bind(this)
         })
+
+
     }
 
     private initialiseRaceMenu(): void {
@@ -283,7 +284,7 @@ export class RaceMenuManager {
     }
 
     private initialiseCars(): void {
-        this.carChoices.push(new CarChoice(0, "models/selection/car1.glb", {
+        this.carChoices.push(new CarChoice(0, "models/selection/car3.glb", {
             parent: this.carContainer,
             position: Vector3.create(0, 0.4, 0),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -297,7 +298,7 @@ export class RaceMenuManager {
             scale: Vector3.create(0.95, 0.95, 0.95)
         }))
 
-        this.carChoices.push(new CarChoice(2, "models/selection/car3.glb", {
+        this.carChoices.push(new CarChoice(2, "models/selection/car1.glb", {
             parent: this.carContainer,
             position: Vector3.create(0, 0.4, 0),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -340,6 +341,7 @@ export class RaceMenuManager {
         RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
         RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
         CarPerspectives.enterCar(Car.instances[0].data)
+        this.raceButton.deselect()
     }
 
     static LoadTrack(_trackNumber: number) {
@@ -399,23 +401,5 @@ export class RaceMenuManager {
         RaceMenuManager.instance.carChoices.forEach(car => {
             car.hide()
         });
-    }
-
-    static loadNextCar(): void {
-        this.instance.currentCarIndex++
-        if (this.instance.currentCarIndex > this.instance.carChoices.length - 1) {
-            this.instance.currentCarIndex = 0
-        }
-        RaceMenuManager.hideAllCars()
-        RaceMenuManager.instance.carChoices[this.instance.currentCarIndex].show()
-    }
-
-    static loadPreviousCar(): void {
-        this.instance.currentCarIndex--
-        if (this.instance.currentCarIndex < 0) {
-            this.instance.currentCarIndex = this.instance.carChoices.length - 1
-        }
-        RaceMenuManager.hideAllCars()
-        RaceMenuManager.instance.carChoices[this.instance.currentCarIndex].show()
     }
 }
