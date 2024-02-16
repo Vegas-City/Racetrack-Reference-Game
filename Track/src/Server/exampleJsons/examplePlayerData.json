@@ -36,7 +36,7 @@
             "guid": "7e3dc3e9-b96a-458c-933d-25ee72789946"
           }
         ],
-        "pb": 5000,
+        "pb": 65000,
         "name": "Track 2",
         "targetTimeToUnlockNextTrack": 60000,
         "checkpoints": 1,

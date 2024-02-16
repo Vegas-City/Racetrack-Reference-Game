@@ -165,6 +165,7 @@ export class MenuButton {
         if (!this.locked) return
 
         this.locked = false
+        this.qualified = false
         if (this.lockIcon) {
             Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
         }

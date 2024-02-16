@@ -15,7 +15,7 @@ import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
 
 export class ServerComms {
-    private static readonly TEST_MODE: boolean = true
+    private static readonly TEST_MODE: boolean = false
 
     static player: PlayerData
     static leaderboard: LeaderboardData

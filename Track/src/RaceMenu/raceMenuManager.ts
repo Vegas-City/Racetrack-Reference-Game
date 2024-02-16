@@ -363,6 +363,7 @@ export class RaceMenuManager {
 
         RaceMenuManager.instance.trackButton2.lock()
         RaceMenuManager.instance.trackButton3.lock()
+        RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
         ServerComms.player.tracks.forEach(track => {
@@ -379,6 +380,21 @@ export class RaceMenuManager {
                     }
                 }
             })
+
+            if (track.pb < track.targetTimeToUnlockNextTrack) {
+                if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
+                    RaceMenuManager.instance.trackButton1.setQualified()
+                }
+                else if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
+                    RaceMenuManager.instance.trackButton2.setQualified()
+                }
+                else if (track.guid == "ec2a8c30-678a-4d07-b56e-7505ce8f941a") {
+                    RaceMenuManager.instance.trackButton3.setQualified()
+                }
+                else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
+                    // TODO once we have the 4th track button
+                }
+            }
         })
 
         if (RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked
