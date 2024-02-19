@@ -1,4 +1,4 @@
-import { GhostData } from "@vegascity/racetrack/src/ghostCar"
+import { GhostData, GhostRecorder } from "@vegascity/racetrack/src/ghostCar"
 import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
@@ -36,7 +36,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `http://localhost:8080`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -165,7 +165,8 @@ export class ServerComms {
             }).then(async response => await JSON.parse(response.body)).then(
                 data => {
                     if(data.data == "no data"){
-                        // Do nothing, no ghost to show
+                        // No data to show so clear any previous ghosts
+                        GhostRecorder.instance.clearGhostData()
                         console.log(data)
                     } else {
                         // Load ghost data
@@ -174,7 +175,7 @@ export class ServerComms {
 
                         //use this for the data
                         console.log(trackJs)
-                        debugger
+                        GhostRecorder.instance.setGhostDataFromServer(trackJs,data.trackId)
                     }
                     console.log("Returning Data: " + data)
                 }
@@ -201,7 +202,7 @@ export class ServerComms {
                             carID: _data.car,
                             createDate: _data.createDate,
                             duration: _data.duration,
-                            frequency: _data.frequecy,
+                            frequency: _data.frequency,
                             points: _data.getPointJSON()
                         })
                     })

@@ -43,6 +43,8 @@ export class Scene {
 
                     // Load ghost from the server if we don't have a ghost for this track
                     ServerComms.getGhostCarData()
+
+                    TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
                     EventUI.triggerEndEvent()
