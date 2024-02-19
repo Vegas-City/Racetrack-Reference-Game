@@ -36,7 +36,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `https://uat.vegascity.live/services/racetrack`
+                return `http://localhost:8080`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -166,13 +166,14 @@ export class ServerComms {
                 data => {
                     if(data.data == "no data"){
                         // Do nothing, no ghost to show
-                        debugger
-                        console.log("Returning Data: " + data)
-                        debugger
+                        console.log(data)
                     } else {
-                        debugger
                         // Load ghost data
-                        console.log("Returning Data: " + data)
+                        console.log(data)
+                        let trackJs = JSON.parse(data.ghostJson)
+
+                        //use this for the data
+                        console.log(trackJs)
                         debugger
                     }
                     console.log("Returning Data: " + data)
@@ -195,7 +196,7 @@ export class ServerComms {
                     method: 'POST',
                     body: JSON.stringify({
                         userId: publicKey,
-                        trackId: _data.track,
+                        trackId: ServerComms.currentTrack,
                         ghostJson: JSON.stringify({
                             carID: _data.car,
                             createDate: _data.createDate,
