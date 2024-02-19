@@ -50,10 +50,7 @@ export class ShopController {
         })
 
         MeshCollider.setCylinder(collider)
-        GltfContainer.create(plinth, {
-            src: "models/AIFairShopDispenser.glb"
-        })
-
+        
         const linkEntity = engine.addEntity()
         Transform.create(linkEntity, {
             parent: plinth,
@@ -68,7 +65,7 @@ export class ShopController {
 
         pointerEventsSystem.onPointerDown({
             entity: collider,
-            opts: { button: InputAction.IA_POINTER, hoverText: `BUY`, maxDistance: 10 }
+            opts: { button: InputAction.IA_POINTER, hoverText: `BUY: ` + data.id, maxDistance: 10 }
         }, () => {
             shopUI.show(data)
         })
