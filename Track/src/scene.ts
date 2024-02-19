@@ -92,7 +92,7 @@ export class Scene {
 
         new NPCManager()
 
-        new RaceMenuManager(Vector3.create(8, 0.9, 5))
+        new RaceMenuManager(Vector3.create(8, 0.9, 2))
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
