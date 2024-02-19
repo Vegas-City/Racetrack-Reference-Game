@@ -3,28 +3,43 @@ import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
-import { CarData } from "./types/carData"
 import { TrackData } from "./types/trackData"
+import { PlayerData } from "./types/playerData"
+import { LeaderboardData } from "./types/leaderboardData"
+import { LeaderboardUI } from "../UI/leaderboardUI"
+import { TimeUI } from "@vegascity/racetrack/src/ui/timeUI"
+import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
+import * as utils from '@dcl-sdk/utils'
+import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
+import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
 
 export class ServerComms {
-    private static readonly TEST_MODE: boolean = true
+    private static readonly TEST_MODE: boolean = false
+
+    static player: PlayerData
+    static leaderboard: LeaderboardData
+    static currentTrack: string
+    static currentCar: string
 
     constructor() {
         console.log("SERVER COMMS")
         console.log("SC : " + UserData.cachedData?.displayName)
         console.log("SC : " + UserData.cachedData?.publicKey)
-        ServerComms.getLeaderboardData()
-        ServerComms.getPlayerData()
+
+        utils.timers.setTimeout(() => {
+            ServerComms.getLeaderboardData()
+            ServerComms.getPlayerData()
+        }, 2000)
     }
 
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `http://localhost:8080`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Test:
-                return `https://racetrackuat.vegascity.cloud`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
-                return `https://racetrack.vegascity.cloud`
+                return `https://uat.vegascity.live/services/racetrack`
             default:
                 throw Error("Live server URL is not defined")
         }
@@ -56,58 +71,86 @@ export class ServerComms {
     }
 
     public static getLeaderboardData() {
-        try {
-            signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/leaderboard",
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'GET'
-                }
-            }).then(async response => await JSON.parse(response.body)).then(
-                data => {
-                    console.log(data.result)
-                }
+        if (ServerComms.TEST_MODE) {
+            ServerComms.leaderboard = Object.assign(new LeaderboardData(), JSON.parse(JSON.stringify(exampleLeaderboardData)))
+            LeaderboardUI.update()
+        }
+        else {
+            try {
+                signedFetch({
+                    url: this.getServerUrl() + "/api/racetrack/leaderboard",
+                    init: {
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET'
+                    }
+                }).then(async response => await JSON.parse(response.body)).then(
+                    data => {
+                        ServerComms.leaderboard = Object.assign(new LeaderboardData(), data)
+                        LeaderboardUI.update()
+                    }
 
-            )
-        } catch (ex) {
-            console.log("Error getting leaderboard data: " + ex)
+                )
+            } catch (ex) {
+                console.log("Error getting leaderboard data: " + ex)
+            }
         }
     }
 
-    public static getPlayerData() {
-        try {
-            signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'GET'
-                }
-            }).then(async response => await JSON.parse(response.body)).then(
-                data => {
-                    console.log(data.result)
-                }
+    public static async getPlayerData() {
+        if (ServerComms.TEST_MODE) {
+            ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
+            RaceMenuManager.update()
+        }
+        else {
+            try {
+                let response = await signedFetch({
+                    url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
+                    init: {
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET'
+                    }
+                }).then(async response => await JSON.parse(response.body)).then(
+                    data => {
+                        console.log(data.result)
+                        ServerComms.player = Object.assign(new PlayerData(), data.result)
+                        RaceMenuManager.update()
+                    }
 
-            )
-        } catch (ex) {
-            console.log("Error getting player data: " + ex)
+                )
+            } catch (ex) {
+                console.log("Error getting player data: " + ex)
+            }
         }
     }
 
-    public static async makePurchase(_data: CarData) {
-        try {
-            let response = await signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/purchase",
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'POST',
-                    body: JSON.stringify({
-                        guid: _data.guid
-                    })
-                }
+    static async canClaimWearable(_wearableId:number):Promise<any>{
+        let player = UserData.cachedData
+
+        return await signedFetch({
+            url:this.getServerUrl() + "/api/missions/canspend",
+            init: {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({
+                user: player.publicKey || "GUEST_" + player.userId,
+                wearableId: _wearableId,
             })
-        } catch (ex) {
-            console.log("Error make purchase: " + ex)
-        }
+        }})
+    }
+
+    static async claimWearable(_wearableId:number){
+        let player = UserData.cachedData
+
+        let response = await signedFetch({
+            url: this.getServerUrl() + "/api/missions/spend", 
+            init:{
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({
+                user: player.publicKey || "GUEST_" + player.userId,
+                wearableId: _wearableId,
+            })
+        }})
     }
 
     public static getGhostCarData(_data: TrackData) {
@@ -120,7 +163,7 @@ export class ServerComms {
                 }
             }).then(async response => await JSON.parse(response.body)).then(
                 data => {
-                    console.log(data.result)
+                    console.log("Returning Data: " + data)
                 }
 
             )
@@ -131,7 +174,7 @@ export class ServerComms {
 
     public static async sendGhostCarData(_data: GhostData) {
         let publicKey = UserData.cachedData.publicKey || "GUEST_" + UserData.cachedData.userId
-        
+
         try {
             let response = await signedFetch({
                 url: this.getServerUrl() + "/api/racetrack/ghostcardata",
@@ -154,5 +197,15 @@ export class ServerComms {
         } catch (ex) {
             console.log("Error saving ghost data: " + ex)
         }
+    }
+
+    public static setTrack(guid: string) {
+        ServerComms.getPlayerData().then(() => {
+            ServerComms.currentTrack = guid
+            let track = ServerComms.player.tracks.find(track => track.guid === guid)
+            console.log(track)
+            let bool = track.pb == 0
+            TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+        })
     }
 }
