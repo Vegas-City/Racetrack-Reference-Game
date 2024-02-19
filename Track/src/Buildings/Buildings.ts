@@ -14,11 +14,8 @@ export class Buildings {
             rotation: Quaternion.fromEulerDegrees(0,180,0)
         })
 
-        let tribunes:Building = new Building("models/buildings/Tribunes.glb")
-        let bridge:Building = new Building("models/buildings/Bridges.glb")
+        let stadium:Building = new Building("models/buildings/Stadium.glb")
         let tower:Building = new Building("models/buildings/Tower.glb")
-        let pitstops:Building = new Building("models/buildings/Pitstops.glb")
-        let entranceFloor:Building = new Building("models/buildings/EntranceFloor.glb")
     }
 }
 
