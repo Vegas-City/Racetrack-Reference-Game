@@ -40,6 +40,9 @@ export class Scene {
                         checkpoint: 0,
                         time: 0
                     })
+
+                    // Load ghost from the server if we don't have a ghost for this track
+                    ServerComms.getGhostCarData()
                 },
                 onEndEvent: () => {
                     EventUI.triggerEndEvent()

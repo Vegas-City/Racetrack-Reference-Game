@@ -12,6 +12,7 @@ import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
 import * as utils from '@dcl-sdk/utils'
 import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
+import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -153,16 +154,27 @@ export class ServerComms {
         }})
     }
 
-    public static getGhostCarData(_data: TrackData) {
+    public static getGhostCarData() {
         try {
             signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/ghostcardata?trackId=" + _data.guid,
+                url: this.getServerUrl() + "/api/racetrack/ghostcardata?trackId=" + ServerComms.currentTrack,
                 init: {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'GET'
                 }
             }).then(async response => await JSON.parse(response.body)).then(
                 data => {
+                    if(data.data == "no data"){
+                        // Do nothing, no ghost to show
+                        debugger
+                        console.log("Returning Data: " + data)
+                        debugger
+                    } else {
+                        debugger
+                        // Load ghost data
+                        console.log("Returning Data: " + data)
+                        debugger
+                    }
                     console.log("Returning Data: " + data)
                 }
 
