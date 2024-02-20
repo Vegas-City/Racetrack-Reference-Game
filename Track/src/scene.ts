@@ -14,6 +14,7 @@ import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
 import * as utils from '@dcl-sdk/utils'
 import { NPCManager } from './NPCs/NPCManager'
+import { AvatarVisibilityManager } from './avatarVisibilityManager'
 
 export class Scene {
 
@@ -158,6 +159,8 @@ export class Scene {
                 ]
             ]
         })
+
+        new AvatarVisibilityManager()
         
         Scene.loaded = true
     }
