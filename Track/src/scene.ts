@@ -13,6 +13,7 @@ import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
 import * as utils from '@dcl-sdk/utils'
+import { NPCManager } from './NPCs/NPCManager'
 
 export class Scene {
 
@@ -39,6 +40,11 @@ export class Scene {
                         checkpoint: 0,
                         time: 0
                     })
+
+                    // Load ghost from the server if we don't have a ghost for this track
+                    ServerComms.getGhostCarData()
+
+                    TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
                     EventUI.triggerEndEvent()
@@ -89,7 +95,9 @@ export class Scene {
         new PhysicsManager()
         RaceMenuManager.LoadTrack(0) // load practice track by default
 
-        new RaceMenuManager(Vector3.create(8, 0.9, 5))
+        new NPCManager()
+
+        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],

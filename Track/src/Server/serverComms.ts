@@ -1,4 +1,4 @@
-import { GhostData } from "@vegascity/racetrack/src/ghostCar"
+import { GhostData, GhostRecorder } from "@vegascity/racetrack/src/ghostCar"
 import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
@@ -12,6 +12,7 @@ import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
 import * as utils from '@dcl-sdk/utils'
 import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
+import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -153,16 +154,29 @@ export class ServerComms {
         }})
     }
 
-    public static getGhostCarData(_data: TrackData) {
+    public static getGhostCarData() {
         try {
             signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/ghostcardata?trackId=" + _data.guid,
+                url: this.getServerUrl() + "/api/racetrack/ghostcardata?trackId=" + ServerComms.currentTrack,
                 init: {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'GET'
                 }
             }).then(async response => await JSON.parse(response.body)).then(
                 data => {
+                    if(data.data == "no data"){
+                        // No data to show so clear any previous ghosts
+                        GhostRecorder.instance.clearGhostData()
+                        console.log(data)
+                    } else {
+                        // Load ghost data
+                        console.log(data)
+                        let trackJs = JSON.parse(data.ghostJson)
+
+                        //use this for the data
+                        console.log(trackJs)
+                        GhostRecorder.instance.setGhostDataFromServer(trackJs,data.trackId)
+                    }
                     console.log("Returning Data: " + data)
                 }
 
@@ -183,12 +197,12 @@ export class ServerComms {
                     method: 'POST',
                     body: JSON.stringify({
                         userId: publicKey,
-                        trackId: _data.track,
+                        trackId: ServerComms.currentTrack,
                         ghostJson: JSON.stringify({
                             carID: _data.car,
                             createDate: _data.createDate,
                             duration: _data.duration,
-                            frequency: _data.frequecy,
+                            frequency: _data.frequency,
                             points: _data.getPointJSON()
                         })
                     })

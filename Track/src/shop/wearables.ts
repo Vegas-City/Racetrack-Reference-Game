@@ -65,11 +65,11 @@ let wearables = {
 
 
 export const wearable_boxes = {
-    helmet: { position: { x: 90, y: 1  , z: -6 }, rotation: { x: 0, y: 0, z: 0 }, scale: 1.5 },
-    upperBody: { position: { x: 90, y: 1, z: -9 }, rotation: { x: 0, y: 0, z: 0 }, scale: 1.5 },
-    lowerBody: { position: { x: 85, y: 1, z: -6 }, rotation: { x: 0, y: 0, z: 0 }, scale: 2 },
-    gloves: { position: { x: 80, y: 1, z: -6 }, rotation: { x: 0, y: 0, z: 0 }, scale: 2 },
-    boots: { position: { x: 80, y: 1, z: -9 }, rotation: { x: 0, y: 0, z: 0 }, scale: 2.5 }
+    helmet: { position: { x: 98.8, y: 1  , z: -10.4 }, rotation: { x: 0, y: 0, z: 0 }, scale: 1.5 },
+    upperBody: { position: { x: 93.9, y: 1, z: -10.4 }, rotation: { x: 0, y: 0, z: 0 }, scale: 1.5 },
+    lowerBody: { position: { x: 91.4 , y: 1, z:-10.4 }, rotation: { x: 0, y: 0, z: 0 }, scale: 2 },
+    gloves: { position: { x: 96.4, y: 1, z: -10.4 }, rotation: { x: 0, y: 0, z: 0 }, scale: 2 },
+    boots: { position: { x: 88.9, y: 1, z: -10.4 }, rotation: { x: 0, y: 0, z: 0 }, scale: 2.5 }
 }
 
 export function setWearableData(

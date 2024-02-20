@@ -307,45 +307,9 @@ class ExportGLBOperator(bpy.types.Operator):
     
     # main method
     def execute(self, context):
-        
-        # find the glb collection and make it active
-        has_collection = False
-        for layer_collection in context.view_layer.layer_collection.children:
-            if (layer_collection.name.lower() == "glb"):
-                context.view_layer.active_layer_collection = layer_collection
-                has_collection = True
-        if not has_collection:
-            print("No GLB collection could be found to export")
-            self.report({'ERROR'}, "No GLB collection could be found to export")
-        
-        # construct an output filepath based on the current blender file
-        filepath = bpy.data.filepath.split("\\")
-        output_path = ""
-        for i in range(len(filepath) - 2):
-            output_path += filepath[i] + "\\"
-        output_path += "Blender\\models\\tracks\\"
-        
-        # construct the filename
-        filename = context.scene.track_name + ".glb"
-        output_path += filename
-        
-        # export the glb collection as the visual mesh and avatar collider
-        print("EXPORTING GLB")
-        print(output_path)
-        self.report({'INFO'}, "Exported GLB to " + output_path)
-        bpy.ops.export_scene.gltf(
-            filepath = output_path,
-            check_existing = False,
-            export_format = "GLB",
-            export_apply = True,
-            export_cameras = False,
-            use_selection = False,
-            use_visible = False,
-            use_renderable = False,
-            use_active_collection = True,
-            will_save_settings = False
-        )
-                
+        export_glb(self, context, "glb")
+        export_glb(self, context, "avatar_colliders")
+
         # report success
         return {'FINISHED'}
     
@@ -405,6 +369,48 @@ def unregister():
 # register all custom tool panels automatically as long as we're not just a dependency        
 if __name__ == '__main__':
     register()
+
+def export_glb(self, context, col):
+    # find the glb collection and make it active
+    has_collection = False
+    for layer_collection in context.view_layer.layer_collection.children:
+        if (layer_collection.name.lower() == col):
+            context.view_layer.active_layer_collection = layer_collection
+            has_collection = True
+    if not has_collection:
+        print("No GLB collection could be found to export")
+        self.report({'ERROR'}, "No GLB collection could be found to export")
+        
+    # construct an output filepath based on the current blender file
+    filepath = bpy.data.filepath.split("\\")
+    output_path = ""
+    for i in range(len(filepath) - 2):
+        output_path += filepath[i] + "\\"
+    output_path += "Blender\\models\\tracks\\"
+    
+    # construct the filename
+    filename = context.scene.track_name
+    if (col == "avatar_colliders"):
+        filename += "_collider"
+
+    output_path += filename + ".glb"
+    
+    # export the glb collection as the visual mesh and avatar collider
+    print("EXPORTING GLB")
+    print(output_path)
+    self.report({'INFO'}, "Exported GLB to " + output_path)
+    bpy.ops.export_scene.gltf(
+        filepath = output_path,
+        check_existing = False,
+        export_format = "GLB",
+        export_apply = True,
+        export_cameras = False,
+        use_selection = False,
+        use_visible = False,
+        use_renderable = False,
+        use_active_collection = True,
+        will_save_settings = False
+    )
 
 def sort_radial_sweep(vs, indices):
     """
