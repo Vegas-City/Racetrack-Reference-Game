@@ -14,7 +14,7 @@ export class GuideNPC {
         // NPC
         this.guideNPC = npc.create(
             {
-                position: Vector3.create(0.4, 1, 4.74),
+                position: Vector3.create(9.5, 1, 3.74),
                 rotation: Quaternion.fromEulerDegrees(0,180,0),
                 scale: Vector3.create(1, 1, 1),
             },
@@ -29,7 +29,7 @@ export class GuideNPC {
                     console.log('test on walk away function')
                 },
                 faceUser: true,
-                reactDistance: 3,
+                reactDistance: 2,
                 idleAnim: 'idle1',
                 walkingAnim: 'walk1',
                 hoverText: 'Talk',
@@ -43,11 +43,8 @@ export class GuideNPC {
         this.guideDialog = [
             {
                 text: "Hi, I'll guide you on how to race",
-                isEndOfDialog: false
-            },{
-                text: "When we find time to write me some dialogue",
                 isEndOfDialog: true
-            },
+            }
         ]
     }
 }
