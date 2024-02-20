@@ -24,14 +24,16 @@ export class EntranceNPC {
                 model: 'models/npcs/EntranceNPC.glb',
                 onActivate: () => {
                     npc.talk(this.entranceNPC, this.entranceDialog)
+                    npc.playAnimation(this.entranceNPC,"Talk")
                 },
                 onWalkAway: () => { 
                     console.log('test on walk away function')
+                    npc.playAnimation(this.entranceNPC,"Idle")
                 },
                 faceUser: true,
                 reactDistance: 3,
-                idleAnim: 'idle1',
-                walkingAnim: 'walk1',
+                idleAnim: 'Idle',
+                walkingAnim: 'Walk',
                 hoverText: 'Talk',
                 continueOnWalkAway: true,
                 onlyClickTrigger: false,
