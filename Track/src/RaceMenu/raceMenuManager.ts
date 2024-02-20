@@ -16,8 +16,7 @@ import * as carConfiguration from "./carConfiguration.json"
 export class RaceMenuManager {
     static instance: RaceMenuManager
 
-    basePodium: Entity
-    carPodium: Entity
+    baseEntity: Entity
     carContainer: Entity
     podiumSpinSpeed: number = 10
     podiumRotation: number = 0
@@ -30,6 +29,8 @@ export class RaceMenuManager {
 
     practiceButton: MenuButton
     competitionButton: MenuButton
+    practiceIcon: Entity
+    competitionIcon: Entity
 
     trackButton1: MenuButton
     trackButton2: MenuButton
@@ -48,23 +49,18 @@ export class RaceMenuManager {
     minimap4: Entity
 
     constructor(_position: Vector3) {
-        this.basePodium = engine.addEntity()
-        Transform.create(this.basePodium, {
+        this.baseEntity = engine.addEntity()
+        Transform.create(this.baseEntity, {
             position: _position,
-            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.8, 0.8, 0.8)
+            rotation: Quaternion.fromEulerDegrees(0, 180, 0)
         })
-        GltfContainer.create(this.basePodium, { src: "models/selection/baseBig.glb" })
-
-        this.carPodium = engine.addEntity()
-        Transform.create(this.carPodium, {
-            parent: this.basePodium
-        })
-        GltfContainer.create(this.carPodium, { src: "models/selection/baseSmall.glb" })
 
         this.carContainer = engine.addEntity()
         Transform.create(this.carContainer, {
-            parent: this.basePodium
+            parent: this.baseEntity,
+            position: Vector3.create(-2.4, 1.2, -0.4),
+            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
+            scale: Vector3.create(0.36, 0.36, 0.36)
         })
 
         this.initialiseMinimaps()
@@ -79,27 +75,27 @@ export class RaceMenuManager {
     private initialiseMinimaps(): void {
         this.minimap1 = engine.addEntity()
         Transform.create(this.minimap1, {
-            parent: this.basePodium
+            parent: this.baseEntity
         })
         GltfContainer.create(this.minimap1, { src: "models/selection/minimap1.glb" })
 
         this.minimap2 = engine.addEntity()
         Transform.create(this.minimap2, {
-            parent: this.basePodium,
+            parent: this.baseEntity,
             scale: Vector3.Zero()
         })
         GltfContainer.create(this.minimap2, { src: "models/selection/minimap2.glb" })
 
         this.minimap3 = engine.addEntity()
         Transform.create(this.minimap3, {
-            parent: this.basePodium,
+            parent: this.baseEntity,
             scale: Vector3.Zero()
         })
         GltfContainer.create(this.minimap3, { src: "models/selection/minimap3.glb" })
 
         this.minimap4 = engine.addEntity()
         Transform.create(this.minimap4, {
-            parent: this.basePodium,
+            parent: this.baseEntity,
             scale: Vector3.Zero()
         })
         GltfContainer.create(this.minimap4, { src: "models/selection/minimap4.glb" })
@@ -108,7 +104,7 @@ export class RaceMenuManager {
     private initialiseMenu(): void {
         this.menuTitles = engine.addEntity()
         Transform.create(this.menuTitles, {
-            parent: this.basePodium
+            parent: this.baseEntity
         })
         GltfContainer.create(this.menuTitles, { src: "models/selection/menuTitles.glb" })
 
@@ -119,11 +115,28 @@ export class RaceMenuManager {
     }
 
     private initialiseGameModeMenu(): void {
+        this.practiceIcon = engine.addEntity()
+        Transform.create(this.practiceIcon, {
+            parent: this.baseEntity
+        })
+        GltfContainer.create(this.practiceIcon, {
+            src: "models/selection/practice_icon.glb"
+        })
+
+        this.competitionIcon = engine.addEntity()
+        Transform.create(this.competitionIcon, {
+            parent: this.baseEntity,
+            scale: Vector3.Zero()
+        })
+        GltfContainer.create(this.competitionIcon, {
+            src: "models/selection/competition_icon.glb"
+        })
+
         this.practiceButton = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(5.05, 2.58, -4.8),
-            rotation: Quaternion.fromEulerDegrees(0, 43, 0),
-            scale: Vector3.create(0.1, 0.5, 3.8),
+            parent: this.baseEntity,
+            position: Vector3.create(8.72, 6.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/practice.glb",
             srcSelected: "models/selection/practice_selected.glb",
             startSelected: true,
@@ -134,14 +147,16 @@ export class RaceMenuManager {
                 this.trackButton3.hide()
                 this.trackButton4.hide()
                 this.trackButton1.select()
+                Transform.getMutable(this.practiceIcon).scale = Vector3.One()
+                Transform.getMutable(this.competitionIcon).scale = Vector3.Zero()
             }).bind(this)
         })
 
         this.competitionButton = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(5.05, 1.92, -4.8),
-            rotation: Quaternion.fromEulerDegrees(0, 43, 0),
-            scale: Vector3.create(0.1, 0.5, 3.8),
+            parent: this.baseEntity,
+            position: Vector3.create(8.72, 5.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/competition.glb",
             srcSelected: "models/selection/competition_selected.glb",
             deselectAllCallback: this.deselectAllGameModes.bind(this),
@@ -150,16 +165,18 @@ export class RaceMenuManager {
                 this.trackButton2.show()
                 this.trackButton3.show()
                 this.trackButton4.show()
+                Transform.getMutable(this.practiceIcon).scale = Vector3.Zero()
+                Transform.getMutable(this.competitionIcon).scale = Vector3.One()
             }).bind(this)
         })
     }
 
     private initialiseTrackMenu(): void {
         this.trackButton1 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(1.7, 2.58, -6.9),
-            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
-            scale: Vector3.create(0.1, 0.5, 2.85),
+            parent: this.baseEntity,
+            position: Vector3.create(3.12, 6.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/track1.glb",
             srcSelected: "models/selection/track1_selected.glb",
             srcWhiteCup: "models/selection/track1_whitecup.glb",
@@ -176,10 +193,10 @@ export class RaceMenuManager {
         })
 
         this.trackButton2 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(1.7, 1.92, -6.9),
-            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
-            scale: Vector3.create(0.1, 0.5, 2.85),
+            parent: this.baseEntity,
+            position: Vector3.create(3.12, 5.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/track2.glb",
             srcSelected: "models/selection/track2_selected.glb",
             srcLock: "models/selection/track2_lock.glb",
@@ -197,10 +214,10 @@ export class RaceMenuManager {
         })
 
         this.trackButton3 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(1.7, 1.26, -6.9),
-            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
-            scale: Vector3.create(0.1, 0.5, 2.85),
+            parent: this.baseEntity,
+            position: Vector3.create(3.12, 4.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/track3.glb",
             srcSelected: "models/selection/track3_selected.glb",
             srcLock: "models/selection/track3_lock.glb",
@@ -218,10 +235,10 @@ export class RaceMenuManager {
         })
 
         this.trackButton4 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(1.7, 0.6, -6.9),
-            rotation: Quaternion.fromEulerDegrees(0, 76, 0),
-            scale: Vector3.create(0.1, 0.5, 2.85),
+            parent: this.baseEntity,
+            position: Vector3.create(3.12, 3.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/track4.glb",
             srcSelected: "models/selection/track4_selected.glb",
             srcLock: "models/selection/track4_lock.glb",
@@ -246,10 +263,10 @@ export class RaceMenuManager {
     private initialiseCarMenu(): void {
 
         this.carButton1 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(-3.92, 2.58, -5.9),
-            rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
-            scale: Vector3.create(0.1, 0.5, 3.55),
+            parent: this.baseEntity,
+            position: Vector3.create(-2.47, 6.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/car1b.glb",
             srcSelected: "models/selection/car1b_selected.glb",
             startSelected: true,
@@ -261,10 +278,10 @@ export class RaceMenuManager {
         })
 
         this.carButton2 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(-3.92, 1.92, -5.9),
-            rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
-            scale: Vector3.create(0.1, 0.5, 3.55),
+            parent: this.baseEntity,
+            position: Vector3.create(-2.47, 5.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb",
             srcLock: "models/selection/car2b_lock.glb",
@@ -277,10 +294,10 @@ export class RaceMenuManager {
         })
 
         this.carButton3 = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(-3.92, 1.26, -5.9),
-            rotation: Quaternion.fromEulerDegrees(0, 123.8, 0),
-            scale: Vector3.create(0.1, 0.5, 3.55),
+            parent: this.baseEntity,
+            position: Vector3.create(-2.47, 4.2, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/car3b_lock.glb",
@@ -295,10 +312,10 @@ export class RaceMenuManager {
 
     private initialiseRaceMenu(): void {
         this.raceButton = new MenuButton({
-            parent: this.basePodium,
-            position: Vector3.create(-6.55, 2.25, -2.7),
-            rotation: Quaternion.fromEulerDegrees(0, 157.5, 0),
-            scale: Vector3.create(0.1, 1.18, 3.55),
+            parent: this.baseEntity,
+            position: Vector3.create(-8.05, 5.7, -2.7),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(0.1, 1.7, 4.15),
             src: "models/selection/race.glb",
             onSelectCallback: this.startRace.bind(this)
         })
@@ -307,23 +324,23 @@ export class RaceMenuManager {
     private initialiseCars(): void {
         this.carChoices.push(new CarChoice(0, "models/selection/car3.glb", {
             parent: this.carContainer,
-            position: Vector3.create(0, 0.4, 0),
-            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.95, 0.95, 0.95)
+            position: Vector3.Zero(),
+            rotation: Quaternion.Identity(),
+            scale: Vector3.One()
         }))
 
         this.carChoices.push(new CarChoice(1, "models/selection/car2.glb", {
             parent: this.carContainer,
-            position: Vector3.create(0, 0.4, 0),
-            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.95, 0.95, 0.95)
+            position: Vector3.Zero(),
+            rotation: Quaternion.Identity(),
+            scale: Vector3.One()
         }))
 
         this.carChoices.push(new CarChoice(2, "models/selection/car1.glb", {
             parent: this.carContainer,
-            position: Vector3.create(0, 0.4, 0),
-            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-            scale: Vector3.create(0.95, 0.95, 0.95)
+            position: Vector3.Zero(),
+            rotation: Quaternion.Identity(),
+            scale: Vector3.One()
         }))
 
         this.carChoices[0].show()

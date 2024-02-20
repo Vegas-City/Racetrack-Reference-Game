@@ -114,7 +114,8 @@ export class MenuButton {
                     entity: this.buttonEntity,
                     opts: {
                         button: InputAction.IA_POINTER,
-                        hoverText: 'Select'
+                        hoverText: 'Select',
+                        maxDistance: 20
                     }
                 },
                 function () {
@@ -182,7 +183,8 @@ export class MenuButton {
                 entity: this.buttonEntity,
                 opts: {
                     button: InputAction.IA_POINTER,
-                    hoverText: 'Select'
+                    hoverText: 'Select',
+                    maxDistance: 20
                 }
             },
             function () {
