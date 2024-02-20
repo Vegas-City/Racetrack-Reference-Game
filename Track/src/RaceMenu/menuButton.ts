@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, Transform, engine, pointerEventsSystem } from "@dcl/ecs";
+import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem, pointerEventsSystem } from "@dcl/ecs";
 import { Quaternion, Vector3 } from "@dcl/ecs-math";
 
 export type MenuConfig = {
@@ -22,9 +22,13 @@ export type MenuConfig = {
 export class MenuButton {
     private static readonly SHOW_BUTTON_MESH: boolean = false
 
+    animSpeed: number = 1.2
+    isScalingUp: boolean = false
+
     parentEntity: Entity
     buttonEntity: Entity
-    entity: Entity
+
+    entityUnselected: Entity
     entitySelected?: Entity
 
     lockIcon?: Entity
@@ -44,12 +48,13 @@ export class MenuButton {
 
         this.parentEntity = engine.addEntity()
         Transform.create(this.parentEntity, {
-            parent: _config.parent
+            parent: _config.parent,
+            position: _config.position
         })
 
         this.buttonEntity = engine.addEntity()
         Transform.create(this.buttonEntity, {
-            parent: this.parentEntity,
+            parent: _config.parent,
             position: _config.position,
             rotation: _config.rotation,
             scale: _config.scale
@@ -57,11 +62,11 @@ export class MenuButton {
         if (MenuButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
 
-        this.entity = engine.addEntity()
-        Transform.create(this.entity, {
+        this.entityUnselected = engine.addEntity()
+        Transform.create(this.entityUnselected, {
             parent: this.parentEntity,
         })
-        GltfContainer.create(this.entity, { src: _config.src })
+        GltfContainer.create(this.entityUnselected, { src: _config.src })
 
         if (_config.srcSelected) {
             this.entitySelected = engine.addEntity()
@@ -108,21 +113,62 @@ export class MenuButton {
         }
 
         if (!this.locked) {
-            const self = this
-            pointerEventsSystem.onPointerDown(
-                {
-                    entity: this.buttonEntity,
-                    opts: {
-                        button: InputAction.IA_POINTER,
-                        hoverText: 'Select',
-                        maxDistance: 20
+            PointerEvents.create(this.buttonEntity, {
+                pointerEvents: [
+                    {
+                        eventType: PointerEventType.PET_DOWN,
+                        eventInfo: {
+                            button: InputAction.IA_POINTER,
+                            hoverText: 'Select',
+                            maxDistance: 20
+                        }
+                    },
+                    {
+                        eventType: PointerEventType.PET_HOVER_ENTER,
+                        eventInfo: {
+                            button: InputAction.IA_POINTER,
+                            showFeedback: false,
+                            maxDistance: 20
+                        }
+                    },
+                    {
+                        eventType: PointerEventType.PET_HOVER_LEAVE,
+                        eventInfo: {
+                            button: InputAction.IA_POINTER,
+                            showFeedback: false,
+                            maxDistance: 20
+                        }
                     }
-                },
-                function () {
-                    self.select()
-                }
-            )
+                ]
+            })
         }
+
+        engine.addSystem((dt: number) => {
+            if (this.locked) return
+
+            if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_DOWN, this.buttonEntity)) {
+                this.select()
+            }
+
+            if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_ENTER, this.buttonEntity)) {
+                this.isScalingUp = true
+            }
+
+            if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_LEAVE, this.buttonEntity)) {
+                this.isScalingUp = false
+            }
+
+            let parentTransform = Transform.getMutable(this.parentEntity)
+            let currentScale = parentTransform.scale.x - 1
+            if (this.isScalingUp) {
+                let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
+                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+            }
+            else {
+                let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
+                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+            }
+        })
     }
 
     show(): void {
@@ -158,8 +204,6 @@ export class MenuButton {
         if (this.goldCup) {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
         }
-
-        pointerEventsSystem.removeOnPointerDown(this.buttonEntity)
     }
 
     unlock(): void {
@@ -176,21 +220,6 @@ export class MenuButton {
         if (this.goldCup) {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
         }
-
-        const self = this
-        pointerEventsSystem.onPointerDown(
-            {
-                entity: this.buttonEntity,
-                opts: {
-                    button: InputAction.IA_POINTER,
-                    hoverText: 'Select',
-                    maxDistance: 20
-                }
-            },
-            function () {
-                self.select()
-            }
-        )
     }
 
     setQualified(): void {
@@ -229,11 +258,11 @@ export class MenuButton {
 
         if (this.selected) {
             Transform.getMutable(this.entitySelected).scale = Vector3.One()
-            Transform.getMutable(this.entity).scale = Vector3.Zero()
+            Transform.getMutable(this.entityUnselected).scale = Vector3.Zero()
         }
         else {
             Transform.getMutable(this.entitySelected).scale = Vector3.Zero()
-            Transform.getMutable(this.entity).scale = Vector3.One()
+            Transform.getMutable(this.entityUnselected).scale = Vector3.One()
         }
     }
 }
