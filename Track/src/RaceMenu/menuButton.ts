@@ -38,6 +38,7 @@ export class MenuButton {
     selected: boolean = false
     locked: boolean = false
     qualified: boolean = false
+    hidden: boolean = false
 
     deselectAllCallback: Function = () => { }
     onSelectCallback: Function = () => { }
@@ -61,6 +62,26 @@ export class MenuButton {
         })
         if (MenuButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
+        PointerEvents.create(this.buttonEntity, {
+            pointerEvents: [
+                {
+                    eventType: PointerEventType.PET_HOVER_ENTER,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        showFeedback: false,
+                        maxDistance: 20
+                    }
+                },
+                {
+                    eventType: PointerEventType.PET_HOVER_LEAVE,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        showFeedback: false,
+                        maxDistance: 20
+                    }
+                }
+            ]
+        })
 
         this.entityUnselected = engine.addEntity()
         Transform.create(this.entityUnselected, {
@@ -112,39 +133,12 @@ export class MenuButton {
             this.lock()
         }
 
-        if (!this.locked) {
-            PointerEvents.create(this.buttonEntity, {
-                pointerEvents: [
-                    {
-                        eventType: PointerEventType.PET_DOWN,
-                        eventInfo: {
-                            button: InputAction.IA_POINTER,
-                            hoverText: 'Select',
-                            maxDistance: 20
-                        }
-                    },
-                    {
-                        eventType: PointerEventType.PET_HOVER_ENTER,
-                        eventInfo: {
-                            button: InputAction.IA_POINTER,
-                            showFeedback: false,
-                            maxDistance: 20
-                        }
-                    },
-                    {
-                        eventType: PointerEventType.PET_HOVER_LEAVE,
-                        eventInfo: {
-                            button: InputAction.IA_POINTER,
-                            showFeedback: false,
-                            maxDistance: 20
-                        }
-                    }
-                ]
-            })
+        if(!this.locked && !this.hidden) {
+            this.addSelectPointerEvent()
         }
 
         engine.addSystem((dt: number) => {
-            if (this.locked) return
+            if (this.locked || this.hidden) return
 
             if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_DOWN, this.buttonEntity)) {
                 this.select()
@@ -172,11 +166,15 @@ export class MenuButton {
     }
 
     show(): void {
+        this.addAllPointerEvents()
         Transform.getMutable(this.parentEntity).scale = Vector3.One()
+        this.hidden = false
     }
 
     hide(): void {
+        this.removeAllPointerEvents()
         Transform.getMutable(this.parentEntity).scale = Vector3.Zero()
+        this.hidden = true
     }
 
     select(): void {
@@ -204,6 +202,8 @@ export class MenuButton {
         if (this.goldCup) {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
         }
+
+        this.removeSelectPointerEvent()
     }
 
     unlock(): void {
@@ -220,6 +220,8 @@ export class MenuButton {
         if (this.goldCup) {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
         }
+
+        this.addSelectPointerEvent()
     }
 
     setQualified(): void {
@@ -264,5 +266,57 @@ export class MenuButton {
             Transform.getMutable(this.entitySelected).scale = Vector3.Zero()
             Transform.getMutable(this.entityUnselected).scale = Vector3.One()
         }
+    }
+
+    private addAllPointerEvents(): void {
+        PointerEvents.createOrReplace(this.buttonEntity, {
+            pointerEvents: [
+                {
+                    eventType: PointerEventType.PET_HOVER_ENTER,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        showFeedback: false,
+                        maxDistance: 20
+                    }
+                },
+                {
+                    eventType: PointerEventType.PET_HOVER_LEAVE,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        showFeedback: false,
+                        maxDistance: 20
+                    }
+                }
+            ]
+        })
+
+        if(!this.locked) {
+            this.addSelectPointerEvent()
+        }
+    }
+
+    private removeAllPointerEvents(): void {
+        PointerEvents.deleteFrom(this.buttonEntity)
+    }
+
+    private addSelectPointerEvent(): void {
+        let pointerEvents = PointerEvents.getMutable(this.buttonEntity).pointerEvents
+        if (pointerEvents.length > 2) return
+
+        pointerEvents.push({
+            eventType: PointerEventType.PET_DOWN,
+            eventInfo: {
+                button: InputAction.IA_POINTER,
+                hoverText: 'Select',
+                maxDistance: 20
+            }
+        })
+    }
+
+    private removeSelectPointerEvent(): void {
+        let pointerEvents = PointerEvents.getMutable(this.buttonEntity).pointerEvents
+        if (pointerEvents.length < 3) return
+
+        pointerEvents.splice(0, -1)
     }
 }
