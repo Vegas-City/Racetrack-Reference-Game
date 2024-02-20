@@ -165,7 +165,7 @@ export class ServerComms {
             }).then(async response => await JSON.parse(response.body)).then(
                 data => {
                     if(data.data == "no data"){
-                        // No data to show so clear any previous ghosts
+                        // No data to show so clear any previous ghosts  
                         GhostRecorder.instance.clearGhostData()
                         console.log(data)
                     } else {
@@ -176,6 +176,7 @@ export class ServerComms {
                         //use this for the data
                         console.log(trackJs)
                         GhostRecorder.instance.setGhostDataFromServer(trackJs,data.trackId)
+                        TrackManager.ghostCar.startGhost()
                     }
                     console.log("Returning Data: " + data)
                 }
@@ -188,7 +189,7 @@ export class ServerComms {
 
     public static async sendGhostCarData(_data: GhostData) {
         let publicKey = UserData.cachedData.publicKey || "GUEST_" + UserData.cachedData.userId
-
+debugger
         try {
             let response = await signedFetch({
                 url: this.getServerUrl() + "/api/racetrack/ghostcardata",

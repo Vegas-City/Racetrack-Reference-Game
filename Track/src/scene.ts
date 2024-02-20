@@ -44,9 +44,15 @@ export class Scene {
                     // Load ghost from the server if we don't have a ghost for this track and is not practice mode
                     if(!TrackManager.isPractice){
                         ServerComms.getGhostCarData()
+                    } else {
+                        if (TrackManager.ghostRecorder.currentGhostData.points.length > 0 && TrackManager.ghostRecorder.currentGhostData.track == ServerComms.currentTrack) {
+                            TrackManager.ghostCar.startGhost()
+                        }
                     }
 
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
+
+                    
                 },
                 onEndEvent: () => {
                     EventUI.triggerEndEvent()
@@ -54,7 +60,7 @@ export class Scene {
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
                         checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
-                        time: Math.round(Lap.timeElapsed * 1000)
+                        time: Math.round(Lap.timeElapsed * 1000) 
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
                     })
