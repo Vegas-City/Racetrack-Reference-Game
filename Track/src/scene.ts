@@ -41,8 +41,10 @@ export class Scene {
                         time: 0
                     })
 
-                    // Load ghost from the server if we don't have a ghost for this track
-                    ServerComms.getGhostCarData()
+                    // Load ghost from the server if we don't have a ghost for this track and is not practice mode
+                    if(!TrackManager.isPractice){
+                        ServerComms.getGhostCarData()
+                    }
 
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
