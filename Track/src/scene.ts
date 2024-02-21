@@ -15,6 +15,7 @@ import { Car } from '@vegascity/racetrack/src/car'
 import * as utils from '@dcl-sdk/utils'
 import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
+import { ParticleSystem } from './particleSystem/particleSystem'
 
 export class Scene {
 
@@ -105,6 +106,8 @@ export class Scene {
         RaceMenuManager.LoadTrack(0) // load practice track by default
 
         new NPCManager()
+
+        new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
 
