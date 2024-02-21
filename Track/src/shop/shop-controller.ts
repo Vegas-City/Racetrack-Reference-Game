@@ -79,7 +79,7 @@ export class ShopController {
             popup.show("Connect with your wallet to enjoy the full experience.")
             return
         }
-        let collectionId: string = "0x5077955707acd2429275ea2ead12fdeb4b8af3a9";
+        let collectionId: string = "0xc2601327f0ed843a0a43e0ee9e189069d3e542e2";
         wallet.addValue(-price)
         let body = {
             collection_id: collectionId,
