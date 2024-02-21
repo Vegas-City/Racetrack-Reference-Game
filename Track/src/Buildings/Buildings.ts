@@ -16,6 +16,7 @@ export class Buildings {
 
         let stadium: Building = new Building("models/buildings/Stadium.glb")
         let tower: Building = new Building("models/buildings/Tower.glb")
+        let hq: Building = new Building("models/buildings/HQ.glb")
 
 
         // let fw:Entity = engine.addEntity()
