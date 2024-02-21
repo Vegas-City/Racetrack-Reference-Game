@@ -29,9 +29,13 @@ export class ParticleSystem {
             if(Car.instances[0].data.wheelL2 != null){
                 this.typePosition1 = Transform.getMutable(Car.instances[0].data.wheelL2).position
                 this.spawnParticle(this.typePosition1,Car.instances[0].data.wheelL2)
+                this.spawnParticle(this.typePosition1,Car.instances[0].data.wheelL2)
+                this.spawnParticle(this.typePosition1,Car.instances[0].data.wheelL2)
             }
             if(Car.instances[0].data.wheelR2 != null){
                 this.typePosition2 = Transform.getMutable(Car.instances[0].data.wheelR2).position
+                this.spawnParticle(this.typePosition2,Car.instances[0].data.wheelR2)
+                this.spawnParticle(this.typePosition2,Car.instances[0].data.wheelR2)
                 this.spawnParticle(this.typePosition2,Car.instances[0].data.wheelR2)
             }
 

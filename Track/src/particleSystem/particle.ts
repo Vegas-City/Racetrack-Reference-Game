@@ -19,11 +19,15 @@ export class Particle {
 
     spawn(_position:Vector3,_parent:Entity){
         
-        if(Car.instances[0].data.speed<=5){
+        if(Car.instances[0].data.speed<=7){
             return
         }
         this.dead = false
-        this.size = Car.instances[0].data.speed/80
+        if(!Car.instances[0].data.isDrifting){
+            this.size = Math.abs(Car.instances[0].data.speed)/325
+        } else {
+            this.size = Math.abs(Car.instances[0].data.speed)/120
+        }
         Transform.getMutable(this.entity).position = _position
      //   Transform.getMutable(this.entity).parent = _parent
         Transform.getMutable(this.entity).scale = Vector3.create(this.size,this.size,this.size)
@@ -31,7 +35,7 @@ export class Particle {
         let base:Entity = Car.instances[0].data.carEntity
         this.originalY = Quaternion.toEulerAngles(Transform.get(base).rotation).y
 
-        Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(0,this.originalY-90,0)
+        Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(Math.random()*360,Math.random()*360,Math.random()*360)
     }
 
     die(){
@@ -45,7 +49,7 @@ export class Particle {
         }
         this.size -= _dt/2
         Transform.getMutable(this.entity).scale = Vector3.create(this.size,this.size,this.size)
-        //Transform.getMutable(this.entity).position = Vector3.create(0,Transform.getMutable(this.entity).position.y+_dt,0)
+        Transform.getMutable(this.entity).position = Vector3.create(Transform.getMutable(this.entity).position.x,Transform.getMutable(this.entity).position.y+_dt*2,Transform.getMutable(this.entity).position.z)
 
       //  let base:Entity = Car.instances[0].data.carEntity
       //  Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(0,this.originalY+Quaternion.toEulerAngles(Transform.get(base).rotation).y,0)// Quaternion.multiply(this.originalRotation, Transform.get(Car.instances[0].data.carEntity).rotation)
