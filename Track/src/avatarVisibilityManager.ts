@@ -6,7 +6,7 @@ import { Car } from "@vegascity/racetrack/src/car";
 
 export class AvatarVisibilityManager {
     private static readonly DEBUG_MODE: boolean = false
-    private static readonly UPDATE_FREQUENCY: number = 10
+    private static readonly UPDATE_FREQUENCY: number = 5
 
     private static messageBus = new MessageBus()
     private static entities: Entity[] = []

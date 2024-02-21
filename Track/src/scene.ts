@@ -12,16 +12,16 @@ import { ShopController } from './shop/shop-controller'
 import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
-import * as utils from '@dcl-sdk/utils'
 import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
+import * as utils from '@dcl-sdk/utils'
 import { ParticleSystem } from './particleSystem/particleSystem'
 
 export class Scene {
 
     static loaded: boolean = false
     static shopController: ShopController
-    
+
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
@@ -44,7 +44,7 @@ export class Scene {
                     })
 
                     // Load ghost from the server if we don't have a ghost for this track and is not practice mode
-                    if(!TrackManager.isPractice){
+                    if (!TrackManager.isPractice) {
                         ServerComms.getGhostCarData()
                     } else {
                         if (TrackManager.ghostRecorder.currentGhostData.points.length > 0 && TrackManager.ghostRecorder.currentGhostData.track == ServerComms.currentTrack) {
@@ -54,7 +54,7 @@ export class Scene {
 
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
 
-                    
+
                 },
                 onEndEvent: () => {
                     EventUI.triggerEndEvent()
@@ -62,7 +62,7 @@ export class Scene {
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
                         checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
-                        time: Math.round(Lap.timeElapsed * 1000) 
+                        time: Math.round(Lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
                     })
@@ -164,7 +164,7 @@ export class Scene {
         })
 
         new AvatarVisibilityManager()
-        
+
         Scene.loaded = true
     }
 } 

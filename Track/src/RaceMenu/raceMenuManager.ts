@@ -384,7 +384,7 @@ export class RaceMenuManager {
     }
 
     static update(): void {
-        if (!RaceMenuManager.instance) return
+        if (!RaceMenuManager.instance || !ServerComms.player) return
 
         //update cars
         ServerComms.player.cars.forEach(car => {
