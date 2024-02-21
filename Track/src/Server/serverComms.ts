@@ -3,16 +3,15 @@ import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
-import { TrackData } from "./types/trackData"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
 import { LeaderboardUI } from "../UI/leaderboardUI"
 import { TimeUI } from "@vegascity/racetrack/src/ui/timeUI"
 import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
+import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 import * as utils from '@dcl-sdk/utils'
 import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
-import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
