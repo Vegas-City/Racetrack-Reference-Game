@@ -4,36 +4,36 @@ import { Quaternion, Vector3 } from '@dcl/ecs-math'
 import * as npc from 'dcl-npc-toolkit'
 
 
-export class EntranceNPC {
+export class PitstopNPC {
 
-    entranceDialog: npc.Dialog[]
-    entranceNPC: Entity
+    pitstopDialog: npc.Dialog[]
+    pitstopNPC: Entity
             
     constructor(){
 
         // NPC
-        this.entranceNPC = npc.create(
+        this.pitstopNPC = npc.create(
             {
-                position: Vector3.create(50.6, 1, -10.5),
+                position: Vector3.create(21, 1, 4.51),
                 rotation: Quaternion.fromEulerDegrees(0,180,0),
                 scale: Vector3.create(1, 1, 1),
             },
             //NPC Data Object
             {
                 type: npc.NPCType.CUSTOM,
-                model: 'models/npcs/EntranceNPC.glb',
+                model: 'models/npcs/PitStopNPC.glb',
                 onActivate: () => {
-                    npc.talk(this.entranceNPC, this.entranceDialog)
-                    npc.playAnimation(this.entranceNPC,"Talk")
+                    npc.talk(this.pitstopNPC, this.pitstopDialog)
+                    npc.playAnimation(this.pitstopNPC,"Talk")
                 },
                 onWalkAway: () => { 
                     console.log('test on walk away function')
-                    npc.playAnimation(this.entranceNPC,"Idle")
+                    npc.playAnimation(this.pitstopNPC,"Idle")
                 },
                 faceUser: true,
                 reactDistance: 3,
-                idleAnim: 'idle1',
-                walkingAnim: 'walk1',
+                idleAnim: 'Idle',
+                walkingAnim: 'Walk',
                 hoverText: 'Talk',
                 continueOnWalkAway: true,
                 onlyClickTrigger: false,
@@ -42,9 +42,9 @@ export class EntranceNPC {
             }
         )
 
-        this.entranceDialog = [
+        this.pitstopDialog = [
             {
-                text: "Welcome to the racetrack",
+                text: "Welcome to the pitstop",
                 isEndOfDialog: true
             },
         ]
