@@ -45,6 +45,8 @@ export class RaceMenuManager {
     minimap3: Entity
     minimap4: Entity
 
+    blockStartRaceBtn: boolean = false
+
     constructor(_position: Vector3) {
         this.baseEntity = engine.addEntity()
         Transform.create(this.baseEntity, {
@@ -374,13 +376,21 @@ export class RaceMenuManager {
     }
 
     private startRace(): void {
-        RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+        if(!this.blockStartRaceBtn){
+            this.blockStartRaceBtn = true
 
-        utils.timers.setTimeout(() => {
-            RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
-            CarPerspectives.enterCar(Car.instances[0].data)
-            this.raceButton.deselect()
-        }, 500)
+            let self = this
+            RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+            utils.timers.setTimeout(() => {
+                RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
+                CarPerspectives.enterCar(Car.instances[0].data)
+                self.raceButton.deselect()
+            }, 500)
+
+            utils.timers.setTimeout(function () {
+                self.blockStartRaceBtn = false
+            }, 3000)
+        }
     }
 
     static update(): void {
