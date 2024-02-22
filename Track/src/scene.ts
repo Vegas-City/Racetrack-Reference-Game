@@ -71,7 +71,7 @@ export class Scene {
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
-                        checkpoint: lap.checkpointIndex + (lap.checkpoints.length * (lap.lapsCompleted * 2)),
+                        checkpoint: lap.checkpoints.length * 2,
                         time: Math.round(lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
