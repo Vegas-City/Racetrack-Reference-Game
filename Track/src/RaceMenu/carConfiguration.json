@@ -144,7 +144,7 @@
         "wheelX_R": 1,
         "wheelZ_F": 1.37,
         "wheelZ_B": 1.57,
-        "wheelY": -0.3,
+        "wheelY": -0.45,
         "carScale": 0.7,
         "firstPersonCagePosition": "-0.2,-1.3,0",
         "thirdPersonCagePosition": "0,-0.2,-1.1"
