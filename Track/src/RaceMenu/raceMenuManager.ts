@@ -387,7 +387,7 @@ export class RaceMenuManager {
         if (!RaceMenuManager.instance || !ServerComms.player) return
 
         //update cars
-        ServerComms.player.cars.forEach(car => {
+        ServerComms.player.cars.forEach(car => { 
             for (let carIndex = 0; carIndex < carConfiguration.cars.length; carIndex++) {
                 let carGuid = carConfiguration.cars[carIndex].guid
                 if (car.guid == carGuid) {
