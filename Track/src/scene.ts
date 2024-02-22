@@ -1,6 +1,6 @@
 import { Quaternion, Vector3 } from '@dcl/sdk/math'
 import { PhysicsManager } from "@vegascity/racetrack/src/physics"
-import { InputManager, Lap, TrackManager } from "@vegascity/racetrack/src/racetrack"
+import { InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
 import { setup } from "@vegascity/racetrack/src/utils"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
@@ -14,9 +14,12 @@ import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
 import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
-import * as utils from '@dcl-sdk/utils'
 import { ParticleSystem } from './particleSystem/particleSystem'
 import * as trackConfig1 from "../data/track_01.json"
+import * as trackConfig2 from "../data/track_02.json"
+import * as trackConfig3 from "../data/track_03.json"
+import * as trackConfig4 from "../data/track_04.json"
+import * as utils from '@dcl-sdk/utils'
 
 export class Scene {
 
@@ -34,8 +37,11 @@ export class Scene {
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
 
-        new TrackManager(Vector3.create(-32, 1, 16), Quaternion.fromEulerDegrees(0, 180, 0), Vector3.create(1, 1, 1), false,
-            {
+        new TrackManager({
+            position: Vector3.create(-32, 1, 16),
+            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
+            debugMode: false,
+            eventCallbacks: {
                 onStartEvent: () => {
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
@@ -58,12 +64,15 @@ export class Scene {
 
                 },
                 onEndEvent: () => {
+                    let lap = TrackManager.GetLap()
+                    if (!lap) return
+
                     EventUI.triggerEndEvent()
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
-                        checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * (Lap.lapsCompleted * 2)),
-                        time: Math.round(Lap.timeElapsed * 1000)
+                        checkpoint: lap.checkpointIndex + (lap.checkpoints.length * (lap.lapsCompleted * 2)),
+                        time: Math.round(lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
                     })
@@ -83,34 +92,62 @@ export class Scene {
                     }, 5000)
                 },
                 onCheckpointEvent: () => {
+                    let lap = TrackManager.GetLap()
+                    if (!lap) return
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
-                        checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
-                        time: Math.round(Lap.timeElapsed * 1000)
+                        checkpoint: lap.checkpointIndex + (lap.checkpoints.length * lap.lapsCompleted),
+                        time: Math.round(lap.timeElapsed * 1000)
                     })
                 },
                 onLapCompleteEvent: () => {
+                    let lap = TrackManager.GetLap()
+                    if (!lap) return
+
                     EventUI.triggerLapEvent()
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
-                        checkpoint: Lap.checkpointIndex + (Lap.checkpoints.length * Lap.lapsCompleted),
-                        time: Math.round(Lap.timeElapsed * 1000)
+                        checkpoint: lap.checkpointIndex + (lap.checkpoints.length * lap.lapsCompleted),
+                        time: Math.round(lap.timeElapsed * 1000)
                     })
                 }
             },
-            Vector3.create(5.5, 2.1, 1.1),
-            Vector3.create(5.5, 2.1, 5)
-        )
+            trackConfigs: [
+                {
+                    index: 0,
+                    guid: "6a0a3950-bcfb-4eb4-9166-61edc233b82b",
+                    data: trackConfig1
+                },
+                {
+                    index: 1,
+                    guid: "17e75c78-7f17-4b7f-8a13-9d1832ec1231",
+                    data: trackConfig2
+                },
+                {
+                    index: 2,
+                    guid: "ec2a8c30-678a-4d07-b56e-7505ce8f941a",
+                    data: trackConfig3
+                },
+                {
+                    index: 3,
+                    guid: "a8ceec44-5a8f-4c31-b026-274c865ca689",
+                    data: trackConfig4
+                }
+            ],
+            respawnPosition: Vector3.create(0, 2.1, 5),
+            respawnDirection: Vector3.create(0, 5, 20),
+        })
+
         new PhysicsManager()
-        
-        TrackManager.Load(trackConfig1)
-        //RaceMenuManager.LoadTrack(0) // load practice track by default
+
+        RaceMenuManager.LoadTrack(0) // load practice track by default
 
         new NPCManager()
 
-        //new ParticleSystem()
+        new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
 
