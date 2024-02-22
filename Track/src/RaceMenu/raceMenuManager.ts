@@ -4,13 +4,9 @@ import { Quaternion, Vector3 } from "@dcl/ecs-math";
 import { Entity, GltfContainer, engine } from "@dcl/sdk/ecs";
 import { MenuButton } from "./menuButton";
 import { Car, CarPerspectives } from "@vegascity/racetrack/src/car";
-import { GameManager, Lap, TrackManager } from "@vegascity/racetrack/src/racetrack";
+import { GameManager, TrackManager } from "@vegascity/racetrack/src/racetrack";
 import { Minimap } from "@vegascity/racetrack/src/ui";
 import { ServerComms } from "../Server/serverComms";
-import * as trackConfig1 from "../../data/track_01.json"
-import * as trackConfig2 from "../../data/track_02.json"
-import * as trackConfig3 from "../../data/track_03.json"
-import * as trackConfig4 from "../../data/track_04.json"
 import * as carConfiguration from "./carConfiguration.json"
 import * as utils from '@dcl-sdk/utils'
 
@@ -382,12 +378,15 @@ export class RaceMenuManager {
     private startRace(): void {
         if(!this.blockStartRaceBtn){
             this.blockStartRaceBtn = true
-            RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
-            RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
-            CarPerspectives.enterCar(Car.instances[0].data)
-            this.raceButton.deselect()
 
             let self = this
+            RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+            utils.timers.setTimeout(() => {
+                RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
+                CarPerspectives.enterCar(Car.instances[0].data)
+                self.raceButton.deselect()
+            }, 500)
+
             utils.timers.setTimeout(function () {
                 self.blockStartRaceBtn = false
             }, 3000)
@@ -460,40 +459,36 @@ export class RaceMenuManager {
     }
 
     static LoadTrack(_trackNumber: number) {
-        _trackNumber = 0
+        let totalLaps = 2
+        let trackGuid = ""
         GameManager.reset()
         switch (_trackNumber) {
-            case 0: TrackManager.trackID = 1
+            case 0: trackGuid = "6a0a3950-bcfb-4eb4-9166-61edc233b82b"
+                totalLaps = 1
                 TrackManager.isPractice = true
-                //TrackManager.Load(trackConfig1)
-                ServerComms.setTrack("6a0a3950-bcfb-4eb4-9166-61edc233b82b")
-                Lap.totalLaps = 1
                 break
-            case 1: TrackManager.trackID = 1
+            case 1: trackGuid = "6a0a3950-bcfb-4eb4-9166-61edc233b82b"
                 TrackManager.isPractice = false
-                TrackManager.Load(trackConfig1)
-                ServerComms.setTrack("6a0a3950-bcfb-4eb4-9166-61edc233b82b")
-                Lap.totalLaps = 2
                 break
-            case 2: TrackManager.trackID = 2
+            case 2: trackGuid = "17e75c78-7f17-4b7f-8a13-9d1832ec1231"
                 TrackManager.isPractice = false
-                TrackManager.Load(trackConfig2)
-                ServerComms.setTrack("17e75c78-7f17-4b7f-8a13-9d1832ec1231")
-                Lap.totalLaps = 2
                 break
-            case 3: TrackManager.trackID = 3
+            case 3: trackGuid = "ec2a8c30-678a-4d07-b56e-7505ce8f941a"
                 TrackManager.isPractice = false
-                TrackManager.Load(trackConfig3)
-                ServerComms.setTrack("ec2a8c30-678a-4d07-b56e-7505ce8f941a")
-                Lap.totalLaps = 2
                 break
-            case 4: TrackManager.trackID = 4
+            case 4: trackGuid = "a8ceec44-5a8f-4c31-b026-274c865ca689"
                 TrackManager.isPractice = false
-                TrackManager.Load(trackConfig4)
-                ServerComms.setTrack("a8ceec44-5a8f-4c31-b026-274c865ca689")
-                Lap.totalLaps = 2
                 break
         }
+
+        ServerComms.setTrack(trackGuid)
+        TrackManager.Load(trackGuid)
+
+        let lap = TrackManager.GetLap()
+        if (!lap) return
+
+        lap.totalLaps = totalLaps
+
         Minimap.Load(
             {
                 srcWidth: 992,

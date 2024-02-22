@@ -1,4 +1,4 @@
-import { Entity, Transform, engine } from "@dcl/sdk/ecs";
+import { Transform, engine } from "@dcl/sdk/ecs";
 import { Particle } from "./particle";
 import { Vector3 } from "@dcl/sdk/math";
 import { Car } from "@vegascity/racetrack/src/car";
@@ -23,13 +23,13 @@ export class ParticleSystem {
 
                 // Get tyre positions
                 if(Car.instances[0].data.wheelL2 != null){
-                    this.typePosition1 = Transform.getMutable(Car.instances[0].data.wheelL2).position
+                    this.typePosition1 = Transform.getMutableOrNull(Car.instances[0].data.wheelL2)?.position ?? Vector3.Zero()
                     this.spawnParticle(this.typePosition1)
                     this.spawnParticle(this.typePosition1)
                     this.spawnParticle(this.typePosition1)
                 }
                 if(Car.instances[0].data.wheelR2 != null){
-                    this.typePosition2 = Transform.getMutable(Car.instances[0].data.wheelR2).position
+                    this.typePosition2 = Transform.getMutableOrNull(Car.instances[0].data.wheelR2)?.position ?? Vector3.Zero()
                     this.spawnParticle(this.typePosition2)
                     this.spawnParticle(this.typePosition2)
                     this.spawnParticle(this.typePosition2)
