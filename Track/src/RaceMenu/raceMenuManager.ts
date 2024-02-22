@@ -12,6 +12,7 @@ import * as trackConfig2 from "../../data/track_02.json"
 import * as trackConfig3 from "../../data/track_03.json"
 import * as trackConfig4 from "../../data/track_04.json"
 import * as carConfiguration from "./carConfiguration.json"
+import * as utils from '@dcl-sdk/utils'
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -47,6 +48,8 @@ export class RaceMenuManager {
     minimap2: Entity
     minimap3: Entity
     minimap4: Entity
+
+    blockStartRaceBtn: boolean = false
 
     constructor(_position: Vector3) {
         this.baseEntity = engine.addEntity()
@@ -377,17 +380,25 @@ export class RaceMenuManager {
     }
 
     private startRace(): void {
-        RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
-        RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
-        CarPerspectives.enterCar(Car.instances[0].data)
-        this.raceButton.deselect()
+        if(!this.blockStartRaceBtn){
+            this.blockStartRaceBtn = true
+            RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+            RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
+            CarPerspectives.enterCar(Car.instances[0].data)
+            this.raceButton.deselect()
+
+            let self = this
+            utils.timers.setTimeout(function () {
+                self.blockStartRaceBtn = false
+            }, 3000)
+        }
     }
 
     static update(): void {
         if (!RaceMenuManager.instance || !ServerComms.player) return
 
         //update cars
-        ServerComms.player.cars.forEach(car => {
+        ServerComms.player.cars.forEach(car => { 
             for (let carIndex = 0; carIndex < carConfiguration.cars.length; carIndex++) {
                 let carGuid = carConfiguration.cars[carIndex].guid
                 if (car.guid == carGuid) {
