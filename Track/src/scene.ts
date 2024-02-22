@@ -107,7 +107,7 @@ export class Scene {
 
         new NPCManager()
 
-        new ParticleSystem()
+        //new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
 
