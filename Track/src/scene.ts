@@ -16,6 +16,7 @@ import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import * as utils from '@dcl-sdk/utils'
 import { ParticleSystem } from './particleSystem/particleSystem'
+import * as trackConfig1 from "../data/track_01.json"
 
 export class Scene {
 
@@ -103,7 +104,9 @@ export class Scene {
             Vector3.create(5.5, 2.1, 5)
         )
         new PhysicsManager()
-        RaceMenuManager.LoadTrack(0) // load practice track by default
+        
+        TrackManager.Load(trackConfig1)
+        //RaceMenuManager.LoadTrack(0) // load practice track by default
 
         new NPCManager()
 
