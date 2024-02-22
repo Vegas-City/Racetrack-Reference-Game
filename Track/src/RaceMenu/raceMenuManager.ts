@@ -449,11 +449,12 @@ export class RaceMenuManager {
     }
 
     static LoadTrack(_trackNumber: number) {
+        _trackNumber = 0
         GameManager.reset()
         switch (_trackNumber) {
             case 0: TrackManager.trackID = 1
                 TrackManager.isPractice = true
-                TrackManager.Load(trackConfig1)
+                //TrackManager.Load(trackConfig1)
                 ServerComms.setTrack("6a0a3950-bcfb-4eb4-9166-61edc233b82b")
                 Lap.totalLaps = 1
                 break
