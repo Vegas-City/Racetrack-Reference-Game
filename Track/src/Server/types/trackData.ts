@@ -1,3 +1,4 @@
+import { CarPbData } from "./CarPbData"
 import { CarData } from "./carData"
 
 export type TrackData = {
@@ -6,5 +7,6 @@ export type TrackData = {
     pb: number,
     checkpoints: number,
     targetTimeToUnlockNextTrack: number
-    cars: CarData[]
+    cars: CarData[],
+    carPbsPerTrack: CarPbData[]
 }

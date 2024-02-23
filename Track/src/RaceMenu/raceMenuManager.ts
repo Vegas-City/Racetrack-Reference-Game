@@ -376,7 +376,7 @@ export class RaceMenuManager {
     }
 
     private startRace(): void {
-        if(!this.blockStartRaceBtn){
+        if (!this.blockStartRaceBtn) {
             this.blockStartRaceBtn = true
 
             let self = this
@@ -397,7 +397,7 @@ export class RaceMenuManager {
         if (!RaceMenuManager.instance || !ServerComms.player) return
 
         //update cars
-        ServerComms.player.cars.forEach(car => { 
+        ServerComms.player.cars.forEach(car => {
             for (let carIndex = 0; carIndex < carConfiguration.cars.length; carIndex++) {
                 let carGuid = carConfiguration.cars[carIndex].guid
                 if (car.guid == carGuid) {
@@ -435,20 +435,22 @@ export class RaceMenuManager {
                 }
             })
 
-            if (track.pb > 0 && track.pb < track.targetTimeToUnlockNextTrack) {
-                if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
-                    RaceMenuManager.instance.trackButton1.setQualified()
+            track.carPbsPerTrack.forEach(carPb => {
+                if (carPb.car == selectedCarGuid && carPb.PB > 0 && carPb.PB < track.targetTimeToUnlockNextTrack) {
+                    if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
+                        RaceMenuManager.instance.trackButton1.setQualified()
+                    }
+                    else if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
+                        RaceMenuManager.instance.trackButton2.setQualified()
+                    }
+                    else if (track.guid == "ec2a8c30-678a-4d07-b56e-7505ce8f941a") {
+                        RaceMenuManager.instance.trackButton3.setQualified()
+                    }
+                    else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
+                        RaceMenuManager.instance.trackButton4.setQualified()
+                    }
                 }
-                else if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
-                    RaceMenuManager.instance.trackButton2.setQualified()
-                }
-                else if (track.guid == "ec2a8c30-678a-4d07-b56e-7505ce8f941a") {
-                    RaceMenuManager.instance.trackButton3.setQualified()
-                }
-                else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
-                    RaceMenuManager.instance.trackButton4.setQualified()
-                }
-            }
+            })
         })
 
         if ((RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked)
