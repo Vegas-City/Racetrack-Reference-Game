@@ -214,13 +214,17 @@ export class ServerComms {
         }
     }
 
-    public static setTrack(guid: string) {
+    public static setTrack(_guid: string) {
         ServerComms.getPlayerData().then(() => {
-            ServerComms.currentTrack = guid
-            let track = ServerComms.player.tracks.find(track => track.guid === guid)
-            console.log(track)
-            let bool = track.pb == 0
-            TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+            ServerComms.currentTrack = _guid
         })
+    }
+
+    public static setCar(_guid: string) {
+        ServerComms.currentCar = _guid
+        let track = ServerComms.player.tracks.find(track => track.guid === ServerComms.currentTrack)
+        let carPb = track.carPbsPerTrack.find(carPb => carPb.car === _guid)
+        let bool = carPb.PB == 0
+        TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
     }
 }

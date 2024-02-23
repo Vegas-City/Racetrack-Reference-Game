@@ -381,6 +381,8 @@ export class RaceMenuManager {
 
             let self = this
             RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+            let selectedCarIndex = RaceMenuManager.instance.carButton1.selected ? 0 : (RaceMenuManager.instance.carButton2.selected ? 1 : 2)
+            ServerComms.setCar(carConfiguration.cars[selectedCarIndex].guid)
             utils.timers.setTimeout(() => {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)
