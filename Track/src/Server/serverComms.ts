@@ -214,10 +214,10 @@ export class ServerComms {
         }
     }
 
-    public static setTrack(guid: string) {
+    public static setTrack(_guid: string) {
         ServerComms.getPlayerData().then(() => {
-            ServerComms.currentTrack = guid
-            let track = ServerComms.player.tracks.find(track => track.guid === guid)
+            ServerComms.currentTrack = _guid
+            let track = ServerComms.player.tracks.find(track => track.guid === _guid)
             let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
             let bool = true;
             if(pb != null){
