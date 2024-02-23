@@ -71,7 +71,7 @@ export class ShopController {
         })
     }
 
-    public async sendBuyRequest(id: string, price: number) {
+    public async sendBuyRequest(id: string, price: number, collectionId:string) {
         shopUI.hide()
         let priceS: string = price ? price.toString() : "0" 
         if (this.userKey == "zero") {
@@ -79,7 +79,7 @@ export class ShopController {
             popup.show("Connect with your wallet to enjoy the full experience.")
             return
         }
-        let collectionId: string = "0xc2601327f0ed843a0a43e0ee9e189069d3e542e2";
+        //let collectionId: string = "0xc2601327f0ed843a0a43e0ee9e189069d3e542e2";
         wallet.addValue(-price)
         let body = {
             collection_id: collectionId,
