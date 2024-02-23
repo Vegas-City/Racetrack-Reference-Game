@@ -1,4 +1,3 @@
-import { CarPbData } from "./CarPbData"
 import { CarData } from "./carData"
 import { PbData } from "./PbData"
 
