@@ -69,7 +69,7 @@ export default class ShopUI {
                 popup.show("You cannot afford this wearable")
             } 
             else if(!data.response.hasClaimed && data.response.canSpend){
-                Scene.shopController.sendBuyRequest(this.data.id, this.data.price)
+                Scene.shopController.sendBuyRequest(this.data.id, this.data.price, this.data.collection)
             }
         })
     }
