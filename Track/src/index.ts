@@ -9,7 +9,7 @@ import { Helper, UserData } from "./Server/Helper";
 
 export function main() {
   setupUi()
- 
+
   // wait for the realm and user data to be available
   Helper.init(() => {
     UserData.getUserData(() => {
@@ -17,15 +17,12 @@ export function main() {
         const { realmInfo } = await getRealm({})
         if (realmInfo != undefined) {
           console.log(`You are in the realm: `, realmInfo.realmName)
-          Scene.LoadScene()
-          /*
           if (realmInfo.isPreview) {
             Scene.LoadScene()
             DebugUI.debugUIShow = true
           } else {
             showPrompt()
           }
-          */
         }
       })
     })
@@ -35,7 +32,7 @@ export function main() {
     const prompt = ui.createComponent(ui.FillInPrompt, {
       title: 'Enter password',
       onAccept: (value: string) => {
-        if (value.toLocaleLowerCase() == "letsgo") {
+        if (value.toLocaleLowerCase() == "testingtuesday") {
           prompt.hide()
           utils.timers.setTimeout(function () {
             Scene.LoadScene()
