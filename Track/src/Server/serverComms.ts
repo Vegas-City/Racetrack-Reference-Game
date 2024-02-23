@@ -35,7 +35,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `https://uat.vegascity.live/services/racetrack`
+                return `http://localhost:8080`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -217,14 +217,14 @@ export class ServerComms {
     public static setTrack(_guid: string) {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = _guid
+            let track = ServerComms.player.tracks.find(track => track.guid === _guid)
+            let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
+            let bool = true;
+            if(pb != null){
+                bool = pb.PB == 0
+            } 
+            
+            TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
         })
-    }
-
-    public static setCar(_guid: string) {
-        ServerComms.currentCar = _guid
-        let track = ServerComms.player.tracks.find(track => track.guid === ServerComms.currentTrack)
-        let carPb = track.carPbsPerTrack.find(carPb => carPb.car === _guid)
-        let bool = carPb.PB == 0
-        TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
     }
 }

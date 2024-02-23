@@ -284,7 +284,7 @@ export class RaceMenuManager {
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: true,
+            startLocked: false,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(1)
@@ -300,7 +300,7 @@ export class RaceMenuManager {
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: true,
+            startLocked: false,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(2)
@@ -381,8 +381,6 @@ export class RaceMenuManager {
 
             let self = this
             RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
-            let selectedCarIndex = RaceMenuManager.instance.carButton1.selected ? 0 : (RaceMenuManager.instance.carButton2.selected ? 1 : 2)
-            ServerComms.setCar(carConfiguration.cars[selectedCarIndex].guid)
             utils.timers.setTimeout(() => {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)

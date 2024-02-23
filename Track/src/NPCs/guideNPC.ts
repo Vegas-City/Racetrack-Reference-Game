@@ -2,6 +2,7 @@ import { Entity } from '@dcl/ecs'
 import { Quaternion, Vector3 } from '@dcl/ecs-math'
 
 import * as npc from 'dcl-npc-toolkit'
+import { Info } from './info'
 
 
 export class GuideNPC {
@@ -10,6 +11,8 @@ export class GuideNPC {
     guideNPC: Entity
             
     constructor(){
+
+        new Info(Vector3.create(9.5,1, 3.74))
 
         // NPC
         this.guideNPC = npc.create(

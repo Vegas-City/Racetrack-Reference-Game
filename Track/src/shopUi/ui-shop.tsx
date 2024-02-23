@@ -11,7 +11,7 @@ export default class ShopUI {
 
     private visible: boolean = false;
     private data: Wearable = {
-        name: "Sophia the Robot Headband",
+        name: "",
         rarity: "",
         id: "",
         price: 0,
@@ -69,7 +69,7 @@ export default class ShopUI {
                 popup.show("You cannot afford this wearable")
             } 
             else if(!data.response.hasClaimed && data.response.canSpend){
-                Scene.shopController.sendBuyRequest(this.data.id, this.data.price)
+                Scene.shopController.sendBuyRequest(this.data.id, this.data.price, this.data.collection)
             }
         })
     }
@@ -96,12 +96,12 @@ export default class ShopUI {
                     alignItems: 'center',
                     display: this.visible ? 'flex' : 'none'
                 }}
-                uiBackground={{ textureMode: "stretch", texture: { src: 'textures/ui/middle-window.jpg' } }}
+                uiBackground={{ textureMode: "stretch", texture: { src: 'images/ui/wearablesUI/2d_forAnyText.png' } }}
             >   
                 <UiEntity
                     uiTransform={{
                         positionType: "absolute",
-                        position: { top: 200 },
+                        position: { top: 300 },
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}
@@ -117,7 +117,7 @@ export default class ShopUI {
                 <UiEntity
                     uiTransform={{
                         positionType: "absolute",
-                        position: { top: 510 , right: '10%'},
+                        position: { top: 310 , right: '15%'},
                         width: "70%",
                         flexDirection: "row",
                         justifyContent: 'space-between',
@@ -126,73 +126,23 @@ export default class ShopUI {
                     <UiEntity
                         uiTransform={{
                             width: 348 / 1.4,
-                            height: 92 / 1.4,
+                            height: 292 / 1.4,
                             justifyContent: 'space-between'
                         }}
-                        uiBackground={{ textureMode: "stretch", texture: { src: 'textures/ui/button1-variant2.png' } }}
+                        uiBackground={{ textureMode: "stretch", texture: { src: 'images/ui/wearablesUI/2d_cancel.png' } }}
                         onMouseDown={this.hide.bind(this)}
                     >
-                        <UiEntity
-                            uiTransform={{
-                                width: 225,
-                            }}
-                            uiText={{
-                                value: "Cancel",
-                                textAlign: "middle-center",
-                                fontSize: 40,
-                                color: Color4.White()
-                            }}
-                        />
-                        <UiEntity
-                            uiTransform={{
-                                positionType: "absolute",
-                                width: 32,
-                                height: 32,
-                                position: { top: 17, right: 12 },
-                            }}
-                            uiBackground={{
-                                textureMode: 'stretch',
-                                texture: { src: "textures/ui/hotkeys/Button-F.png" },
-                                color: Color4.create(1, 1, 1, 1)
-                            }}
-                        />
                     </UiEntity>
-
-
 
                     <UiEntity
                         uiTransform={{
                             width: 348 / 1.4,
-                            height: 92 / 1.4,
+                            height: 292 / 1.4,
                             justifyContent: 'space-between'
                         }}
-                        uiBackground={{ textureMode: "stretch", texture: { src: 'textures/ui/button1-variant2.png' } }}
+                        uiBackground={{ textureMode: "stretch", texture: { src: 'images/ui/wearablesUI/2d_confirm.png' } }}
                         onMouseDown={this.buyClick.bind(this)}                 
                     >
-                        <UiEntity
-                            uiTransform={{
-                                width: 225,
-                            }}
-                            uiText={{
-                                value: "Confirm",
-                                textAlign: "middle-center",
-                                fontSize: 40,
-                                color: Color4.White()
-                            }}
-                        />
-                        <UiEntity
-                            uiTransform={{
-                                positionType: "absolute",
-                                width: 32,
-                                height: 32,
-                                position: { top: 17, right: 12 },
-                            }}
-                            uiBackground={{
-                                textureMode: 'stretch',
-                                texture: { src: "textures/ui/hotkeys/Button-E.png" },
-                                color: Color4.create(1, 1, 1, 1)
-                            }}
-                        />
                     </UiEntity>
                 </UiEntity>
 
