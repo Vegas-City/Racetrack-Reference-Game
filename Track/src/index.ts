@@ -17,12 +17,15 @@ export function main() {
         const { realmInfo } = await getRealm({})
         if (realmInfo != undefined) {
           console.log(`You are in the realm: `, realmInfo.realmName)
+          Scene.LoadScene()
+          /*
           if (realmInfo.isPreview) {
             Scene.LoadScene()
             DebugUI.debugUIShow = true
           } else {
             showPrompt()
           }
+          */
         }
       })
     })

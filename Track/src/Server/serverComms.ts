@@ -3,16 +3,15 @@ import { EnvironmentType } from "./EnvironmentType"
 import { Helper, UserData } from "./Helper"
 import { RecordAttemptData } from "./types/recordAttemptData"
 import { signedFetch } from "~system/SignedFetch"
-import { TrackData } from "./types/trackData"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
 import { LeaderboardUI } from "../UI/leaderboardUI"
 import { TimeUI } from "@vegascity/racetrack/src/ui/timeUI"
 import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
+import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 import * as utils from '@dcl-sdk/utils'
 import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
-import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -36,7 +35,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `http://localhost:8080`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -124,34 +123,36 @@ export class ServerComms {
         }
     }
 
-    static async canClaimWearable(_wearableId:number):Promise<any>{
+    static async canClaimWearable(_wearableId: number): Promise<any> {
         let player = UserData.cachedData
 
         return await signedFetch({
-            url:this.getServerUrl() + "/api/missions/canspend",
+            url: this.getServerUrl() + "/api/missions/canspend",
             init: {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: JSON.stringify({
-                user: player.publicKey || "GUEST_" + player.userId,
-                wearableId: _wearableId,
-            })
-        }})
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: JSON.stringify({
+                    user: player.publicKey || "GUEST_" + player.userId,
+                    wearableId: _wearableId,
+                })
+            }
+        })
     }
 
-    static async claimWearable(_wearableId:number){
+    static async claimWearable(_wearableId: number) {
         let player = UserData.cachedData
 
         let response = await signedFetch({
-            url: this.getServerUrl() + "/api/missions/spend", 
-            init:{
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: JSON.stringify({
-                user: player.publicKey || "GUEST_" + player.userId,
-                wearableId: _wearableId,
-            })
-        }})
+            url: this.getServerUrl() + "/api/missions/spend",
+            init: {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: JSON.stringify({
+                    user: player.publicKey || "GUEST_" + player.userId,
+                    wearableId: _wearableId,
+                })
+            }
+        })
     }
 
     public static getGhostCarData() {
@@ -164,7 +165,7 @@ export class ServerComms {
                 }
             }).then(async response => await JSON.parse(response.body)).then(
                 data => {
-                    if(data.data == "no data"){
+                    if (data.data == "no data") {
                         // No data to show so clear any previous ghosts  
                         GhostRecorder.instance.clearGhostData()
                         console.log(data)
@@ -175,7 +176,7 @@ export class ServerComms {
 
                         //use this for the data
                         console.log(trackJs)
-                        GhostRecorder.instance.setGhostDataFromServer(trackJs,data.trackId)
+                        GhostRecorder.instance.setGhostDataFromServer(trackJs, data.trackId)
                         TrackManager.ghostCar.startGhost()
                     }
                     console.log("Returning Data: " + data)
@@ -189,7 +190,6 @@ export class ServerComms {
 
     public static async sendGhostCarData(_data: GhostData) {
         let publicKey = UserData.cachedData.publicKey || "GUEST_" + UserData.cachedData.userId
-debugger
         try {
             let response = await signedFetch({
                 url: this.getServerUrl() + "/api/racetrack/ghostcardata",

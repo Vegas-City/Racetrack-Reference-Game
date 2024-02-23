@@ -203,7 +203,7 @@ export class MenuButton {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
         }
 
-        this.removeSelectPointerEvent()
+        this.removeAllPointerEvents()
     }
 
     unlock(): void {
@@ -221,7 +221,7 @@ export class MenuButton {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
         }
 
-        this.addSelectPointerEvent()
+        this.addAllPointerEvents()
     }
 
     setQualified(): void {
