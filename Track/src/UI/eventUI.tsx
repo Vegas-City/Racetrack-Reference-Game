@@ -3,6 +3,7 @@ import { Color4 } from "@dcl/sdk/math"
 import * as utils from '@dcl-sdk/utils'
 
 export class EventUI {
+    static preEventVisibility: boolean = false
     static lapEventVisibility: boolean = false
     static endEventVisibility: boolean = false
 
@@ -19,6 +20,29 @@ export class EventUI {
 
             }}
         >
+            <Label
+                key="PreEventLabel"
+                value={EventUI.getPreEventText()}
+                fontSize={40}
+                font="monospace"
+                textAlign="middle-center"
+                color={Color4.create(0.8, 0.8, 0.8, 1)}
+                uiTransform={{
+                    positionType: 'absolute',
+                    width: 1100,
+                    height: 100,
+                    position: {
+                        top: 500,
+                        left: -550,
+                    },
+                    display: EventUI.preEventVisibility ? 'flex' : 'none',
+
+                }}
+                uiBackground={{
+                    color: Color4.fromInts(1, 1, 1, 230)
+                }}
+            >
+            </Label>
             <Label
                 key="LapEventLabel"
                 value={EventUI.getLapEventText()}
@@ -74,6 +98,13 @@ export class EventUI {
         ]
     }
 
+    static triggerPreEvent(): void {
+        EventUI.preEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.preEventVisibility = false
+        }, 5000)
+    }
+
     static triggerLapEvent(): void {
         EventUI.lapEventVisibility = true
         utils.timers.setTimeout(() => {
@@ -89,7 +120,11 @@ export class EventUI {
     }
 
     private static getVisibility(): boolean {
-        return EventUI.lapEventVisibility || EventUI.endEventVisibility
+        return EventUI.preEventVisibility || EventUI.lapEventVisibility || EventUI.endEventVisibility
+    }
+
+    private static getPreEventText(): string {
+        return "Tip: You can exit any time by holding E when not moving"
     }
 
     private static getLapEventText(): string {

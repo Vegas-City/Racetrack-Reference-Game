@@ -63,8 +63,6 @@ export class Scene {
                     }
 
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
-
-
                 },
                 onEndEvent: () => {
                     let lap = TrackManager.GetLap()
