@@ -160,7 +160,7 @@ export class RaceMenuManager {
             src: "models/selection/competition.glb",
             srcSelected: "models/selection/competition_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: false,
+            startLocked: true,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
             onSelectCallback: (() => {
                 TrackManager.isPractice = false
@@ -424,6 +424,7 @@ export class RaceMenuManager {
         RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
+        let firstTimePlaying: boolean = true
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
@@ -455,7 +456,15 @@ export class RaceMenuManager {
                     }
                 }
             })
+
+            if (track.pb > 0) {
+                firstTimePlaying = false
+            }
         })
+
+        if (!firstTimePlaying) {
+            RaceMenuManager.instance.competitionButton.unlock()
+        }
 
         if ((RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked)
             || (RaceMenuManager.instance.trackButton3.selected && RaceMenuManager.instance.trackButton3.locked)
