@@ -1,18 +1,22 @@
-import { Entity, Transform, engine } from "@dcl/sdk/ecs";
+import { Transform, engine } from "@dcl/sdk/ecs";
 import { Particle } from "./particle";
 import { Vector3 } from "@dcl/sdk/math";
 import { Car } from "@vegascity/racetrack/src/car";
 
 export class ParticleSystem {
     particles:Particle[] = []
-    spawnSpeed: number = 1/60
+    spawnSpeed: number = 1/15
     currentSpawn: number = 0
 
     typePosition1:Vector3
     typePosition2:Vector3
 
     constructor(){
-        engine.addSystem(this.update.bind(this))
+        try {
+            engine.addSystem(this.update.bind(this))
+        } catch(ex){
+            console.log("Error adding particle system: " + ex)
+        }
     }
 
     update(_dt:number){
@@ -20,29 +24,34 @@ export class ParticleSystem {
         
         this.currentSpawn+=_dt
             if(this.currentSpawn>this.spawnSpeed){
-
-                // Get tyre positions
-                if(Car.instances[0].data.wheelL2 != null){
-                    this.typePosition1 = Transform.getMutable(Car.instances[0].data.wheelL2).position
-                    this.spawnParticle(this.typePosition1)
-                    this.spawnParticle(this.typePosition1)
-                    this.spawnParticle(this.typePosition1)
-                }
-                if(Car.instances[0].data.wheelR2 != null){
-                    this.typePosition2 = Transform.getMutable(Car.instances[0].data.wheelR2).position
-                    this.spawnParticle(this.typePosition2)
-                    this.spawnParticle(this.typePosition2)
-                    this.spawnParticle(this.typePosition2)
+                try{
+                    // Get tyre positions
+                    if(Car.instances[0].data.wheelL2 != null){
+                        this.typePosition1 = Transform.getMutableOrNull(Car.instances[0].data.wheelL2)?.position ?? Vector3.Zero()
+                        this.spawnParticle(this.typePosition1)
+                        this.spawnParticle(this.typePosition1)
+                        this.spawnParticle(this.typePosition1)
+                    }
+                    if(Car.instances[0].data.wheelR2 != null){
+                        this.typePosition2 = Transform.getMutableOrNull(Car.instances[0].data.wheelR2)?.position ?? Vector3.Zero()
+                        this.spawnParticle(this.typePosition2)
+                        this.spawnParticle(this.typePosition2)
+                        this.spawnParticle(this.typePosition2)
+                    }
+                } catch (ex){
+                    console.log("Error spawning particles: " + ex)
                 }
 
                 this.currentSpawn = 0
-
-
             }
         }
 
         this.particles.forEach(particle => {
-            particle.update(_dt)
+            try {
+                particle.update(_dt)
+            } catch(ex){
+                console.log("Error updating particle: " + ex)
+            }
         })
     }
 

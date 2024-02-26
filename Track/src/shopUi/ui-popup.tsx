@@ -13,9 +13,7 @@ export default class Popup {
         return this._currentText
     }
 
-    private currentOkTexture: string = 'textures/ui/button1-variant2.png';
-    private defaultOkTexture: string = 'textures/ui/button1-variant2.png';
-    private selectedOkTexture: string = 'textures/ui/button1-variant1.png';
+    private currentOkTexture: string = 'images/ui/wearablesUI/2d_cancel.png';
 
     constructor() {
         const self = this
@@ -58,12 +56,12 @@ export default class Popup {
                     display: this.visible ? 'flex' : 'none',
                     justifyContent: 'center',
                 }}
-                uiBackground={{ textureMode: "stretch", texture: { src: 'textures/ui/middle-window.jpg' } }}
+                uiBackground={{ textureMode: "stretch", texture: { src: 'images/ui/wearablesUI/2d_forAnyText.png'  } }}
             >
                 <UiEntity
                     uiTransform={{
                         positionType: 'absolute',
-                        position: { top: 200 },
+                        position: { top: 230 },
                         display: this.visible ? 'flex' : 'none'
                     }}
                     uiText={{
@@ -77,39 +75,14 @@ export default class Popup {
                 <UiEntity
                     uiTransform={{
                         width: 348 / 1.4,
-                        height: 92 / 1.4,
+                        height: 292 / 1.4,
                         positionType: "absolute",
-                        position: { top: 400, right: '30%' },
+                        position: { top: 250, right: '30%' },
                         justifyContent: 'center'
                     }}
                     uiBackground={{ textureMode: "stretch", texture: { src: this.currentOkTexture } }}
                     onMouseDown={this.hide.bind(this)}
                 >
-                    <UiEntity
-                        uiTransform={{
-                            width: 225,
-                        }}
-                        uiText={{
-                            value: "OK",
-                            textAlign: "middle-center",
-                            fontSize: 40,
-                            color: Color4.White()
-                        }}
-                    />
-                    <UiEntity
-                        uiTransform={{
-                            positionType: "absolute",
-                            width: 32,
-                            height: 32,
-                            position: { top: 17, right: 12 },
-                        }}
-                        onMouseDown={this.hide.bind(this)}
-                        uiBackground={{
-                            textureMode: 'stretch',
-                            texture: { src: "textures/ui/hotkeys/Button-F.png" },
-                            color: Color4.create(1, 1, 1, 1)
-                        }}
-                    />
                 </UiEntity>
 
 
@@ -146,9 +119,8 @@ export default class Popup {
     }
 
     public hide() {
-        this.currentOkTexture = this.selectedOkTexture
         utils.timers.setTimeout(() => {
-            this.currentOkTexture = this.defaultOkTexture
+            
             this._currentText = "";
             this.visible = false;
         }, 200)

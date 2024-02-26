@@ -71,7 +71,7 @@ export class ShopController {
         })
     }
 
-    public async sendBuyRequest(id: string, price: number) {
+    public async sendBuyRequest(id: string, price: number, collectionId:string) {
         shopUI.hide()
         let priceS: string = price ? price.toString() : "0" 
         if (this.userKey == "zero") {
@@ -79,7 +79,7 @@ export class ShopController {
             popup.show("Connect with your wallet to enjoy the full experience.")
             return
         }
-        let collectionId: string = "0xc2601327f0ed843a0a43e0ee9e189069d3e542e2";
+        //let collectionId: string = "0xc2601327f0ed843a0a43e0ee9e189069d3e542e2";
         wallet.addValue(-price)
         let body = {
             collection_id: collectionId,
@@ -100,7 +100,7 @@ export class ShopController {
             ShopController.logger.purchaseFail(id, collectionId, "", priceS, data)
         }
         else {
-            popup.show("Your Purchase has been Made and we are sending the wearable to your wallet. This may take a short while. Further attempts to purchase this item will result in you receiving this item multiple times. ")
+            popup.show("Your Purchase has been Made and we are sending the wearable to your wallet. This may take a short while.")
             ShopController.logger.purchaseSuccess(id, collectionId, "", priceS, data)
             ServerComms.getPlayerData()
         }
