@@ -20,6 +20,7 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
+import { ShopMenu } from './shop/ShopMenu'
 
 export class Scene {
 
@@ -36,6 +37,8 @@ export class Scene {
         Scene.shopController = new ShopController()
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
+
+        new ShopMenu()
 
         new TrackManager({
             position: Vector3.create(-32, 1, 16),
