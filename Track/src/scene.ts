@@ -21,6 +21,7 @@ import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
 import { ShopMenu } from './shop/ShopMenu'
+import { PlayerData } from './Server/types/playerData'
 
 export class Scene {
 
@@ -68,7 +69,6 @@ export class Scene {
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
-                    EventUI.triggerEndEvent()
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -83,9 +83,8 @@ export class Scene {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
 
-                    // update player data after completing a race
                     utils.timers.setTimeout(() => {
-                        ServerComms.getPlayerData()
+                        ServerComms.getPlayerData(true)
                     }, 4000)
 
                     utils.timers.setTimeout(() => {
@@ -108,12 +107,22 @@ export class Scene {
                     if (!lap) return
 
                     EventUI.triggerLapEvent()
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
                         checkpoint: lap.checkpointIndex + (lap.checkpoints.length * lap.lapsCompleted),
                         time: Math.round(lap.timeElapsed * 1000)
                     })
+
+                    if (TrackManager.isPractice) {
+                        if (Math.round(lap.timeElapsed) < 60) {
+                            if (RaceMenuManager.instance.competitionButton.locked) {
+                                EventUI.triggerCompetionUnlockEvent()
+                                RaceMenuManager.instance.competitionButton.unlock()
+                            }
+                        }
+                    }
                 }
             },
             trackConfigs: [
