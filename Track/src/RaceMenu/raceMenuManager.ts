@@ -386,6 +386,7 @@ export class RaceMenuManager {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)
                 self.raceButton.deselect()
+                EventUI.triggerPreEvent()
             }, 500)
 
             utils.timers.setTimeout(function () {

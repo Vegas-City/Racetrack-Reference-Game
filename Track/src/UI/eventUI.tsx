@@ -5,18 +5,19 @@ import { PlayerData } from "../Server/types/playerData"
 import { ServerComms } from "../Server/serverComms"
 
 export class EventUI {
+    static preEventVisibility: boolean = false
     static lapEventVisibility: boolean = false
     static endEventVisibility: boolean = false
     static newTrackEventVisibility: boolean = false
     static newCarEventVisibility: boolean = false
     static competionUnlockEventVisibility: boolean = false
 
-    static eventsShownOrWaiting:number = 0
-    static notificationTime:number = 3000
+    static eventsShownOrWaiting: number = 0
+    static notificationTime: number = 3000
 
-    static oldPlayerData:PlayerData = new PlayerData()
+    static oldPlayerData: PlayerData = new PlayerData()
 
-    static pointIncrease:number = 0
+    static pointIncrease: number = 0
 
     private static component = () => (
         <UiEntity
@@ -31,6 +32,29 @@ export class EventUI {
 
             }}
         >
+            <Label
+                key="PreEventLabel"
+                value={EventUI.getPreEventText()}
+                fontSize={40}
+                font="monospace"
+                textAlign="middle-center"
+                color={Color4.create(0.8, 0.8, 0.8, 1)}
+                uiTransform={{
+                    positionType: 'absolute',
+                    width: 1100,
+                    height: 100,
+                    position: {
+                        top: 500,
+                        left: -550,
+                    },
+                    display: EventUI.preEventVisibility ? 'flex' : 'none',
+
+                }}
+                uiBackground={{
+                    color: Color4.fromInts(1, 1, 1, 230)
+                }}
+            >
+            </Label>
             <Label
                 key="LapEventLabel"
                 value={EventUI.getLapEventText()}
@@ -155,6 +179,13 @@ export class EventUI {
         ]
     }
 
+    static triggerPreEvent(): void {
+        EventUI.preEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.preEventVisibility = false
+        }, 5000)
+    }
+
     static triggerLapEvent(): void {
         utils.timers.setTimeout(() => {
             EventUI.lapEventVisibility = true
@@ -162,10 +193,10 @@ export class EventUI {
 
         utils.timers.setTimeout(() => {
             EventUI.lapEventVisibility = false
-            EventUI.eventsShownOrWaiting-=1
+            EventUI.eventsShownOrWaiting -= 1
         }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
 
-        EventUI.eventsShownOrWaiting+=1
+        EventUI.eventsShownOrWaiting += 1
     }
 
     static triggerEndEvent(): void {
@@ -175,10 +206,10 @@ export class EventUI {
 
         utils.timers.setTimeout(() => {
             EventUI.endEventVisibility = false
-            EventUI.eventsShownOrWaiting-=1
+            EventUI.eventsShownOrWaiting -= 1
         }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
 
-        EventUI.eventsShownOrWaiting+=1
+        EventUI.eventsShownOrWaiting += 1
     }
 
     static triggerNewTrackEvent(): void {
@@ -188,10 +219,10 @@ export class EventUI {
 
         utils.timers.setTimeout(() => {
             EventUI.newTrackEventVisibility = false
-            EventUI.eventsShownOrWaiting-=1
+            EventUI.eventsShownOrWaiting -= 1
         }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
 
-        EventUI.eventsShownOrWaiting+=1
+        EventUI.eventsShownOrWaiting += 1
     }
 
     static triggerNewCarEvent(): void {
@@ -201,10 +232,10 @@ export class EventUI {
 
         utils.timers.setTimeout(() => {
             EventUI.newCarEventVisibility = false
-            EventUI.eventsShownOrWaiting-=1
+            EventUI.eventsShownOrWaiting -= 1
         }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
 
-        EventUI.eventsShownOrWaiting+=1
+        EventUI.eventsShownOrWaiting += 1
     }
 
     static triggerCompetionUnlockEvent(): void {
@@ -214,19 +245,24 @@ export class EventUI {
 
         utils.timers.setTimeout(() => {
             EventUI.competionUnlockEventVisibility = false
-            EventUI.eventsShownOrWaiting-=1
+            EventUI.eventsShownOrWaiting -= 1
         }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
 
-        EventUI.eventsShownOrWaiting+=1
+        EventUI.eventsShownOrWaiting += 1
     }
-    
-  
+
+
     private static getVisibility(): boolean {
-        return EventUI.lapEventVisibility 
-        || EventUI.endEventVisibility 
-        || EventUI.newTrackEventVisibility
-        || EventUI.newCarEventVisibility
-        || EventUI.competionUnlockEventVisibility
+        return EventUI.preEventVisibility
+            || EventUI.lapEventVisibility
+            || EventUI.endEventVisibility
+            || EventUI.newTrackEventVisibility
+            || EventUI.newCarEventVisibility
+            || EventUI.competionUnlockEventVisibility
+    }
+
+    private static getPreEventText(): string {
+        return "Tip: You can exit any time by holding E when not moving"
     }
 
     private static getLapEventText(): string {
@@ -234,38 +270,38 @@ export class EventUI {
     }
 
     private static getEndEventText(): string {
-        
-        if(EventUI.pointIncrease>0){
-            return ("Well done!").toUpperCase() +"\n+"+EventUI.pointIncrease+" PTS" 
+
+        if (EventUI.pointIncrease > 0) {
+            return ("Well done!").toUpperCase() + "\n+" + EventUI.pointIncrease + " PTS"
         } else {
             return ("Well done!").toUpperCase()
         }
-        
+
     }
 
     private static getNewTrackEventText(): string {
-        return("Congratulations\nYou have unlocked a new track!").toUpperCase()
+        return ("Congratulations\nYou have unlocked a new track!").toUpperCase()
     }
 
     private static getNewCarEventText(): string {
-        return("Congratulations\nYou have unlocked a new car!").toUpperCase()
+        return ("Congratulations\nYou have unlocked a new car!").toUpperCase()
     }
 
     private static getCompetionUnlockEventText(): string {
-        return("Congratulations\nYou just unlocked competition mode!").toUpperCase()
+        return ("Congratulations\nYou just unlocked competition mode!").toUpperCase()
     }
 
-    static comparePlayerData(){        
-        EventUI.pointIncrease = ServerComms.player.points -EventUI.oldPlayerData.points
+    static comparePlayerData() {
+        EventUI.pointIncrease = ServerComms.player.points - EventUI.oldPlayerData.points
         EventUI.triggerEndEvent()
 
         // Check for track unlock
-        if(ServerComms.player.tracks.length> EventUI.oldPlayerData.tracks.length){
+        if (ServerComms.player.tracks.length > EventUI.oldPlayerData.tracks.length) {
             this.triggerNewTrackEvent()
-        }         
+        }
 
-        if(ServerComms.player.cars.length> EventUI.oldPlayerData.cars.length){
+        if (ServerComms.player.cars.length > EventUI.oldPlayerData.cars.length) {
             this.triggerNewCarEvent()
-        }         
+        }
     }
 }
