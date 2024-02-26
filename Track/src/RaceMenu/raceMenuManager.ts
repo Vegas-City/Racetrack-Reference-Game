@@ -285,7 +285,7 @@ export class RaceMenuManager {
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: false,
+            startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(1)
@@ -301,7 +301,7 @@ export class RaceMenuManager {
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: false,
+            startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(2)
