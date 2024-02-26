@@ -9,7 +9,7 @@ export class ShopMenu {
         new ShopButton(Vector3.create(98.9,2.42,-9),"models/wearables/helmet_btn.glb",getWearableData("helmet"))
         new ShopButton(Vector3.create(98.9-2.42,2.4,-9),"models/wearables/gloves_btn.glb",getWearableData("gloves"))
         new ShopButton(Vector3.create(98.9-2.42*2,2.4,-9),"models/wearables/jacket_btn.glb",getWearableData("upperBody"))
-        new ShopButton(Vector3.create(98.9-2.42*3,2.4,-9),"models/wearables/pants_btn.glb",getWearableData("lowerBody"))
+        new ShopButton(Vector3.create(98.9-2.42*3,2.4,-9),"models/wearables/pants_btn.glb",getWearableData("lowerBody")).unlock()
         new ShopButton(Vector3.create(98.9-2.42*4,2.4,-9),"models/wearables/boots_btn.glb",getWearableData("boots"))
     }
 }

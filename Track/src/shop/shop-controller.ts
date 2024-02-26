@@ -100,7 +100,7 @@ export class ShopController {
             ShopController.logger.purchaseFail(id, collectionId, "", priceS, data)
         }
         else {
-            popup.show("Your Purchase has been Made and we are sending the wearable to your wallet. This may take a short while.")
+            popup.show("Your Purchase has been made and we are sending the wearable to your wallet. This may take a short while.")
             ShopController.logger.purchaseSuccess(id, collectionId, "", priceS, data)
             ServerComms.getPlayerData()
         }
