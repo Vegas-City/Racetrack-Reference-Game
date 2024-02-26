@@ -404,11 +404,9 @@ export class RaceMenuManager {
                 if (car.guid == carGuid) {
                     if (carIndex == 1) {
                         RaceMenuManager.instance.carButton2.unlock()
-                        EventUI.triggerNewCarEvent()
                     }
                     else if (carIndex == 2) {
                         RaceMenuManager.instance.carButton3.unlock()
-                        EventUI.triggerNewCarEvent()
                     }
                 }
             }
@@ -428,15 +426,12 @@ export class RaceMenuManager {
                 if (car.guid == selectedCarGuid) {
                     if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
                         RaceMenuManager.instance.trackButton2.unlock()
-                        EventUI.triggerNewTrackEvent()
                     }
                     else if (track.guid == "ec2a8c30-678a-4d07-b56e-7505ce8f941a") {
                         RaceMenuManager.instance.trackButton3.unlock()
-                        EventUI.triggerNewTrackEvent()
                     }
                     else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
                         RaceMenuManager.instance.trackButton4.unlock()
-                        EventUI.triggerNewTrackEvent()
                     }
                 }
             })

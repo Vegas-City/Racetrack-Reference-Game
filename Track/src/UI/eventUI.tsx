@@ -1,6 +1,8 @@
 import ReactEcs, { Label, UiEntity } from "@dcl/sdk/react-ecs"
 import { Color4 } from "@dcl/sdk/math"
 import * as utils from '@dcl-sdk/utils'
+import { PlayerData } from "../Server/types/playerData"
+import { ServerComms } from "../Server/serverComms"
 
 export class EventUI {
     static lapEventVisibility: boolean = false
@@ -10,7 +12,11 @@ export class EventUI {
     static competionUnlockEventVisibility: boolean = false
 
     static eventsShownOrWaiting:number = 0
-    static notificationTime:number = 4000
+    static notificationTime:number = 3000
+
+    static oldPlayerData:PlayerData = new PlayerData()
+
+    static pointIncrease:number = 0
 
     private static component = () => (
         <UiEntity
@@ -57,11 +63,11 @@ export class EventUI {
                 color={Color4.create(0.8, 0.8, 0.8, 1)}
                 uiTransform={{
                     positionType: 'absolute',
-                    width: 600,
-                    height: 100,
+                    width: 900,
+                    height: 200,
                     position: {
                         top: 0,
-                        left: -300,
+                        left: -450,
                     },
                     display: EventUI.endEventVisibility ? 'flex' : 'none',
 
@@ -80,11 +86,11 @@ export class EventUI {
                 color={Color4.create(0.8, 0.8, 0.8, 1)}
                 uiTransform={{
                     positionType: 'absolute',
-                    width: 600,
-                    height: 100,
+                    width: 1500,
+                    height: 200,
                     position: {
                         top: 0,
-                        left: -300,
+                        left: -750,
                     },
                     display: EventUI.newTrackEventVisibility ? 'flex' : 'none',
 
@@ -103,11 +109,11 @@ export class EventUI {
                 color={Color4.create(0.8, 0.8, 0.8, 1)}
                 uiTransform={{
                     positionType: 'absolute',
-                    width: 600,
-                    height: 100,
+                    width: 1500,
+                    height: 200,
                     position: {
                         top: 0,
-                        left: -300,
+                        left: -750,
                     },
                     display: EventUI.newCarEventVisibility ? 'flex' : 'none',
 
@@ -126,11 +132,11 @@ export class EventUI {
                 color={Color4.create(0.8, 0.8, 0.8, 1)}
                 uiTransform={{
                     positionType: 'absolute',
-                    width: 600,
-                    height: 100,
+                    width: 1750,
+                    height: 200,
                     position: {
                         top: 0,
-                        left: -300,
+                        left: -875,
                     },
                     display: EventUI.competionUnlockEventVisibility ? 'flex' : 'none',
 
@@ -216,7 +222,11 @@ export class EventUI {
     
   
     private static getVisibility(): boolean {
-        return EventUI.lapEventVisibility || EventUI.endEventVisibility
+        return EventUI.lapEventVisibility 
+        || EventUI.endEventVisibility 
+        || EventUI.newTrackEventVisibility
+        || EventUI.newCarEventVisibility
+        || EventUI.competionUnlockEventVisibility
     }
 
     private static getLapEventText(): string {
@@ -224,18 +234,38 @@ export class EventUI {
     }
 
     private static getEndEventText(): string {
-        return ("Well done!").toUpperCase()
+        
+        if(EventUI.pointIncrease>0){
+            return ("Well done!").toUpperCase() +"\n+"+EventUI.pointIncrease+" PTS" 
+        } else {
+            return ("Well done!").toUpperCase()
+        }
+        
     }
 
     private static getNewTrackEventText(): string {
-        return("Congratulations, you have unlocked a new track!").toUpperCase()
+        return("Congratulations\nYou have unlocked a new track!").toUpperCase()
     }
 
     private static getNewCarEventText(): string {
-        return("Congratulations, you have unlocked a new car!").toUpperCase()
+        return("Congratulations\nYou have unlocked a new car!").toUpperCase()
     }
 
     private static getCompetionUnlockEventText(): string {
-        return("Congratulations, you just unlocked competition mode!").toUpperCase()
+        return("Congratulations\nYou just unlocked competition mode!").toUpperCase()
+    }
+
+    static comparePlayerData(){        
+        EventUI.pointIncrease = ServerComms.player.points -EventUI.oldPlayerData.points
+        EventUI.triggerEndEvent()
+
+        // Check for track unlock
+        if(ServerComms.player.tracks.length> EventUI.oldPlayerData.tracks.length){
+            this.triggerNewTrackEvent()
+        }         
+
+        if(ServerComms.player.cars.length> EventUI.oldPlayerData.cars.length){
+            this.triggerNewCarEvent()
+        }         
     }
 }
