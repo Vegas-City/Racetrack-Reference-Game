@@ -9,6 +9,9 @@ export class EventUI {
     static newCarEventVisibility: boolean = false
     static competionUnlockEventVisibility: boolean = false
 
+    static eventsShownOrWaiting:number = 0
+    static notificationTime:number = 4000
+
     private static component = () => (
         <UiEntity
             key="EventUI"
@@ -147,42 +150,71 @@ export class EventUI {
     }
 
     static triggerLapEvent(): void {
-        EventUI.lapEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.lapEventVisibility = true
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting)
+
         utils.timers.setTimeout(() => {
             EventUI.lapEventVisibility = false
-        }, 4000)
+            EventUI.eventsShownOrWaiting-=1
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
+
+        EventUI.eventsShownOrWaiting+=1
     }
 
     static triggerEndEvent(): void {
-        EventUI.endEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.endEventVisibility = true
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting)
+
         utils.timers.setTimeout(() => {
             EventUI.endEventVisibility = false
-        }, 4000)
+            EventUI.eventsShownOrWaiting-=1
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
+
+        EventUI.eventsShownOrWaiting+=1
     }
 
     static triggerNewTrackEvent(): void {
-        EventUI.newTrackEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.newTrackEventVisibility = true
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting)
+
         utils.timers.setTimeout(() => {
             EventUI.newTrackEventVisibility = false
-        }, 4000)
+            EventUI.eventsShownOrWaiting-=1
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
+
+        EventUI.eventsShownOrWaiting+=1
     }
 
     static triggerNewCarEvent(): void {
-        EventUI.newCarEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.newCarEventVisibility = true
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting)
+
         utils.timers.setTimeout(() => {
             EventUI.newCarEventVisibility = false
-        }, 4000)
+            EventUI.eventsShownOrWaiting-=1
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
+
+        EventUI.eventsShownOrWaiting+=1
     }
 
     static triggerCompetionUnlockEvent(): void {
-        EventUI.competionUnlockEventVisibility = true
+        utils.timers.setTimeout(() => {
+            EventUI.competionUnlockEventVisibility = true
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting)
+
         utils.timers.setTimeout(() => {
             EventUI.competionUnlockEventVisibility = false
-        }, 4000)
+            EventUI.eventsShownOrWaiting-=1
+        }, EventUI.notificationTime * EventUI.eventsShownOrWaiting + EventUI.notificationTime)
+
+        EventUI.eventsShownOrWaiting+=1
     }
-
-
-
+    
+  
     private static getVisibility(): boolean {
         return EventUI.lapEventVisibility || EventUI.endEventVisibility
     }

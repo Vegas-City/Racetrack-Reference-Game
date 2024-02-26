@@ -110,6 +110,7 @@ export class Scene {
                     if (!lap) return
 
                     EventUI.triggerLapEvent()
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
