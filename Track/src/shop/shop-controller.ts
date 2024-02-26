@@ -63,12 +63,12 @@ export class ShopController {
         // make collectables spin to draw attention
         utils.perpetualMotions.startRotation(linkEntity, Quaternion.fromEulerDegrees(0, 45, 0))   
 
-        pointerEventsSystem.onPointerDown({
-            entity: collider,
-            opts: { button: InputAction.IA_POINTER, hoverText: `BUY: ` + data.id, maxDistance: 10 }
-        }, () => {
-            shopUI.show(data)
-        })
+        // pointerEventsSystem.onPointerDown({
+        //     entity: collider,
+        //     opts: { button: InputAction.IA_POINTER, hoverText: `BUY: ` + data.id, maxDistance: 10 }
+        // }, () => {
+        //     shopUI.show(data)
+        // })
     }
 
     public async sendBuyRequest(id: string, price: number, collectionId:string) {
@@ -100,7 +100,7 @@ export class ShopController {
             ShopController.logger.purchaseFail(id, collectionId, "", priceS, data)
         }
         else {
-            popup.show("Your Purchase has been Made and we are sending the wearable to your wallet. This may take a short while.")
+            popup.show("Your Purchase has been made and we are sending the wearable to your wallet. This may take a short while.")
             ShopController.logger.purchaseSuccess(id, collectionId, "", priceS, data)
             ServerComms.getPlayerData()
         }
