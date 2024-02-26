@@ -85,6 +85,7 @@ export class Scene {
 
                     utils.timers.setTimeout(() => {
                         ServerComms.getPlayerData(true)
+                        ServerComms.getLeaderboardData()
                     }, 4000)
 
                     utils.timers.setTimeout(() => {
