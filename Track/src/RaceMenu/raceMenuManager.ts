@@ -159,6 +159,7 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/competition.glb",
             srcSelected: "models/selection/competition_selected.glb",
+            srcWhiteCup: "models/selection/whiteCup.glb",
             srcLock: "models/selection/lock.glb",
             startLocked: true,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
@@ -169,7 +170,9 @@ export class RaceMenuManager {
                 this.trackButton4.show()
                 Transform.getMutable(this.practiceIcon).scale = Vector3.Zero()
                 Transform.getMutable(this.competitionIcon).scale = Vector3.One()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.35, 0, 0),
+            iconScale: Vector3.create(0.8, 0.8, 0.8)
         })
     }
 
@@ -191,7 +194,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap3).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton2 = new MenuButton({
@@ -212,7 +217,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.One()
                 Transform.getMutable(this.minimap3).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton3 = new MenuButton({
@@ -233,7 +240,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap3).scale = Vector3.One()
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton4 = new MenuButton({
@@ -254,7 +263,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap3).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap4).scale = Vector3.One()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton2.hide()
