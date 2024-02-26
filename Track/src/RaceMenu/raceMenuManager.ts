@@ -160,7 +160,7 @@ export class RaceMenuManager {
             src: "models/selection/competition.glb",
             srcSelected: "models/selection/competition_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: true,
+            startLocked: false,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
             onSelectCallback: (() => {
                 TrackManager.isPractice = false
