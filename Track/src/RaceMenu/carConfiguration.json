@@ -7,12 +7,12 @@
       "attributes": {
         "mass": 150,
         "accelerationF": 8,
-        "accelerationB": 12,
+        "accelerationB": 8,
         "deceleration": 4,
         "minSpeed": -14,
         "maxSpeed": 21,
-        "steerSpeed": 1.5,
-        "grip": 0.3
+        "steerSpeed": 1.3,
+        "grip": 0.2
       },
       "audio": {
         "engineStart": "audio/engineStart.mp3",
@@ -57,12 +57,12 @@
       "attributes": {
         "mass": 150,
         "accelerationF": 10,
-        "accelerationB": 12,
-        "deceleration": 4,
+        "accelerationB": 10,
+        "deceleration": 6,
         "minSpeed": -14,
         "maxSpeed": 23,
-        "steerSpeed": 1.5,
-        "grip": 0.3
+        "steerSpeed": 1.4,
+        "grip": 0.25
       },
       "audio": {
         "engineStart": "audio/engineStart.mp3",
@@ -108,7 +108,7 @@
         "mass": 150,
         "accelerationF": 12,
         "accelerationB": 12,
-        "deceleration": 4,
+        "deceleration": 8,
         "minSpeed": -14,
         "maxSpeed": 25,
         "steerSpeed": 1.5,
