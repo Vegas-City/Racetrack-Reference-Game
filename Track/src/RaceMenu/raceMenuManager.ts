@@ -159,6 +159,8 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/competition.glb",
             srcSelected: "models/selection/competition_selected.glb",
+            srcLock: "models/selection/lock.glb",
+            startLocked: true,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
             onSelectCallback: (() => {
                 TrackManager.isPractice = false

@@ -115,11 +115,11 @@ export class Scene {
                         time: Math.round(lap.timeElapsed * 1000)
                     })
 
-                    if (!TrackManager.isPractice) {
-                        if(Math.round(lap.timeElapsed * 1000)<60){
-                            if(RaceMenuManager.instance.trackButton1.locked){
+                    if (TrackManager.isPractice) {
+                        if (Math.round(lap.timeElapsed) < 60) {
+                            if (RaceMenuManager.instance.competitionButton.locked) {
                                 EventUI.triggerCompetionUnlockEvent()
-                                RaceMenuManager.instance.trackButton1.locked = false
+                                RaceMenuManager.instance.competitionButton.unlock()
                             }
                         }
                     }
