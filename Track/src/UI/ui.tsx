@@ -2,7 +2,7 @@ import ReactEcs, { ReactEcsRenderer } from '@dcl/sdk/react-ecs'
 import { SpeedometerUI, TimeUI, Countdown, ExitCarUI } from '@vegascity/racetrack/src/ui'
 import { Minimap } from '@vegascity/racetrack/src/ui'
 import { UiCanvasInformation, engine } from '@dcl/sdk/ecs'
-import { EventUI } from './eventUI'
+import { EventUIImage } from './eventUIImage'
 import * as  ui from 'dcl-ui-toolkit'
 import { PointsUi } from './pointsUi'
 import { popup, shopUI } from '../utils/ui-provider'
@@ -14,7 +14,7 @@ const uiComponent = () => (
     TimeUI.Render(),
     Countdown.Render(),
     Minimap.Render(),
-    EventUI.Render(),
+    EventUIImage.Render(),
     popup.render(),
     shopUI.render(),
     PointsUi.Render(),
