@@ -21,7 +21,7 @@ let wearables = {
         image_path: "models/wearables/jacket.glb",
         numericalId: 2,
         active: true,
-        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da923",
+        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da922",
         stock: 0,
         posy: 1
     },
@@ -33,7 +33,7 @@ let wearables = {
         image_path: "models/wearables/pants.glb",
         numericalId: 3,
         active: true,
-        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da925",
+        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da922",
         stock: 0,
         posy: 1.6
     },
@@ -45,7 +45,7 @@ let wearables = {
         image_path: "models/wearables/gloves.glb",
         numericalId: 4,
         active: true,
-        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da924",
+        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da922",
         stock: 0,
         posy: 0.9
     },
@@ -57,7 +57,7 @@ let wearables = {
         image_path: "models/wearables/boots.glb",
         numericalId: 5,
         active: true,
-        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da926",
+        collection: "0x3045d4e3b5322c866fb03fcdbbf63050433da922",
         stock: 0,
         posy: 2
     }

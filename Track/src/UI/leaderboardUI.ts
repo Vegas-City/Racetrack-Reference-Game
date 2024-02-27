@@ -3,7 +3,7 @@ import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { ServerComms } from "../Server/serverComms";
 
 export class LeaderboardUI {
-    private static readonly MAX_ROWS: number = 10
+    private static readonly MAX_ROWS: number = 5
     private static readonly HORIZONTAL_SPACING: number = 6
     private static readonly VERTICAL_SPACING: number = 1.5
 
@@ -61,6 +61,7 @@ export class LeaderboardUI {
         // Total text
         if (LeaderboardUI.trackNames.length > 0) {
             if (LeaderboardUI.totalTextEntity === undefined) {
+                LeaderboardUI.totalTextEntity = engine.addEntity()
                 Transform.create(LeaderboardUI.totalTextEntity, {
                     parent: LeaderboardUI.container,
                     position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
@@ -82,7 +83,6 @@ export class LeaderboardUI {
                 TextShape.getMutable(LeaderboardUI.totalTextEntity).text = ""
             }
         }
-
 
         // Player names
         index = 0
