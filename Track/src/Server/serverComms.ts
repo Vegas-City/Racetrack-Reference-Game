@@ -106,8 +106,6 @@ export class ServerComms {
         }
         else {
             try {
-                if (ServerComms.player != undefined || ServerComms.player != null) {
-                    Object.assign(EventUI.oldPlayerData, ServerComms.player)
                 if(ServerComms.player!=undefined || ServerComms.player != null){
                      Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
                 }
@@ -123,8 +121,6 @@ export class ServerComms {
                         ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
                         CarSpecsMenuManager.update()
-                        if (_raceEnded) {
-                            EventUI.comparePlayerData()
                         if(_raceEnded){
                             EventUIImage.comparePlayerData()
                         }
