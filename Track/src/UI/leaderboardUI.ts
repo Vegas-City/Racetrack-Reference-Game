@@ -157,8 +157,8 @@ export class LeaderboardUI {
                         text: LeaderboardUI.formatTime(totalScore),
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
                         outlineWidth: 0.2,
-                        textColor: Color4.create(0.3, 0.5, 0.8, 1),
-                        outlineColor: Color4.create(0.3, 0.5, 0.8, 1)
+                        textColor: Color4.create(1, 1, 1, 1),
+                        outlineColor: Color4.create(1, 1, 1, 1)
                     })
                     LeaderboardUI.totalScoreEntities.push(totalScoreEntity)
                 }
