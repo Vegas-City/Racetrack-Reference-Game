@@ -98,14 +98,16 @@ export class ServerComms {
         }
     }
 
-    public static async getPlayerData(_raceEnded:boolean = false) {
+    public static async getPlayerData(_raceEnded: boolean = false) {
         if (ServerComms.TEST_MODE) {
             ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
             RaceMenuManager.update()
             CarSpecsMenuManager.update()
-        } 
+        }
         else {
             try {
+                if (ServerComms.player != undefined || ServerComms.player != null) {
+                    Object.assign(EventUI.oldPlayerData, ServerComms.player)
                 if(ServerComms.player!=undefined || ServerComms.player != null){
                      Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
                 }
@@ -118,9 +120,11 @@ export class ServerComms {
                 }).then(async response => await JSON.parse(response.body)).then(
                     data => {
                         console.log(data.result)
-                       ServerComms.player = Object.assign(new PlayerData(), data.result)
+                        ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
                         CarSpecsMenuManager.update()
+                        if (_raceEnded) {
+                            EventUI.comparePlayerData()
                         if(_raceEnded){
                             EventUIImage.comparePlayerData()
                         }
@@ -129,7 +133,7 @@ export class ServerComms {
                 )
             } catch (ex) {
                 console.log("Error getting player data: " + ex)
-            } 
+            }
         }
     }
 
@@ -224,17 +228,33 @@ export class ServerComms {
         }
     }
 
-    public static setTrack(_guid: string) {
+    public static setTrack(_guid: string): void {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = _guid
             let track = ServerComms.player.tracks.find(track => track.guid === _guid)
             let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
             let bool = true;
-            if(pb != null){
+            if (pb != null) {
                 bool = pb.PB == 0
-            } 
-            
+            }
+
             TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
         })
+    }
+
+    public static getPlayerTotalScore(): number {
+        if (ServerComms.player.tracks.length < 4) return 0
+
+        let total: number = 0
+        let invalid: boolean = false
+        for (let track of ServerComms.player.tracks) {
+            if (track.pb < 1) {
+                invalid = true
+            }
+            total += track.pb
+        }
+        if (invalid) return 0
+
+        return Math.floor(total)
     }
 }

@@ -22,6 +22,7 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
+import { Transform } from '@dcl/sdk/ecs'
 
 export class Scene {
 
@@ -77,7 +78,6 @@ export class Scene {
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
                         ServerComms.getPlayerData(true)
-                        ServerComms.getLeaderboardData()
                     })
 
                     // Send the ghost to the server at game end
@@ -154,6 +154,7 @@ export class Scene {
         new NPCManager()
         new ParticleSystem()
 
+        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
         RaceMenuManager.LoadTrack(0) // load practice track by default
 
         Minimap.InitialiseAssets({
@@ -214,6 +215,9 @@ export class Scene {
     }
 
     static LoadMenu() {
-        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
+        let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
+        if (menuTransform) {
+            menuTransform.scale = Vector3.One()
+        }
     }
 } 
