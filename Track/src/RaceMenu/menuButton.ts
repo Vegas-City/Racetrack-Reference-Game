@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem, pointerEventsSystem } from "@dcl/ecs";
+import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from "@dcl/ecs";
 import { Quaternion, Vector3 } from "@dcl/ecs-math";
 
 export type MenuConfig = {

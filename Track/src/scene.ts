@@ -15,13 +15,13 @@ import { Car } from '@vegascity/racetrack/src/car'
 import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import { ParticleSystem } from './particleSystem/particleSystem'
+import { ShopMenu } from './shop/ShopMenu'
+import { CarSpecsMenuManager } from './CarSpecsMenu/carSpecsMenuManager'
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { ShopMenu } from './shop/ShopMenu'
-import { PlayerData } from './Server/types/playerData'
 
 export class Scene {
 
@@ -153,14 +153,12 @@ export class Scene {
         })
 
         new PhysicsManager()
-
-        RaceMenuManager.LoadTrack(0) // load practice track by default
-
+        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
+        new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
         new NPCManager()
-
         new ParticleSystem()
 
-        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
+        RaceMenuManager.LoadTrack(0) // load practice track by default
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
