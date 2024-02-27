@@ -7,7 +7,7 @@ import { Minimap } from "@vegascity/racetrack/src/ui"
 import { RaceMenuManager } from './RaceMenu/raceMenuManager'
 import { ServerComms } from './Server/serverComms'
 import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
-import { EventUI } from './UI/eventUI'
+import { EventUIEnum, EventUIImage } from './UI/eventUIImage'
 import { ShopController } from './shop/shop-controller'
 import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
@@ -104,7 +104,7 @@ export class Scene {
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
-                    EventUI.triggerLapEvent()
+                    EventUIImage.triggerEvent(EventUIEnum.lapEvent)
 
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
@@ -116,7 +116,7 @@ export class Scene {
                     if (TrackManager.isPractice) {
                         if (Math.round(lap.timeElapsed) < 60) {
                             if (RaceMenuManager.instance.competitionButton.locked) {
-                                EventUI.triggerCompetionUnlockEvent()
+                                EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
                                 RaceMenuManager.instance.competitionButton.unlock()
                             }
                         }

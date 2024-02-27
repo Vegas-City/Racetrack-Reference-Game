@@ -12,7 +12,7 @@ import * as utils from '@dcl-sdk/utils'
 import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
 import { TimeUI } from "@vegascity/racetrack/src/ui"
-import { EventUI } from "../UI/eventUI"
+import { EventUIImage } from "../UI/eventUIImage"
 import { CarSpecsMenuManager } from "../CarSpecsMenu/carSpecsMenuManager"
 
 export class ServerComms {
@@ -106,8 +106,8 @@ export class ServerComms {
         }
         else {
             try {
-                if (ServerComms.player != undefined || ServerComms.player != null) {
-                    Object.assign(EventUI.oldPlayerData, ServerComms.player)
+                if(ServerComms.player!=undefined || ServerComms.player != null){
+                     Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
                 }
                 let response = await signedFetch({
                     url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
@@ -121,8 +121,8 @@ export class ServerComms {
                         ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
                         CarSpecsMenuManager.update()
-                        if (_raceEnded) {
-                            EventUI.comparePlayerData()
+                        if(_raceEnded){
+                            EventUIImage.comparePlayerData()
                         }
                     }
 
