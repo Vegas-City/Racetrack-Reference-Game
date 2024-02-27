@@ -9,7 +9,7 @@ import { Minimap } from "@vegascity/racetrack/src/ui";
 import { ServerComms } from "../Server/serverComms";
 import * as carConfiguration from "./carConfiguration.json"
 import * as utils from '@dcl-sdk/utils'
-import { EventUI } from "../UI/eventUI";
+import { EventUIEnum, EventUIImage } from "../UI/eventUIImage";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -400,7 +400,7 @@ export class RaceMenuManager {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)
                 self.raceButton.deselect()
-                EventUI.triggerPreEvent()
+                EventUIImage.triggerEvent(EventUIEnum.preEvent)
             }, 500)
 
             utils.timers.setTimeout(function () {
