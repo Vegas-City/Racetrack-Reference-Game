@@ -7,7 +7,7 @@ import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
 import { Helper, UserData } from "./Server/Helper";
 
-const passwordProtected: boolean = true
+const passwordProtected: boolean = false
 const password: string = "testingtuesday"
 const passwordDev: string = "letsgodev"
 

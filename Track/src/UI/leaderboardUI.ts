@@ -1,16 +1,17 @@
-import { Entity, Material, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
+import { Entity, GltfContainer, Material, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
 import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { ServerComms } from "../Server/serverComms";
+import { Buildings } from "../Buildings/Buildings";
 
 export class LeaderboardUI {
     private static readonly MAX_ROWS: number = 5
     private static readonly HORIZONTAL_SPACING: number = 6
-    private static readonly VERTICAL_SPACING: number = 1.5
+    private static readonly VERTICAL_SPACING: number = 2
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
-        position: Vector3.create(8, 5, -4),
-        rotation: Quaternion.fromEulerDegrees(0, 180, 0),
-        scale: Vector3.create(0.3, 0.3, 0.3)
+        position: Vector3.create(-46.3, 18.6, 26.6),
+        rotation: Quaternion.fromEulerDegrees(0, -90, 0),
+        scale: Vector3.create(0.6, 0.6, 0.6)
     }
 
     private static trackNames: string[] = []
@@ -51,7 +52,7 @@ export class LeaderboardUI {
                 TextShape.create(nameEntity, {
                     text: track.toUpperCase(),
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
-                    textColor: Color4.create(0.1, 0.8, 0.2, 1)
+                    textColor: Color4.create(0, 0, 0, 1)
                 })
                 LeaderboardUI.trackNameEntities.push(nameEntity)
             }
@@ -172,6 +173,15 @@ export class LeaderboardUI {
     }
 
     private static initialise(): void {
+        let leaderboardBars = engine.addEntity()
+        Transform.create(leaderboardBars, {
+            parent: Buildings.buildingsParent,
+            position: Vector3.create(0, -4, 0)
+        })
+        GltfContainer.create(leaderboardBars, {
+            src: "models/buildings/leaderboardBars.glb"
+        })
+
         LeaderboardUI.container = engine.addEntity()
         Transform.create(LeaderboardUI.container, LeaderboardUI.LEADERBOARD_TRANSFORM)
 
@@ -186,6 +196,7 @@ export class LeaderboardUI {
             textColor: Color4.create(0.8, 0.2, 0.2, 1)
         })
 
+        /*
         let bgEntity = engine.addEntity()
         Transform.create(bgEntity, {
             parent: LeaderboardUI.container,
@@ -196,6 +207,7 @@ export class LeaderboardUI {
         Material.setPbrMaterial(bgEntity, {
             albedoColor: Color4.Black()
         })
+        */
     }
 
     private static updateTopPlayerData(): void {
