@@ -15,6 +15,7 @@ export enum EventUIEnum {
 
 export class EventUIImage {
     static eventVisibility: boolean = false
+    static loadingImage: boolean = false
 
     static eventsShownOrWaiting: number = 0
     static notificationTime: number = 4000
@@ -34,7 +35,7 @@ export class EventUIImage {
                     top: '25%',
                     right: '50%',
                 },
-                display: EventUIImage.eventVisibility ? 'flex' : 'none',
+                display: EventUIImage.eventVisibility && !EventUIImage.loadingImage  ? 'flex' : 'none',
             }}
         >
         <UiEntity
@@ -45,7 +46,6 @@ export class EventUIImage {
                 },
                 width:512,
                 height:512,
-                display: EventUIImage.eventVisibility ? 'flex' : 'none',
             }}
             uiBackground={{
                 textureMode: 'stretch',
@@ -85,6 +85,10 @@ export class EventUIImage {
 
     static triggerEvent(_event: EventUIEnum): void {
         utils.timers.setTimeout(() => {
+            EventUIImage.loadingImage = true
+            utils.timers.setTimeout(() => {
+                EventUIImage.loadingImage = false
+            },250)
             EventUIImage.points = ""
             EventUIImage.eventVisibility = true
             switch(_event){
