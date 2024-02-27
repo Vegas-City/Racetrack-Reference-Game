@@ -52,7 +52,8 @@ export class RaceMenuManager {
         this.baseEntity = engine.addEntity()
         Transform.create(this.baseEntity, {
             position: _position,
-            rotation: Quaternion.fromEulerDegrees(0, 180, 0)
+            rotation: Quaternion.fromEulerDegrees(0, 180, 0),
+            scale: Vector3.Zero()
         })
 
         this.carContainer = engine.addEntity()
