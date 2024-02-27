@@ -150,7 +150,6 @@ export class Scene {
         })
 
         new PhysicsManager()
-        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
         new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
         new NPCManager()
         new ParticleSystem()
@@ -212,5 +211,9 @@ export class Scene {
         new AvatarVisibilityManager()
 
         Scene.loaded = true
+    }
+
+    static LoadMenu() {
+        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
     }
 } 

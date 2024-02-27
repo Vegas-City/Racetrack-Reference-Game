@@ -23,13 +23,16 @@ export function main() {
           console.log(`You are in the realm: `, realmInfo.realmName)
           if (realmInfo.isPreview) {
             Scene.LoadScene()
+            Scene.LoadMenu()
             DebugUI.debugUIShow = true
-          } else {
+          }
+          else {
+            Scene.LoadScene()
             if (passwordProtected) {
               showPrompt()
             }
             else {
-              Scene.LoadScene()
+              Scene.LoadMenu()
             }
           }
         }
@@ -44,12 +47,12 @@ export function main() {
         if (value.toLocaleLowerCase() == password) {
           prompt.hide()
           utils.timers.setTimeout(function () {
-            Scene.LoadScene()
+            Scene.LoadMenu()
           }, 1000)
         } else if (value.toLocaleLowerCase() == passwordDev) {
           prompt.hide()
           utils.timers.setTimeout(function () {
-            Scene.LoadScene()
+            Scene.LoadMenu()
             DebugUI.debugUIShow = true
           }, 1000)
         }
