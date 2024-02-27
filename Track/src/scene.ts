@@ -78,7 +78,6 @@ export class Scene {
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
                         ServerComms.getPlayerData(true)
-                        ServerComms.getLeaderboardData()
                     })
 
                     // Send the ghost to the server at game end
@@ -217,7 +216,7 @@ export class Scene {
 
     static LoadMenu() {
         let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
-        if(menuTransform) {
+        if (menuTransform) {
             menuTransform.scale = Vector3.One()
         }
     }
