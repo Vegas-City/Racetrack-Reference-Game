@@ -76,17 +76,14 @@ export class Scene {
                         time: Math.round(lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
+                        ServerComms.getPlayerData(true)
+                        ServerComms.getLeaderboardData()
                     })
 
                     // Send the ghost to the server at game end
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
-
-                    utils.timers.setTimeout(() => {
-                        ServerComms.getPlayerData(true)
-                        ServerComms.getLeaderboardData()
-                    }, 4000)
 
                     utils.timers.setTimeout(() => {
                         Car.unload()
