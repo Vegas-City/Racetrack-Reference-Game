@@ -274,7 +274,7 @@ export class EventUI {
         if (EventUI.pointIncrease > 0) {
             return ("Well done!").toUpperCase() + "\n+" + EventUI.pointIncrease + " PTS"
         } else {
-            return ("Well done!").toUpperCase()
+            return ("Nice try!\nPlease try again!").toUpperCase()
         }
 
     }
