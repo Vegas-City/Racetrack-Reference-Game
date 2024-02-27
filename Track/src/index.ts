@@ -56,10 +56,26 @@ export function main() {
             DebugUI.debugUIShow = true
           }, 1000)
         }
-      },
+      }
     })
+
+    prompt.inputElement.onChange = (value: string) => {
+      if (value.toLocaleLowerCase() == password) {
+        prompt.hide()
+        utils.timers.setTimeout(function () {
+          Scene.LoadMenu()
+          prompt.hide()
+        }, 1000)
+      } else if (value.toLocaleLowerCase() == passwordDev) {
+        prompt.hide()
+        utils.timers.setTimeout(function () {
+          Scene.LoadMenu()
+          prompt.hide()
+          DebugUI.debugUIShow = true
+        }, 1000)
+      }
+    }
 
     prompt.show()
   }
-
 }
