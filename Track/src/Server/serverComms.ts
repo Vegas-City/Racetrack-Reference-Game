@@ -13,6 +13,7 @@ import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
 import { TimeUI } from "@vegascity/racetrack/src/ui"
 import { EventUI } from "../UI/eventUI"
+import { CarSpecsMenuManager } from "../CarSpecsMenu/carSpecsMenuManager"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -101,6 +102,7 @@ export class ServerComms {
         if (ServerComms.TEST_MODE) {
             ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
             RaceMenuManager.update()
+            CarSpecsMenuManager.update()
         } 
         else {
             try {
@@ -118,6 +120,7 @@ export class ServerComms {
                         console.log(data.result)
                        ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
+                        CarSpecsMenuManager.update()
                         if(_raceEnded){
                             EventUI.comparePlayerData()
                         }
