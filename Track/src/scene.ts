@@ -15,6 +15,8 @@ import { Car } from '@vegascity/racetrack/src/car'
 import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import { ParticleSystem } from './particleSystem/particleSystem'
+import { ShopMenu } from './shop/ShopMenu'
+import { CarSpecsMenuManager } from './CarSpecsMenu/carSpecsMenuManager'
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
@@ -36,6 +38,8 @@ export class Scene {
         Scene.shopController = new ShopController()
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
+
+        new ShopMenu()
 
         new TrackManager({
             position: Vector3.create(-32, 1, 16),
@@ -60,14 +64,11 @@ export class Scene {
                     }
 
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
-
-
                 },
                 onEndEvent: () => {
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
-                    EventUI.triggerEndEvent()
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -75,17 +76,14 @@ export class Scene {
                         time: Math.round(lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
+                        ServerComms.getPlayerData(true)
+                        ServerComms.getLeaderboardData()
                     })
 
                     // Send the ghost to the server at game end
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
-
-                    // update player data after completing a race
-                    utils.timers.setTimeout(() => {
-                        ServerComms.getPlayerData()
-                    }, 4000)
 
                     utils.timers.setTimeout(() => {
                         Car.unload()
@@ -107,12 +105,22 @@ export class Scene {
                     if (!lap) return
 
                     EventUI.triggerLapEvent()
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
                         checkpoint: lap.checkpointIndex + (lap.checkpoints.length * lap.lapsCompleted),
                         time: Math.round(lap.timeElapsed * 1000)
                     })
+
+                    if (TrackManager.isPractice) {
+                        if (Math.round(lap.timeElapsed) < 60) {
+                            if (RaceMenuManager.instance.competitionButton.locked) {
+                                EventUI.triggerCompetionUnlockEvent()
+                                RaceMenuManager.instance.competitionButton.unlock()
+                            }
+                        }
+                    }
                 }
             },
             trackConfigs: [
@@ -142,14 +150,11 @@ export class Scene {
         })
 
         new PhysicsManager()
-
-        RaceMenuManager.LoadTrack(0) // load practice track by default
-
+        new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
         new NPCManager()
-
         new ParticleSystem()
 
-        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
+        RaceMenuManager.LoadTrack(0) // load practice track by default
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
@@ -206,5 +211,9 @@ export class Scene {
         new AvatarVisibilityManager()
 
         Scene.loaded = true
+    }
+
+    static LoadMenu() {
+        new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
     }
 } 

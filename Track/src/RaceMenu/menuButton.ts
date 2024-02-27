@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem, pointerEventsSystem } from "@dcl/ecs";
+import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from "@dcl/ecs";
 import { Quaternion, Vector3 } from "@dcl/ecs-math";
 
 export type MenuConfig = {
@@ -6,6 +6,9 @@ export type MenuConfig = {
     position: Vector3
     rotation: Quaternion
     scale: Vector3
+
+    iconOffset?: Vector3
+    iconScale?: Vector3
 
     src: string
     srcSelected?: string
@@ -24,6 +27,9 @@ export class MenuButton {
 
     animSpeed: number = 1.2
     isScalingUp: boolean = false
+
+    iconOffset: Vector3 = Vector3.Zero()
+    iconScale: Vector3 = Vector3.One()
 
     parentEntity: Entity
     buttonEntity: Entity
@@ -46,6 +52,8 @@ export class MenuButton {
     constructor(_config: MenuConfig) {
         if (_config.deselectAllCallback) this.deselectAllCallback = _config.deselectAllCallback
         if (_config.onSelectCallback) this.onSelectCallback = _config.onSelectCallback
+        if (_config.iconOffset) this.iconOffset = _config.iconOffset
+        if (_config.iconScale) this.iconScale = _config.iconScale
 
         this.parentEntity = engine.addEntity()
         Transform.create(this.parentEntity, {
@@ -102,6 +110,7 @@ export class MenuButton {
             this.lockIcon = engine.addEntity()
             Transform.create(this.lockIcon, {
                 parent: this.parentEntity,
+                position: this.iconOffset,
                 scale: Vector3.Zero()
             })
             GltfContainer.create(this.lockIcon, { src: _config.srcLock })
@@ -111,7 +120,8 @@ export class MenuButton {
             this.whiteCup = engine.addEntity()
             Transform.create(this.whiteCup, {
                 parent: this.parentEntity,
-                scale: Vector3.One()
+                position: this.iconOffset,
+                scale: this.iconScale
             })
             GltfContainer.create(this.whiteCup, { src: _config.srcWhiteCup })
         }
@@ -120,6 +130,7 @@ export class MenuButton {
             this.goldCup = engine.addEntity()
             Transform.create(this.goldCup, {
                 parent: this.parentEntity,
+                position: this.iconOffset,
                 scale: Vector3.Zero()
             })
             GltfContainer.create(this.goldCup, { src: _config.srcGoldCup })
@@ -133,7 +144,7 @@ export class MenuButton {
             this.lock()
         }
 
-        if(!this.locked && !this.hidden) {
+        if (!this.locked && !this.hidden) {
             this.addSelectPointerEvent()
         }
 
@@ -194,7 +205,7 @@ export class MenuButton {
 
         this.locked = true
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = Vector3.One()
+            Transform.getMutable(this.lockIcon).scale = this.iconScale
         }
         if (this.whiteCup) {
             Transform.getMutable(this.whiteCup).scale = Vector3.Zero()
@@ -215,7 +226,7 @@ export class MenuButton {
             Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
         }
         if (this.whiteCup) {
-            Transform.getMutable(this.whiteCup).scale = Vector3.One()
+            Transform.getMutable(this.whiteCup).scale = this.iconScale
         }
         if (this.goldCup) {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
@@ -235,7 +246,7 @@ export class MenuButton {
             Transform.getMutable(this.whiteCup).scale = Vector3.Zero()
         }
         if (this.goldCup) {
-            Transform.getMutable(this.goldCup).scale = Vector3.One()
+            Transform.getMutable(this.goldCup).scale = this.iconScale
         }
     }
 
@@ -247,7 +258,7 @@ export class MenuButton {
             Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
         }
         if (this.whiteCup) {
-            Transform.getMutable(this.whiteCup).scale = Vector3.One()
+            Transform.getMutable(this.whiteCup).scale = this.iconScale
         }
         if (this.goldCup) {
             Transform.getMutable(this.goldCup).scale = Vector3.Zero()
@@ -290,7 +301,7 @@ export class MenuButton {
             ]
         })
 
-        if(!this.locked) {
+        if (!this.locked) {
             this.addSelectPointerEvent()
         }
     }

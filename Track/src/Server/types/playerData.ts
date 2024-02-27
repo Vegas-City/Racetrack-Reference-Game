@@ -4,6 +4,6 @@ import { TrackData } from "./trackData"
 export class PlayerData {
     name: string
     points: number
-    cars: CarData[]
-    tracks: TrackData[]
+    cars: CarData[] = []
+    tracks: TrackData[] = []
 }

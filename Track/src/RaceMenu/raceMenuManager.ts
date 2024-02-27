@@ -9,6 +9,7 @@ import { Minimap } from "@vegascity/racetrack/src/ui";
 import { ServerComms } from "../Server/serverComms";
 import * as carConfiguration from "./carConfiguration.json"
 import * as utils from '@dcl-sdk/utils'
+import { EventUI } from "../UI/eventUI";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -158,6 +159,9 @@ export class RaceMenuManager {
             scale: Vector3.create(0.1, 0.7, 4.1),
             src: "models/selection/competition.glb",
             srcSelected: "models/selection/competition_selected.glb",
+            srcWhiteCup: "models/selection/whiteCup.glb",
+            srcLock: "models/selection/lock.glb",
+            startLocked: true,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
             onSelectCallback: (() => {
                 TrackManager.isPractice = false
@@ -166,7 +170,9 @@ export class RaceMenuManager {
                 this.trackButton4.show()
                 Transform.getMutable(this.practiceIcon).scale = Vector3.Zero()
                 Transform.getMutable(this.competitionIcon).scale = Vector3.One()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.35, 0, 0),
+            iconScale: Vector3.create(0.8, 0.8, 0.8)
         })
     }
 
@@ -188,7 +194,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap3).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton2 = new MenuButton({
@@ -209,7 +217,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.One()
                 Transform.getMutable(this.minimap3).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton3 = new MenuButton({
@@ -230,7 +240,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap3).scale = Vector3.One()
                 Transform.getMutable(this.minimap4).scale = Vector3.Zero()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton4 = new MenuButton({
@@ -251,7 +263,9 @@ export class RaceMenuManager {
                 Transform.getMutable(this.minimap2).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap3).scale = Vector3.Zero()
                 Transform.getMutable(this.minimap4).scale = Vector3.One()
-            }).bind(this)
+            }).bind(this),
+            iconOffset: Vector3.create(-0.16, 0, 0),
+            iconScale: Vector3.create(0.9, 0.9, 0.9)
         })
 
         this.trackButton2.hide()
@@ -284,7 +298,7 @@ export class RaceMenuManager {
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: false,
+            startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(1)
@@ -300,7 +314,7 @@ export class RaceMenuManager {
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/lock.glb",
-            startLocked: false,
+            startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(2)
@@ -385,6 +399,7 @@ export class RaceMenuManager {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)
                 self.raceButton.deselect()
+                EventUI.triggerPreEvent()
             }, 500)
 
             utils.timers.setTimeout(function () {
@@ -420,6 +435,7 @@ export class RaceMenuManager {
         RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
+        let firstTimePlaying: boolean = true
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
@@ -451,7 +467,15 @@ export class RaceMenuManager {
                     }
                 }
             })
+
+            if (track.pb > 0) {
+                firstTimePlaying = false
+            }
         })
+
+        if (!firstTimePlaying) {
+            RaceMenuManager.instance.competitionButton.unlock()
+        }
 
         if ((RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked)
             || (RaceMenuManager.instance.trackButton3.selected && RaceMenuManager.instance.trackButton3.locked)

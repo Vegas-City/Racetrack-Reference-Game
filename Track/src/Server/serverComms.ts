@@ -6,12 +6,14 @@ import { signedFetch } from "~system/SignedFetch"
 import { PlayerData } from "./types/playerData"
 import { LeaderboardData } from "./types/leaderboardData"
 import { LeaderboardUI } from "../UI/leaderboardUI"
-import { TimeUI } from "@vegascity/racetrack/src/ui/timeUI"
 import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
 import { TrackManager } from "@vegascity/racetrack/src/racetrack"
 import * as utils from '@dcl-sdk/utils'
 import * as examplePlayerData from "./exampleJsons/examplePlayerData.json"
 import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.json"
+import { TimeUI } from "@vegascity/racetrack/src/ui"
+import { EventUI } from "../UI/eventUI"
+import { CarSpecsMenuManager } from "../CarSpecsMenu/carSpecsMenuManager"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -35,7 +37,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `http://localhost:8080`
+                return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -96,13 +98,17 @@ export class ServerComms {
         }
     }
 
-    public static async getPlayerData() {
+    public static async getPlayerData(_raceEnded:boolean = false) {
         if (ServerComms.TEST_MODE) {
             ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
             RaceMenuManager.update()
-        }
+            CarSpecsMenuManager.update()
+        } 
         else {
             try {
+                if(ServerComms.player!=undefined || ServerComms.player != null){
+                     Object.assign(EventUI.oldPlayerData, ServerComms.player)
+                }
                 let response = await signedFetch({
                     url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
                     init: {
@@ -112,14 +118,18 @@ export class ServerComms {
                 }).then(async response => await JSON.parse(response.body)).then(
                     data => {
                         console.log(data.result)
-                        ServerComms.player = Object.assign(new PlayerData(), data.result)
+                       ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
+                        CarSpecsMenuManager.update()
+                        if(_raceEnded){
+                            EventUI.comparePlayerData()
+                        }
                     }
 
                 )
             } catch (ex) {
                 console.log("Error getting player data: " + ex)
-            }
+            } 
         }
     }
 

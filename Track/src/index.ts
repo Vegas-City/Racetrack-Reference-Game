@@ -7,6 +7,10 @@ import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
 import { Helper, UserData } from "./Server/Helper";
 
+const passwordProtected: boolean = true
+const password: string = "testingtuesday"
+const passwordDev: string = "letsgodev"
+
 export function main() {
   setupUi()
 
@@ -19,9 +23,17 @@ export function main() {
           console.log(`You are in the realm: `, realmInfo.realmName)
           if (realmInfo.isPreview) {
             Scene.LoadScene()
+            Scene.LoadMenu()
             DebugUI.debugUIShow = true
-          } else {
-            showPrompt()
+          }
+          else {
+            Scene.LoadScene()
+            if (passwordProtected) {
+              showPrompt()
+            }
+            else {
+              Scene.LoadMenu()
+            }
           }
         }
       })
@@ -32,15 +44,15 @@ export function main() {
     const prompt = ui.createComponent(ui.FillInPrompt, {
       title: 'Enter password',
       onAccept: (value: string) => {
-        if (value.toLocaleLowerCase() == "testingtuesday") {
+        if (value.toLocaleLowerCase() == password) {
           prompt.hide()
           utils.timers.setTimeout(function () {
-            Scene.LoadScene()
+            Scene.LoadMenu()
           }, 1000)
-        } else if (value.toLocaleLowerCase() == "letsgodev") {
+        } else if (value.toLocaleLowerCase() == passwordDev) {
           prompt.hide()
           utils.timers.setTimeout(function () {
-            Scene.LoadScene()
+            Scene.LoadMenu()
             DebugUI.debugUIShow = true
           }, 1000)
         }
