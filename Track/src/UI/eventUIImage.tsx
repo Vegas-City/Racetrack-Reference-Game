@@ -23,7 +23,7 @@ export class EventUIImage {
 
     static pointIncrease: number = 0
     static imageSource: string
-    static points:string = "+150pts"
+    static points:string = ""
 
     private static component = () => (
         <UiEntity
@@ -84,8 +84,8 @@ export class EventUIImage {
     }
 
     static triggerEvent(_event: EventUIEnum): void {
-        EventUIImage.points = ""
         utils.timers.setTimeout(() => {
+            EventUIImage.points = ""
             EventUIImage.eventVisibility = true
             switch(_event){
                 case EventUIEnum.preEvent:
