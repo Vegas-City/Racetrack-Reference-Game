@@ -14,6 +14,7 @@ import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.j
 import { TimeUI } from "@vegascity/racetrack/src/ui"
 import { EventUIImage } from "../UI/eventUIImage"
 import { CarSpecsMenuManager } from "../CarSpecsMenu/carSpecsMenuManager"
+import { ShopMenu } from "../shop/ShopMenu"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -37,7 +38,7 @@ export class ServerComms {
     public static getServerUrl(): string {
         switch (Helper.getEnvironmentType()) {
             case EnvironmentType.Localhost:
-                return `https://uat.vegascity.live/services/racetrack`
+                return `http://localhost:8080`
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
@@ -124,6 +125,9 @@ export class ServerComms {
                         if(_raceEnded){
                             EventUIImage.comparePlayerData()
                         }
+                        ShopMenu.items.forEach(wearable => {
+                            wearable.unlock(ServerComms.player.points)
+                        })
                     }
 
                 )
