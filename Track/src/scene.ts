@@ -115,11 +115,8 @@ export class Scene {
                     })
 
                     if (TrackManager.isPractice) {
-                        if (Math.round(lap.timeElapsed) < 60) {
-                            if (RaceMenuManager.instance.competitionButton.locked) {
-                                EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
-                                RaceMenuManager.instance.competitionButton.unlock()
-                            }
+                        if (Math.round(lap.timeElapsed) < 50) {
+                            ServerComms.completePractice()
                         }
                     }
                 }

@@ -107,8 +107,8 @@ export class ServerComms {
         }
         else {
             try {
-                if(ServerComms.player!=undefined || ServerComms.player != null){
-                     Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
+                if (ServerComms.player != undefined || ServerComms.player != null) {
+                    Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
                 }
                 let response = await signedFetch({
                     url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
@@ -122,7 +122,7 @@ export class ServerComms {
                         ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
                         CarSpecsMenuManager.update()
-                        if(_raceEnded){
+                        if (_raceEnded) {
                             EventUIImage.comparePlayerData()
                         }
                         ShopMenu.items.forEach(wearable => {
@@ -228,22 +228,28 @@ export class ServerComms {
         }
     }
 
-    public static completePractice(){
-        try {
-            signedFetch({
-                url: this.getServerUrl() + "/api/racetrack/practice",
-                init: {
-                    headers: { 'Content-Type': 'application/json' },
-                    method: 'GET'
-                }
-            }).then(async response => await JSON.parse(response.body)).then(
-                data => {
-                    console.log("Returning Data: " + data)
-                }
-
-            )
-        } catch (ex) {
-            console.log("Error getting ghost data: " + ex)
+    public static completePractice() {
+        if (ServerComms.TEST_MODE) {
+            console.log("Practice completed.")
+        }
+        else {
+            try {
+                signedFetch({
+                    url: this.getServerUrl() + "/api/racetrack/practice",
+                    init: {
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET'
+                    }
+                }).then(async response => await JSON.parse(response.body)).then(
+                    data => {
+                        console.log("Returning Data: " + data)
+                    }
+                ).then(() => {
+                    ServerComms.getPlayerData()
+                })
+            } catch (ex) {
+                console.log("Error getting ghost data: " + ex)
+            }
         }
     }
 
@@ -257,7 +263,12 @@ export class ServerComms {
                 bool = pb.PB == 0
             }
 
-            TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+            if(TrackManager.isPractice) {
+                TimeUI.showQualOrPbTime("Qualification", 50000)
+            }
+            else {
+                TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+            }
         })
     }
 

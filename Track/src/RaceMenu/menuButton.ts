@@ -20,6 +20,7 @@ export type MenuConfig = {
     startLocked?: boolean
     deselectAllCallback?: Function
     onSelectCallback?: Function
+    tooltip?: string
 }
 
 export class MenuButton {
@@ -49,11 +50,14 @@ export class MenuButton {
     deselectAllCallback: Function = () => { }
     onSelectCallback: Function = () => { }
 
+    tooltip: string = ""
+
     constructor(_config: MenuConfig) {
         if (_config.deselectAllCallback) this.deselectAllCallback = _config.deselectAllCallback
         if (_config.onSelectCallback) this.onSelectCallback = _config.onSelectCallback
         if (_config.iconOffset) this.iconOffset = _config.iconOffset
         if (_config.iconScale) this.iconScale = _config.iconScale
+        if (_config.tooltip) this.tooltip = _config.tooltip
 
         this.parentEntity = engine.addEntity()
         Transform.create(this.parentEntity, {
@@ -215,6 +219,7 @@ export class MenuButton {
         }
 
         this.removeAllPointerEvents()
+        this.addTooltipPointerEvent()
     }
 
     unlock(): void {
@@ -324,10 +329,20 @@ export class MenuButton {
         })
     }
 
-    private removeSelectPointerEvent(): void {
-        let pointerEvents = PointerEvents.getMutable(this.buttonEntity).pointerEvents
-        if (pointerEvents.length < 3) return
-
-        pointerEvents.splice(0, -1)
+    private addTooltipPointerEvent(): void {
+        if(this.tooltip.length < 1) return
+        
+        PointerEvents.createOrReplace(this.buttonEntity, {
+            pointerEvents: [
+                {
+                    eventType: PointerEventType.PET_DOWN,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        hoverText: this.tooltip,
+                        maxDistance: 20
+                    }
+                }
+            ]
+        })
     }
 }

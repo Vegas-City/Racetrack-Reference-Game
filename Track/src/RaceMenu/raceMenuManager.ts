@@ -150,6 +150,7 @@ export class RaceMenuManager {
                 this.trackButton1.select()
                 Transform.getMutable(this.practiceIcon).scale = Vector3.One()
                 Transform.getMutable(this.competitionIcon).scale = Vector3.Zero()
+                RaceMenuManager.update()
             }).bind(this)
         })
 
@@ -171,9 +172,11 @@ export class RaceMenuManager {
                 this.trackButton4.show()
                 Transform.getMutable(this.practiceIcon).scale = Vector3.Zero()
                 Transform.getMutable(this.competitionIcon).scale = Vector3.One()
+                RaceMenuManager.update()
             }).bind(this),
             iconOffset: Vector3.create(-0.35, 0, 0),
-            iconScale: Vector3.create(0.8, 0.8, 0.8)
+            iconScale: Vector3.create(0.8, 0.8, 0.8),
+            tooltip: ""
         })
     }
 
@@ -304,7 +307,8 @@ export class RaceMenuManager {
             onSelectCallback: (() => {
                 this.selectCar(1)
                 RaceMenuManager.update()
-            }).bind(this)
+            }).bind(this),
+            tooltip: ""
         })
 
         this.carButton3 = new MenuButton({
@@ -436,7 +440,6 @@ export class RaceMenuManager {
         RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
-        let firstTimePlaying: boolean = true
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
@@ -454,7 +457,7 @@ export class RaceMenuManager {
 
             track.carPbsPerTrack.forEach(carPb => {
                 if (carPb.car == selectedCarGuid && carPb.PB > 0 && carPb.PB < track.targetTimeToUnlockNextTrack) {
-                    if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
+                    if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b" && RaceMenuManager.instance.competitionButton.selected) {
                         RaceMenuManager.instance.trackButton1.setQualified()
                     }
                     else if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
@@ -468,14 +471,14 @@ export class RaceMenuManager {
                     }
                 }
             })
-
-            if (track.pb > 0) {
-                firstTimePlaying = false
-            }
         })
 
-        if (!firstTimePlaying) {
+        if (ServerComms.player.practiceCompleted) {
             RaceMenuManager.instance.competitionButton.unlock()
+
+            if (RaceMenuManager.instance.practiceButton.selected) {
+                RaceMenuManager.instance.trackButton1.setQualified()
+            }
         }
 
         if ((RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked)

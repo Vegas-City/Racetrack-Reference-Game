@@ -6,4 +6,5 @@ export class PlayerData {
     points: number
     cars: CarData[] = []
     tracks: TrackData[] = []
+    practiceCompleted: boolean
 }
