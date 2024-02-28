@@ -224,7 +224,26 @@ export class ServerComms {
         }
     }
 
-    public static setTrack(_guid: string): void {
+    public static completePractice(){
+        try {
+            signedFetch({
+                url: this.getServerUrl() + "/api/racetrack/practice",
+                init: {
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'GET'
+                }
+            }).then(async response => await JSON.parse(response.body)).then(
+                data => {
+                    console.log("Returning Data: " + data)
+                }
+
+            )
+        } catch (ex) {
+            console.log("Error getting ghost data: " + ex)
+        }
+    }
+
+    public static setTrack(_guid: string) {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = _guid
             let track = ServerComms.player.tracks.find(track => track.guid === _guid)
