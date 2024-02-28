@@ -151,23 +151,25 @@ export class EventUIImage {
         let selectedCarIndex = RaceMenuManager.instance.carButton1.selected ? 0 : (RaceMenuManager.instance.carButton2.selected ? 1 : 2)
         let selectedCarGuid = carConfiguration.cars[selectedCarIndex].guid
         
+        let trackImagePath:string = ""
+
          // Work out which track
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
                     if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
-                        return "msg_unlockedTrack2.png"
+                        trackImagePath = "msg_unlockedTrack2.png"
                     }
                     else if (track.guid == "ec2a8c30-678a-4d07-b56e-7505ce8f941a") {
-                        return "msg_unlockedTrack3.png"
+                        trackImagePath = "msg_unlockedTrack3.png"
                     }
                     else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
-                        return "msg_unlockedTrack4.png"
+                        trackImagePath = "msg_unlockedTrack4.png"
                     }
                 }
             })
         })
-        return ""
+        return trackImagePath
     }
 
     private static getNewCarEventImage(): string {
