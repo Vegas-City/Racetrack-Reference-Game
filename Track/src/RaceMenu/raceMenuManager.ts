@@ -436,7 +436,6 @@ export class RaceMenuManager {
         RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
-        let firstTimePlaying: boolean = true
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
@@ -468,13 +467,10 @@ export class RaceMenuManager {
                     }
                 }
             })
-
-            if (track.pb > 0) {
-                firstTimePlaying = false
-            }
         })
 
-        if (!firstTimePlaying) {
+        if (ServerComms.player.practiceCompleted) {
+            console.log(ServerComms.player.practiceCompleted)
             RaceMenuManager.instance.competitionButton.unlock()
         }
 
