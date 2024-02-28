@@ -175,7 +175,8 @@ export class RaceMenuManager {
                 RaceMenuManager.update()
             }).bind(this),
             iconOffset: Vector3.create(-0.35, 0, 0),
-            iconScale: Vector3.create(0.8, 0.8, 0.8)
+            iconScale: Vector3.create(0.8, 0.8, 0.8),
+            tooltip: ""
         })
     }
 
@@ -306,7 +307,8 @@ export class RaceMenuManager {
             onSelectCallback: (() => {
                 this.selectCar(1)
                 RaceMenuManager.update()
-            }).bind(this)
+            }).bind(this),
+            tooltip: ""
         })
 
         this.carButton3 = new MenuButton({
