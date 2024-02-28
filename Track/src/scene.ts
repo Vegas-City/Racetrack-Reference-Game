@@ -34,13 +34,14 @@ export class Scene {
 
         new Buildings()
         new InputManager()
-        new ServerComms()
 
         Scene.shopController = new ShopController()
+        new ShopMenu()
+        new ServerComms()
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
 
-        new ShopMenu()
+        
 
         new TrackManager({
             position: Vector3.create(-32, 1, 16),

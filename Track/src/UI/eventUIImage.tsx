@@ -3,6 +3,8 @@ import { Color4 } from "@dcl/sdk/math"
 import * as utils from '@dcl-sdk/utils'
 import { PlayerData } from "../Server/types/playerData"
 import { ServerComms } from "../Server/serverComms"
+import * as carConfiguration from "./../RaceMenu/carConfiguration.json"
+import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
 
 export enum EventUIEnum {
     preEvent,
@@ -145,21 +147,29 @@ export class EventUIImage {
     }
 
     private static getNewTrackEventImage(): string {
-        // Work out which track
-        switch (ServerComms.player.tracks.length) {
-            case 2:
-            case 6:
-            case 10:
-                return "msg_unlockedTrack2.png"
-            case 3:
-            case 7:
-            case 11:
-                return "msg_unlockedTrack3.png"
-            case 4:
-            case 8:
-            case 12:
-                return "msg_unlockedTrack4.png"
-        }
+
+        let selectedCarIndex = RaceMenuManager.instance.carButton1.selected ? 0 : (RaceMenuManager.instance.carButton2.selected ? 1 : 2)
+        let selectedCarGuid = carConfiguration.cars[selectedCarIndex].guid
+        
+        let trackImagePath:string = ""
+
+         // Work out which track
+        ServerComms.player.tracks.forEach(track => {
+            track.cars.forEach(car => {
+                if (car.guid == selectedCarGuid) {
+                    if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
+                        trackImagePath = "msg_unlockedTrack2.png"
+                    }
+                    else if (track.guid == "ec2a8c30-678a-4d07-b56e-7505ce8f941a") {
+                        trackImagePath = "msg_unlockedTrack3.png"
+                    }
+                    else if (track.guid == "a8ceec44-5a8f-4c31-b026-274c865ca689") {
+                        trackImagePath = "msg_unlockedTrack4.png"
+                    }
+                }
+            })
+        })
+        return trackImagePath
     }
 
     private static getNewCarEventImage(): string {
@@ -185,7 +195,7 @@ export class EventUIImage {
             let newPB:number = 0
 
             EventUIImage.oldPlayerData.tracks.forEach(track => {
-                if(track.guid == ServerComms.currentTrack){
+                if(track.guid == ServerComms.currentTrack){ 
                     oldPB = track.pb
                 }
             });
@@ -193,10 +203,13 @@ export class EventUIImage {
             ServerComms.player.tracks.forEach(track => {
                 if(track.guid == ServerComms.currentTrack){
                     newPB = track.pb
+                    if(track.pb<track.targetTimeToUnlockNextTrack){
+                        newPB = -1
+                    } 
                 }
             });
 
-            if(newPB<oldPB){
+            if(newPB<oldPB){ 
                 EventUIImage.pointIncrease = -1 // We'll use this later
             }
         }
