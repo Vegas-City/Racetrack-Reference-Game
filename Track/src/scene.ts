@@ -1,5 +1,4 @@
-import { Quaternion, Vector3 } from '@dcl/sdk/math'
-import { PhysicsManager } from "@vegascity/racetrack/src/physics"
+import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
 import { InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
 import { setup } from "@vegascity/racetrack/src/utils"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
@@ -22,14 +21,14 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { Transform } from '@dcl/sdk/ecs'
+import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
 
 export class Scene {
 
     static loaded: boolean = false
     static shopController: ShopController
 
-    static LoadBuildings() : void {
+    static LoadBuildings(): void {
         new Buildings()
     }
 
@@ -44,7 +43,7 @@ export class Scene {
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
 
-        
+
 
         new TrackManager({
             position: Vector3.create(-32, 1, 16),
@@ -150,7 +149,6 @@ export class Scene {
             respawnDirection: Vector3.create(0, 5, 20),
         })
 
-        new PhysicsManager()
         new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
         new NPCManager()
         new ParticleSystem()
@@ -211,14 +209,62 @@ export class Scene {
         })
 
         new AvatarVisibilityManager()
+        Scene.InitialiseExperimentalMode()
 
         Scene.loaded = true
     }
 
-    static LoadMenu() {
+    static LoadMenu(): void {
         let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
         if (menuTransform) {
             menuTransform.scale = Vector3.One()
         }
+    }
+
+    private static InitialiseExperimentalMode(): void {
+        let experimentalModeEntity = engine.addEntity()
+        Transform.create(experimentalModeEntity, {
+            position: Vector3.create(-13, 2, 7),
+            scale: Vector3.create(0.6, 0.6, 0.6)
+        })
+        Material.setPbrMaterial(experimentalModeEntity, {
+            albedoColor: Color4.Black()
+        })
+        MeshRenderer.setSphere(experimentalModeEntity)
+        MeshCollider.setSphere(experimentalModeEntity)
+        PointerEvents.create(experimentalModeEntity, {
+            pointerEvents: [
+                {
+                    eventType: PointerEventType.PET_DOWN,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        hoverText: "Experimental Mode",
+                        maxDistance: 10
+                    }
+                }
+            ]
+        })
+
+        engine.addSystem((dt: number) => {
+            if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_DOWN, experimentalModeEntity)) {
+                TrackManager.experimentalMode = !TrackManager.experimentalMode
+                let hoverText = TrackManager.experimentalMode ? "Normal Mode" : "Experimental Mode"
+                PointerEvents.createOrReplace(experimentalModeEntity, {
+                    pointerEvents: [
+                        {
+                            eventType: PointerEventType.PET_DOWN,
+                            eventInfo: {
+                                button: InputAction.IA_POINTER,
+                                hoverText: hoverText,
+                                maxDistance: 10
+                            }
+                        }
+                    ]
+                })
+                Material.setPbrMaterial(experimentalModeEntity, {
+                    albedoColor: TrackManager.experimentalMode ? Color4.Red() : Color4.Black()
+                })
+            }
+        })
     }
 } 
