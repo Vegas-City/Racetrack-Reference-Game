@@ -88,6 +88,8 @@ export class Scene {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
 
+                    TrackManager.ghostCar.endGhost() // Hide the ghost car if there is one
+
                     utils.timers.setTimeout(() => {
                         Car.unload()
                     }, 5000)
