@@ -13,7 +13,7 @@ const passwordDev: string = "letsgodev"
 
 export function main() {
   setupUi()
-
+ 
   // wait for the realm and user data to be available
   Helper.init(() => {
     UserData.getUserData(() => {
