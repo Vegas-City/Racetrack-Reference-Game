@@ -12,7 +12,7 @@ export class GuideNPC {
             
     constructor(){
 
-        new Info(Vector3.create(9.5,1, 3.74))
+        new Info(Vector3.create(9.5,1, 3.7))
 
         // NPC
         this.guideNPC = npc.create(

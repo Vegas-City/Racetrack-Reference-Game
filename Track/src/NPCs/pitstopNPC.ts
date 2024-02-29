@@ -12,7 +12,7 @@ export class PitstopNPC {
             
     constructor(){
 
-        new Info(Vector3.create(20.9, 1, 4.45))
+        new Info(Vector3.create(21, 1, 4.55))
 
         // NPC
         this.pitstopNPC = npc.create(
