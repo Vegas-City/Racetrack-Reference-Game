@@ -1,7 +1,6 @@
-import { Entity, GltfContainer, Material, MaterialTransparencyMode, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
+import { Entity, Material, MaterialTransparencyMode, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
 import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { ServerComms } from "../Server/serverComms";
-import { Buildings } from "../Buildings/Buildings";
 import { UserData } from "../Server/Helper";
 
 export class LeaderboardUI {
@@ -20,11 +19,19 @@ export class LeaderboardUI {
 
     private static trackNames: string[] = []
     private static playerScores = new Map<string, Map<string, number>>()
+    private static selfScores = new Map<string, number>()
+    private static selfRank: number = 0
 
     private static container: Entity | undefined
     private static trackNameEntities: Entity[] = []
     private static playerNameEntities: Entity[] = []
     private static totalTextEntity: Entity | undefined
+
+    private static selfScoreContainer: Entity | undefined
+    private static selfScoreEntities: Entity[] = []
+    private static selfTotalScoreEntity: Entity | undefined
+    private static selfRankEntity: Entity | undefined
+    private static youTextEntity: Entity | undefined
 
     private static avatarImageEntity: Entity | undefined
     private static playerNameEntity: Entity | undefined
@@ -62,8 +69,8 @@ export class LeaderboardUI {
                     text: track.toUpperCase(),
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
                     outlineWidth: 0.2,
-                    textColor: Color4.create(0, 0, 0, 1),
-                    outlineColor: Color4.create(0, 0, 0, 1)
+                    textColor: Color4.Black(),
+                    outlineColor: Color4.Black()
                 })
                 LeaderboardUI.trackNameEntities.push(nameEntity)
             }
@@ -82,8 +89,8 @@ export class LeaderboardUI {
                     text: "TOTAL",
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
                     outlineWidth: 0.2,
-                    textColor: Color4.create(0, 0, 0, 1),
-                    outlineColor: Color4.create(0, 0, 0, 1)
+                    textColor: Color4.Black(),
+                    outlineColor: Color4.Black()
                 })
             }
             else {
@@ -110,6 +117,7 @@ export class LeaderboardUI {
                 })
                 TextShape.create(nameEntity, {
                     text: player.substring(0, 12),
+                    textColor: Color4.Black(),
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                 })
                 LeaderboardUI.playerNameEntities.push(nameEntity)
@@ -137,6 +145,7 @@ export class LeaderboardUI {
                     })
                     TextShape.create(scoreEntity, {
                         text: LeaderboardUI.formatTime(LeaderboardUI.playerScores.get(player).get(track)),
+                        textColor: Color4.Black(),
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
                     LeaderboardUI.scoreEntities[index].push(scoreEntity)
@@ -168,8 +177,8 @@ export class LeaderboardUI {
                         text: LeaderboardUI.formatTime(totalScore),
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
                         outlineWidth: 0.2,
-                        textColor: Color4.create(1, 1, 1, 1),
-                        outlineColor: Color4.create(1, 1, 1, 1)
+                        textColor: Color4.Black(),
+                        outlineColor: Color4.Black()
                     })
                     LeaderboardUI.totalScoreEntities.push(totalScoreEntity)
                 }
@@ -195,15 +204,72 @@ export class LeaderboardUI {
                 emissiveTexture: Material.Texture.Avatar({
                     userId: UserData.cachedData.publicKey,
                 }),
-                emissiveColor: Color4.White(),
+                emissiveColor: Color4.Black(),
                 emissiveIntensity: 0.5
             })
+        }
+
+        // Self scores data
+        if (LeaderboardUI.selfScores.size > 0) {
+            index = 0
+            let selfTotal: number = 0
+            for (let track of LeaderboardUI.trackNames) {
+                if (index < LeaderboardUI.selfScoreEntities.length) {
+                    TextShape.getMutable(LeaderboardUI.selfScoreEntities[index]).text = LeaderboardUI.formatTime(LeaderboardUI.selfScores.get(track))
+                }
+                else {
+                    let selfScoreEntity = engine.addEntity()
+                    Transform.create(selfScoreEntity, {
+                        parent: LeaderboardUI.selfScoreContainer,
+                        position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
+                    })
+                    TextShape.create(selfScoreEntity, {
+                        text: LeaderboardUI.formatTime(LeaderboardUI.selfScores.get(track)),
+                        textColor: Color4.Black(),
+                        textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                    })
+                    LeaderboardUI.selfScoreEntities.push(selfScoreEntity)
+                }
+                selfTotal += LeaderboardUI.selfScores.get(track)
+                index++
+            }
+
+            if (LeaderboardUI.selfTotalScoreEntity === undefined) {
+                LeaderboardUI.selfTotalScoreEntity = engine.addEntity()
+                Transform.create(LeaderboardUI.selfTotalScoreEntity, {
+                    parent: LeaderboardUI.selfScoreContainer,
+                    position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (LeaderboardUI.trackNames.length * LeaderboardUI.HORIZONTAL_SPACING), 0, 0)
+                })
+                TextShape.create(LeaderboardUI.selfTotalScoreEntity, {
+                    text: LeaderboardUI.formatTime(selfTotal),
+                    textColor: Color4.Black(),
+                    textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                })
+            }
+            else {
+                let textShape = TextShape.getMutableOrNull(LeaderboardUI.selfTotalScoreEntity)
+                if (textShape) {
+                    textShape.text = LeaderboardUI.formatTime(selfTotal)
+                }
+            }
+
+            let selfRankTextShape = TextShape.getMutableOrNull(LeaderboardUI.selfRankEntity)
+            if (selfRankTextShape) {
+                selfRankTextShape.text = LeaderboardUI.selfRank.toString()
+            }
+        }
+
+        if (LeaderboardUI.selfRank > LeaderboardUI.MAX_ROWS) {
+            LeaderboardUI.showSelfScores()
+        }
+        else {
+            LeaderboardUI.hideSelfScores()
         }
 
         if (LeaderboardUI.playerNameEntity !== undefined) {
             let textShape = TextShape.getMutableOrNull(LeaderboardUI.playerNameEntity)
             if (textShape) {
-                textShape.text = UserData.cachedData.displayName.length > 12 ? UserData.cachedData.displayName.substring(0, 12) : UserData.cachedData.displayName
+                textShape.text = LeaderboardUI.getTruncatedSelfUsername()
             }
         }
 
@@ -223,15 +289,6 @@ export class LeaderboardUI {
     }
 
     private static initialise(): void {
-        let leaderboardBars = engine.addEntity()
-        Transform.create(leaderboardBars, {
-            parent: Buildings.buildingsParent,
-            position: Vector3.create(0, -4, 0)
-        })
-        GltfContainer.create(leaderboardBars, {
-            src: "models/buildings/leaderboardBars.glb"
-        })
-
         LeaderboardUI.container = engine.addEntity()
         Transform.create(LeaderboardUI.container, LeaderboardUI.LEADERBOARD_TRANSFORM)
 
@@ -244,8 +301,8 @@ export class LeaderboardUI {
             text: "PLAYER",
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
             outlineWidth: 0.2,
-            textColor: Color4.create(0, 0, 0, 1),
-            outlineColor: Color4.create(0, 0, 0, 1)
+            textColor: Color4.Black(),
+            outlineColor: Color4.Black()
         })
 
         LeaderboardUI.avatarImageEntity = engine.addEntity()
@@ -273,7 +330,7 @@ export class LeaderboardUI {
             scale: Vector3.create(2, 2, 2)
         })
         TextShape.create(LeaderboardUI.playerNameEntity, {
-            text: UserData.cachedData.displayName.length > 12 ? UserData.cachedData.displayName.substring(0, 12) : UserData.cachedData.displayName,
+            text: LeaderboardUI.getTruncatedSelfUsername(),
             textColor: Color4.Black()
         })
 
@@ -310,10 +367,41 @@ export class LeaderboardUI {
             })
             TextShape.create(rankEntity, {
                 text: (i + 1).toString(),
+                textColor: Color4.Black(),
                 textAlign: TextAlignMode.TAM_MIDDLE_LEFT
             })
         }
 
+        // Self scores
+        LeaderboardUI.selfScoreContainer = engine.addEntity()
+        Transform.create(LeaderboardUI.selfScoreContainer, {
+            parent: LeaderboardUI.container,
+            position: Vector3.create(0, -14, 0)
+        })
+
+        LeaderboardUI.youTextEntity = engine.addEntity()
+        Transform.create(LeaderboardUI.youTextEntity, {
+            parent: LeaderboardUI.selfScoreContainer,
+            position: Vector3.create(0, 0, 0)
+        })
+        TextShape.create(LeaderboardUI.youTextEntity, {
+            text: "you",
+            textColor: Color4.Black(),
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+        })
+
+        LeaderboardUI.selfRankEntity = engine.addEntity()
+        Transform.create(LeaderboardUI.selfRankEntity, {
+            parent: LeaderboardUI.selfScoreContainer,
+            position: Vector3.create(-2, 0, 0)
+        })
+        TextShape.create(LeaderboardUI.selfRankEntity, {
+            text: "",
+            textColor: Color4.Black(),
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+        })
+
+        // Refresh system
         engine.addSystem((_dt: number) => {
             LeaderboardUI.elapsed += _dt
             if (LeaderboardUI.elapsed >= LeaderboardUI.REFRESH_RATE) {
@@ -325,11 +413,16 @@ export class LeaderboardUI {
 
     private static updateTopPlayerData(): void {
         LeaderboardUI.playerScores.clear()
+        LeaderboardUI.selfScores.clear()
+        LeaderboardUI.selfRank = 0
 
         for (let track of ServerComms.leaderboard.result) {
             for (let trackScores of track.scores) {
                 if (!LeaderboardUI.playerScores.has(trackScores.user)) {
                     LeaderboardUI.playerScores.set(trackScores.user, new Map<string, number>())
+                }
+                if (trackScores.user === LeaderboardUI.getSelfUsername()) {
+                    LeaderboardUI.selfScores.set(track.trackName, trackScores.time)
                 }
 
                 let playerScores = LeaderboardUI.playerScores.get(trackScores.user)
@@ -350,7 +443,10 @@ export class LeaderboardUI {
         // take the first MAX_ROWS rows
         let index: number = 0
         for (let player of LeaderboardUI.playerScores.keys()) {
-            if (index > LeaderboardUI.MAX_ROWS) {
+            if (player === LeaderboardUI.getSelfUsername()) {
+                LeaderboardUI.selfRank = index + 1
+            }
+            if (index >= LeaderboardUI.MAX_ROWS) {
                 LeaderboardUI.playerScores.delete(player)
             }
             index++
@@ -385,5 +481,28 @@ export class LeaderboardUI {
         }
 
         return LeaderboardUI.formatTime(_time)
+    }
+
+    private static getSelfUsername(): string {
+        return UserData.cachedData.displayName.substring(0, UserData.cachedData.displayName.lastIndexOf("#"))
+    }
+
+    private static getTruncatedSelfUsername(): string {
+        let name = LeaderboardUI.getSelfUsername()
+        return name.length > 12 ? name.substring(0, 12) : name
+    }
+
+    private static showSelfScores(): void {
+        let transform = Transform.getMutableOrNull(LeaderboardUI.selfScoreContainer)
+        if (transform) {
+            transform.scale = Vector3.One()
+        }
+    }
+
+    private static hideSelfScores(): void {
+        let transform = Transform.getMutableOrNull(LeaderboardUI.selfScoreContainer)
+        if (transform) {
+            transform.scale = Vector3.Zero()
+        }
     }
 }
