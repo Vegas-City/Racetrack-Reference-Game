@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, Material, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
+import { Entity, GltfContainer, Material, MaterialTransparencyMode, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
 import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { ServerComms } from "../Server/serverComms";
 import { Buildings } from "../Buildings/Buildings";
@@ -188,6 +188,10 @@ export class LeaderboardUI {
                 texture: Material.Texture.Avatar({
                     userId: UserData.cachedData.publicKey,
                 }),
+                alphaTexture: Material.Texture.Avatar({
+                    userId: UserData.cachedData.publicKey,
+                }),
+                transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
                 emissiveTexture: Material.Texture.Avatar({
                     userId: UserData.cachedData.publicKey,
                 }),
