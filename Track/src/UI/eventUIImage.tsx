@@ -133,7 +133,9 @@ export class EventUIImage {
 
     private static getEndEventImage(): string {
         if (EventUIImage.pointIncrease > 0) {
-            EventUIImage.points = "+" + EventUIImage.pointIncrease + " PTS"
+
+            EventUIImage.animatePointIncrease()
+
             return "msg_wellDone.png"
         } else {
             // But did the pb get quicker?
@@ -144,6 +146,21 @@ export class EventUIImage {
             }
         }
 
+    }
+
+    private static animatePointIncrease():void{
+        EventUIImage.points = ""
+
+        utils.timers.setTimeout(()=>{
+            for(let i:number = 1; i<21; i++){
+                utils.timers.setTimeout(()=>{
+                EventUIImage.points = "+" + Math.floor((EventUIImage.pointIncrease/20)*i) + " PTS"
+                if(i==20){
+                    EventUIImage.points = "+" + EventUIImage.pointIncrease + " PTS"
+                }
+                },50*i)
+            }
+        },250)
     }
 
     private static getNewTrackEventImage(): string {
