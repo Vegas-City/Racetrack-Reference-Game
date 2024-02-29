@@ -27,7 +27,7 @@ export function main() {
               Scene.LoadScene()
               Scene.LoadMenu()
               DebugUI.debugUIShow = true
-            }, 1000)
+            }, 1500)
           }
           else {
             Scene.LoadBuildings()
@@ -39,7 +39,7 @@ export function main() {
               else {
                 Scene.LoadMenu()
               }
-            }, 1000)
+            }, 1500)
           }
         }
       })

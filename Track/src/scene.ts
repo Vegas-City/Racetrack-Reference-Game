@@ -78,12 +78,12 @@ export class Scene {
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
                         checkpoint: lap.checkpoints.length * 2,
-                        time: Math.round(lap.timeElapsed * 1500)
+                        time: Math.round(lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
                         ServerComms.getPlayerData(true)
                     })
- 
+
                     // Send the ghost to the server at game end
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
@@ -101,7 +101,7 @@ export class Scene {
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
                         checkpoint: lap.checkpointIndex + (lap.checkpoints.length * lap.lapsCompleted),
-                        time: Math.round(lap.timeElapsed * 1500)
+                        time: Math.round(lap.timeElapsed * 1000)
                     })
                 },
                 onLapCompleteEvent: () => {
