@@ -29,10 +29,13 @@ export class Scene {
     static loaded: boolean = false
     static shopController: ShopController
 
+    static LoadBuildings() : void {
+        new Buildings()
+    }
+
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
-        new Buildings()
         new InputManager()
 
         Scene.shopController = new ShopController()

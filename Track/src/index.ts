@@ -13,7 +13,7 @@ const passwordDev: string = "letsgodev"
 
 export function main() {
   setupUi()
-
+ 
   // wait for the realm and user data to be available
   Helper.init(() => {
     UserData.getUserData(() => {
@@ -22,18 +22,24 @@ export function main() {
         if (realmInfo != undefined) {
           console.log(`You are in the realm: `, realmInfo.realmName)
           if (realmInfo.isPreview) {
-            Scene.LoadScene()
-            Scene.LoadMenu()
-            DebugUI.debugUIShow = true
+            Scene.LoadBuildings()
+            utils.timers.setTimeout(() => {
+              Scene.LoadScene()
+              Scene.LoadMenu()
+              DebugUI.debugUIShow = true
+            }, 1500)
           }
           else {
-            Scene.LoadScene()
-            if (passwordProtected) {
-              showPrompt()
-            }
-            else {
-              Scene.LoadMenu()
-            }
+            Scene.LoadBuildings()
+            utils.timers.setTimeout(() => {
+              Scene.LoadScene()
+              if (passwordProtected) {
+                showPrompt()
+              }
+              else {
+                Scene.LoadMenu()
+              }
+            }, 1500)
           }
         }
       })
