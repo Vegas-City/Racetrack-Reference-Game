@@ -22,18 +22,24 @@ export function main() {
         if (realmInfo != undefined) {
           console.log(`You are in the realm: `, realmInfo.realmName)
           if (realmInfo.isPreview) {
-            Scene.LoadScene()
-            Scene.LoadMenu()
-            DebugUI.debugUIShow = true
+            Scene.LoadBuildings()
+            utils.timers.setTimeout(() => {
+              Scene.LoadScene()
+              Scene.LoadMenu()
+              DebugUI.debugUIShow = true
+            }, 1000)
           }
           else {
-            Scene.LoadScene()
-            if (passwordProtected) {
-              showPrompt()
-            }
-            else {
-              Scene.LoadMenu()
-            }
+            Scene.LoadBuildings()
+            utils.timers.setTimeout(() => {
+              Scene.LoadScene()
+              if (passwordProtected) {
+                showPrompt()
+              }
+              else {
+                Scene.LoadMenu()
+              }
+            }, 1000)
           }
         }
       })
