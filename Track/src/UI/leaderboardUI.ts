@@ -8,9 +8,10 @@ export class LeaderboardUI {
     private static readonly HORIZONTAL_SPACING: number = 6
     private static readonly VERTICAL_SPACING: number = 2.05
     private static readonly REFRESH_RATE: number = 5
+    private static readonly TEXT_COLOR: Color4 = Color4.White()
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
-        position: Vector3.create(-46.3, 18.65, 26.6),
+        position: Vector3.create(-46.3, 19, 26.6),
         rotation: Quaternion.fromEulerDegrees(0, -90, 0),
         scale: Vector3.create(0.6, 0.6, 0.6)
     }
@@ -117,7 +118,7 @@ export class LeaderboardUI {
                 })
                 TextShape.create(nameEntity, {
                     text: player.substring(0, 12),
-                    textColor: Color4.Black(),
+                    textColor: LeaderboardUI.TEXT_COLOR,
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                 })
                 LeaderboardUI.playerNameEntities.push(nameEntity)
@@ -145,7 +146,7 @@ export class LeaderboardUI {
                     })
                     TextShape.create(scoreEntity, {
                         text: LeaderboardUI.formatTime(LeaderboardUI.playerScores.get(player).get(track)),
-                        textColor: Color4.Black(),
+                        textColor: LeaderboardUI.TEXT_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
                     LeaderboardUI.scoreEntities[index].push(scoreEntity)
@@ -177,8 +178,8 @@ export class LeaderboardUI {
                         text: LeaderboardUI.formatTime(totalScore),
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
                         outlineWidth: 0.2,
-                        textColor: Color4.Black(),
-                        outlineColor: Color4.Black()
+                        textColor: LeaderboardUI.TEXT_COLOR,
+                        outlineColor: LeaderboardUI.TEXT_COLOR
                     })
                     LeaderboardUI.totalScoreEntities.push(totalScoreEntity)
                 }
@@ -225,7 +226,7 @@ export class LeaderboardUI {
                     })
                     TextShape.create(selfScoreEntity, {
                         text: LeaderboardUI.formatTime(LeaderboardUI.selfScores.get(track)),
-                        textColor: Color4.Black(),
+                        textColor: LeaderboardUI.TEXT_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
                     LeaderboardUI.selfScoreEntities.push(selfScoreEntity)
@@ -242,7 +243,9 @@ export class LeaderboardUI {
                 })
                 TextShape.create(LeaderboardUI.selfTotalScoreEntity, {
                     text: LeaderboardUI.formatTime(selfTotal),
-                    textColor: Color4.Black(),
+                    textColor: LeaderboardUI.TEXT_COLOR,
+                    outlineWidth: 0.2,
+                    outlineColor: LeaderboardUI.TEXT_COLOR,
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                 })
             }
@@ -291,6 +294,28 @@ export class LeaderboardUI {
     private static initialise(): void {
         LeaderboardUI.container = engine.addEntity()
         Transform.create(LeaderboardUI.container, LeaderboardUI.LEADERBOARD_TRANSFORM)
+
+        let bg = engine.addEntity()
+        Transform.create(bg, {
+            parent: LeaderboardUI.container,
+            position: Vector3.create(16.5, -6.6, 0.1),
+            scale: Vector3.create(42, 12.5, 1)
+        })
+        MeshRenderer.setPlane(bg)
+        Material.setPbrMaterial(bg, {
+            texture: Material.Texture.Common({
+                src: 'images/leaderboardBG.png'
+            }),
+            alphaTexture: Material.Texture.Common({
+                src: 'images/leaderboardBG.png'
+            }),
+            emissiveTexture: Material.Texture.Common({
+                src: 'images/leaderboardBG.png'
+            }),
+            transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+            emissiveColor: Color4.White(),
+            emissiveIntensity: 1
+        })
 
         let playerTextEntity = engine.addEntity()
         Transform.create(playerTextEntity, {
@@ -367,7 +392,7 @@ export class LeaderboardUI {
             })
             TextShape.create(rankEntity, {
                 text: (i + 1).toString(),
-                textColor: Color4.Black(),
+                textColor: LeaderboardUI.TEXT_COLOR,
                 textAlign: TextAlignMode.TAM_MIDDLE_LEFT
             })
         }
@@ -386,7 +411,7 @@ export class LeaderboardUI {
         })
         TextShape.create(LeaderboardUI.youTextEntity, {
             text: "you",
-            textColor: Color4.Black(),
+            textColor: LeaderboardUI.TEXT_COLOR,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
@@ -397,9 +422,32 @@ export class LeaderboardUI {
         })
         TextShape.create(LeaderboardUI.selfRankEntity, {
             text: "",
-            textColor: Color4.Black(),
+            textColor: LeaderboardUI.TEXT_COLOR,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
+
+        let youBg = engine.addEntity()
+        Transform.create(youBg, {
+            parent: LeaderboardUI.selfScoreContainer,
+            position: Vector3.create(16.5, 0, 0.1),
+            scale: Vector3.create(42, 6, 1)
+        })
+        MeshRenderer.setPlane(youBg)
+        Material.setPbrMaterial(youBg, {
+            texture: Material.Texture.Common({
+                src: 'images/leaderboardBG_you.png'
+            }),
+            alphaTexture: Material.Texture.Common({
+                src: 'images/leaderboardBG_you.png'
+            }),
+            emissiveTexture: Material.Texture.Common({
+                src: 'images/leaderboardBG_you.png'
+            }),
+            transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+            emissiveColor: Color4.White(),
+            emissiveIntensity: 1
+        })
+
 
         // Refresh system
         engine.addSystem((_dt: number) => {
