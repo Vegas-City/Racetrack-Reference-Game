@@ -9,7 +9,7 @@ export class LeaderboardUI {
     private static readonly VERTICAL_SPACING: number = 2.05
     private static readonly REFRESH_RATE: number = 5
     private static readonly TEXT_COLOR: Color4 = Color4.White()
-    private static readonly MILLI_COLOR: Color4 = Color4.create(0.9, 0.9, 0.9)
+    private static readonly MILLI_COLOR: Color4 = Color4.create(0.8, 0.8, 0.8)
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
         position: Vector3.create(-46.3, 19, 26.6),
