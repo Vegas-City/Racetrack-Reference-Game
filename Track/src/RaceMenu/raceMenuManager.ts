@@ -163,6 +163,7 @@ export class RaceMenuManager {
             srcSelected: "models/selection/competition_selected.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcLock: "models/selection/lock.glb",
+            srcTooltip: "images/ui/tooltips/compTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
             onSelectCallback: (() => {
@@ -175,8 +176,7 @@ export class RaceMenuManager {
                 RaceMenuManager.update()
             }).bind(this),
             iconOffset: Vector3.create(-0.35, 0, 0),
-            iconScale: Vector3.create(0.8, 0.8, 0.8),
-            tooltip: ""
+            iconScale: Vector3.create(0.8, 0.8, 0.8)
         })
     }
 
@@ -190,6 +190,7 @@ export class RaceMenuManager {
             srcSelected: "models/selection/track1_selected.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startSelected: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -213,6 +214,7 @@ export class RaceMenuManager {
             srcLock: "models/selection/lock.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -236,6 +238,7 @@ export class RaceMenuManager {
             srcLock: "models/selection/lock.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -259,6 +262,7 @@ export class RaceMenuManager {
             srcLock: "models/selection/lock.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -302,13 +306,13 @@ export class RaceMenuManager {
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb",
             srcLock: "models/selection/lock.glb",
+            srcTooltip: "images/ui/tooltips/carTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
                 this.selectCar(1)
                 RaceMenuManager.update()
-            }).bind(this),
-            tooltip: ""
+            }).bind(this)
         })
 
         this.carButton3 = new MenuButton({
@@ -319,6 +323,7 @@ export class RaceMenuManager {
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/lock.glb",
+            srcTooltip: "images/ui/tooltips/carTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
