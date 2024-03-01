@@ -9,6 +9,7 @@ export class LeaderboardUI {
     private static readonly VERTICAL_SPACING: number = 2.05
     private static readonly REFRESH_RATE: number = 5
     private static readonly TEXT_COLOR: Color4 = Color4.White()
+    private static readonly MILLI_COLOR: Color4 = Color4.create(0.9, 0.9, 0.9)
 
     private static readonly LEADERBOARD_TRANSFORM: TransformType = {
         position: Vector3.create(-46.3, 19, 26.6),
@@ -31,6 +32,8 @@ export class LeaderboardUI {
     private static selfScoreContainer: Entity | undefined
     private static selfScoreEntities: Entity[] = []
     private static selfTotalScoreEntity: Entity | undefined
+    private static selfScoreMilliEntities: Entity[] = []
+    private static selfTotalScoreMilliEntity: Entity | undefined
     private static selfRankEntity: Entity | undefined
     private static youTextEntity: Entity | undefined
 
@@ -41,6 +44,8 @@ export class LeaderboardUI {
 
     private static scoreEntities: Entity[][] = []
     private static totalScoreEntities: Entity[] = []
+    private static scoreMilliEntities: Entity[][] = []
+    private static totalScoreMilliEntities: Entity[] = []
 
     static update(): void {
         if (LeaderboardUI.container === undefined) {
@@ -131,12 +136,14 @@ export class LeaderboardUI {
         for (let track of LeaderboardUI.trackNames) {
             if (index >= LeaderboardUI.scoreEntities.length) {
                 LeaderboardUI.scoreEntities.push([])
+                LeaderboardUI.scoreMilliEntities.push([])
             }
 
             let subIndex: number = 0
             for (let player of LeaderboardUI.playerScores.keys()) {
                 if (subIndex < LeaderboardUI.scoreEntities[index].length) {
                     TextShape.getMutable(LeaderboardUI.scoreEntities[index][subIndex]).text = LeaderboardUI.formatTime(LeaderboardUI.playerScores.get(player).get(track))
+                    TextShape.getMutable(LeaderboardUI.scoreMilliEntities[index][subIndex]).text = LeaderboardUI.formatTimeMilli(LeaderboardUI.playerScores.get(player).get(track))
                 }
                 else {
                     let scoreEntity = engine.addEntity()
@@ -150,6 +157,19 @@ export class LeaderboardUI {
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
                     LeaderboardUI.scoreEntities[index].push(scoreEntity)
+
+                    let scoremilliEntity = engine.addEntity()
+                    Transform.create(scoremilliEntity, {
+                        parent: LeaderboardUI.container,
+                        position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING) + 2.8, -(LeaderboardUI.VERTICAL_SPACING * 1.3) - (subIndex * LeaderboardUI.VERTICAL_SPACING) - 0.1, 0),
+                        scale: Vector3.create(0.7, 0.7, 0.7)
+                    })
+                    TextShape.create(scoremilliEntity, {
+                        text: LeaderboardUI.formatTimeMilli(LeaderboardUI.playerScores.get(player).get(track)),
+                        textColor: LeaderboardUI.MILLI_COLOR,
+                        textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                    })
+                    LeaderboardUI.scoreMilliEntities[index].push(scoremilliEntity)
                 }
                 subIndex++
             }
@@ -167,6 +187,7 @@ export class LeaderboardUI {
 
                 if (index < LeaderboardUI.totalScoreEntities.length) {
                     TextShape.getMutable(LeaderboardUI.totalScoreEntities[index]).text = LeaderboardUI.formatTime(totalScore)
+                    TextShape.getMutable(LeaderboardUI.totalScoreMilliEntities[index]).text = LeaderboardUI.formatTimeMilli(totalScore)
                 }
                 else {
                     let totalScoreEntity = engine.addEntity()
@@ -182,6 +203,21 @@ export class LeaderboardUI {
                         outlineColor: LeaderboardUI.TEXT_COLOR
                     })
                     LeaderboardUI.totalScoreEntities.push(totalScoreEntity)
+
+                    let totalMilliScoreEntity = engine.addEntity()
+                    Transform.create(totalMilliScoreEntity, {
+                        parent: LeaderboardUI.container,
+                        position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (LeaderboardUI.trackNames.length * LeaderboardUI.HORIZONTAL_SPACING) + 2.8, -(LeaderboardUI.VERTICAL_SPACING * 1.3) - (index * LeaderboardUI.VERTICAL_SPACING) - 0.1, 0),
+                        scale: Vector3.create(0.7, 0.7, 0.7)
+                    })
+                    TextShape.create(totalMilliScoreEntity, {
+                        text: LeaderboardUI.formatTimeMilli(totalScore),
+                        textAlign: TextAlignMode.TAM_MIDDLE_LEFT,
+                        outlineWidth: 0.2,
+                        textColor: LeaderboardUI.MILLI_COLOR,
+                        outlineColor: LeaderboardUI.MILLI_COLOR
+                    })
+                    LeaderboardUI.totalScoreMilliEntities.push(totalMilliScoreEntity)
                 }
                 index++
             }
@@ -217,6 +253,7 @@ export class LeaderboardUI {
             for (let track of LeaderboardUI.trackNames) {
                 if (index < LeaderboardUI.selfScoreEntities.length) {
                     TextShape.getMutable(LeaderboardUI.selfScoreEntities[index]).text = LeaderboardUI.formatTime(LeaderboardUI.selfScores.get(track))
+                    TextShape.getMutable(LeaderboardUI.selfScoreMilliEntities[index]).text = LeaderboardUI.formatTimeMilli(LeaderboardUI.selfScores.get(track))
                 }
                 else {
                     let selfScoreEntity = engine.addEntity()
@@ -230,6 +267,19 @@ export class LeaderboardUI {
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
                     LeaderboardUI.selfScoreEntities.push(selfScoreEntity)
+
+                    let selfScoreMilliEntity = engine.addEntity()
+                    Transform.create(selfScoreMilliEntity, {
+                        parent: LeaderboardUI.selfScoreContainer,
+                        position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (index * LeaderboardUI.HORIZONTAL_SPACING) + 2.8, -0.1, 0),
+                        scale: Vector3.create(0.7, 0.7, 0.7)
+                    })
+                    TextShape.create(selfScoreMilliEntity, {
+                        text: LeaderboardUI.formatTimeMilli(LeaderboardUI.selfScores.get(track)),
+                        textColor: LeaderboardUI.MILLI_COLOR,
+                        textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                    })
+                    LeaderboardUI.selfScoreMilliEntities.push(selfScoreMilliEntity)
                 }
                 selfTotal += LeaderboardUI.selfScores.get(track)
                 index++
@@ -253,6 +303,28 @@ export class LeaderboardUI {
                 let textShape = TextShape.getMutableOrNull(LeaderboardUI.selfTotalScoreEntity)
                 if (textShape) {
                     textShape.text = LeaderboardUI.formatTime(selfTotal)
+                }
+            }
+
+            if (LeaderboardUI.selfTotalScoreMilliEntity === undefined) {
+                LeaderboardUI.selfTotalScoreMilliEntity = engine.addEntity()
+                Transform.create(LeaderboardUI.selfTotalScoreMilliEntity, {
+                    parent: LeaderboardUI.selfScoreContainer,
+                    position: Vector3.create((LeaderboardUI.HORIZONTAL_SPACING * 1.3) + (LeaderboardUI.trackNames.length * LeaderboardUI.HORIZONTAL_SPACING) + 2.8, -0.1, 0),
+                    scale: Vector3.create(0.7, 0.7, 0.7)
+                })
+                TextShape.create(LeaderboardUI.selfTotalScoreMilliEntity, {
+                    text: LeaderboardUI.formatTimeMilli(selfTotal),
+                    textColor: LeaderboardUI.MILLI_COLOR,
+                    outlineWidth: 0.2,
+                    outlineColor: LeaderboardUI.MILLI_COLOR,
+                    textAlign: TextAlignMode.TAM_MIDDLE_LEFT
+                })
+            }
+            else {
+                let textShape = TextShape.getMutableOrNull(LeaderboardUI.selfTotalScoreMilliEntity)
+                if (textShape) {
+                    textShape.text = LeaderboardUI.formatTimeMilli(selfTotal)
                 }
             }
 
@@ -298,7 +370,7 @@ export class LeaderboardUI {
         let bg = engine.addEntity()
         Transform.create(bg, {
             parent: LeaderboardUI.container,
-            position: Vector3.create(16.5, -6.6, 0.1),
+            position: Vector3.create(16.8, -6.6, 0.1),
             scale: Vector3.create(42, 12.5, 1)
         })
         MeshRenderer.setPlane(bg)
@@ -429,7 +501,7 @@ export class LeaderboardUI {
         let youBg = engine.addEntity()
         Transform.create(youBg, {
             parent: LeaderboardUI.selfScoreContainer,
-            position: Vector3.create(16.5, 0, 0.1),
+            position: Vector3.create(16.8, 0, 0.1),
             scale: Vector3.create(42, 6, 1)
         })
         MeshRenderer.setPlane(youBg)
@@ -523,12 +595,20 @@ export class LeaderboardUI {
         return timeStr
     }
 
+    private static formatTimeMilli(_time: number): string {
+        let timeStr = "." + (_time % 1000).toString()
+        while (timeStr.length < 4) {
+            timeStr += "0"
+        }
+        return timeStr
+    }
+
     private static formatPlayerTotal(_time: number): string {
         if (_time < 1) {
             return "N/A"
         }
 
-        return LeaderboardUI.formatTime(_time)
+        return (LeaderboardUI.formatTime(_time) + LeaderboardUI.formatTimeMilli(_time)).replace(".", ":");
     }
 
     private static getSelfUsername(): string {
