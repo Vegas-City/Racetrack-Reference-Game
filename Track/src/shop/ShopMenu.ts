@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, InputAction, Material, MaterialTransparencyMode, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem, pointerEventsSystem } from "@dcl/ecs"
+import { Entity, GltfContainer, InputAction, Material, MaterialTransparencyMode, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from "@dcl/ecs"
 import { Color4, Quaternion, Vector3 } from "@dcl/ecs-math"
 import { shopUI } from "../utils/ui-provider"
 import Wearable from "../utils/interfaces/wearable"
