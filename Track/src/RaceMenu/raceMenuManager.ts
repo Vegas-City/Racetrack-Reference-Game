@@ -11,6 +11,7 @@ import * as carConfiguration from "./carConfiguration.json"
 import * as utils from '@dcl-sdk/utils'
 import { EventUIEnum, EventUIImage } from "../UI/eventUIImage";
 import { DemoManager } from "../DemoMode/DemoManager";
+import { CrowdNPC } from "../NPCs/crowdNPC";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -405,6 +406,7 @@ export class RaceMenuManager {
             this.blockStartRaceBtn = true
 
             DemoManager.hide()
+            CrowdNPC.instance.show()
 
             let self = this
             RaceMenuManager.LoadTrack(RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex)

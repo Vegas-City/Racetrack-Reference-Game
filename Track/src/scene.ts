@@ -23,6 +23,7 @@ import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
 import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
 import { DemoManager } from './DemoMode/DemoManager'
+import { CrowdNPC } from './NPCs/crowdNPC'
 
 export class Scene {
 
@@ -95,11 +96,13 @@ export class Scene {
                         Car.unload()
                         RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                         DemoManager.show()
+                        CrowdNPC.instance.hide()
                     }, 5000)
                 },
                 onQuitEvent: () => {
                     RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                     DemoManager.show()
+                    CrowdNPC.instance.hide()
                 },
                 onCheckpointEvent: () => {
                     let lap = TrackManager.GetLap()

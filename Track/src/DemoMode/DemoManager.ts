@@ -1,6 +1,5 @@
 import { engine } from "@dcl/sdk/ecs";
 import { DemoCar } from "./DemoCar";
-import { RaceMenuManager } from "../RaceMenu/raceMenuManager";
 
 export class DemoManager {
     static demoCars:DemoCar[] = []
