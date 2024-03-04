@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, Transform, engine } from "@dcl/sdk/ecs";
+import { Animator, Entity, GltfContainer, Transform, engine } from "@dcl/sdk/ecs";
 import { Quaternion, Vector3 } from "@dcl/sdk/math";
 import { GhostPoint } from "@vegascity/racetrack/src/ghostCar";
 import * as ghostData from "./DemoData.json"
@@ -26,6 +26,17 @@ export class DemoCar {
         Transform.createOrReplace(this.entity, {parent:this.parent})
 
         GltfContainer.createOrReplace(this.entity,{src:_modelPath})
+
+        Animator.create(this.entity, {
+            states: [
+                {
+                    clip: 'Spin',
+                    playing: true,
+                    loop: true,
+                    speed: 3
+                }
+            ]
+        })
         
         //Load data
         ghostData.points.forEach(point => {
