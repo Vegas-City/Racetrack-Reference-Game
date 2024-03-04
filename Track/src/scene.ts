@@ -73,8 +73,6 @@ export class Scene {
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
-                    DemoManager.show()
-                    
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -97,6 +95,7 @@ export class Scene {
 
                     utils.timers.setTimeout(() => {
                         Car.unload()
+                        DemoManager.show()
                     }, 5000)
                 },
                 onCheckpointEvent: () => {
