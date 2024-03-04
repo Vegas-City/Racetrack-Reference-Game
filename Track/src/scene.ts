@@ -52,8 +52,6 @@ export class Scene {
             debugMode: false,
             eventCallbacks: {
                 onStartEvent: () => {
-                    DemoManager.hide()
-
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -95,6 +93,7 @@ export class Scene {
 
                     utils.timers.setTimeout(() => {
                         Car.unload()
+                        RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                         DemoManager.show()
                     }, 5000)
                 },
@@ -160,7 +159,7 @@ export class Scene {
         new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
-        RaceMenuManager.LoadTrack(0) // load practice track by default
+        RaceMenuManager.LoadTrack(2) // load track 2 by default
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],

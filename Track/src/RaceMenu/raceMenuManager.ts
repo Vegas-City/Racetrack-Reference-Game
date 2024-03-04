@@ -10,6 +10,7 @@ import { ServerComms } from "../Server/serverComms";
 import * as carConfiguration from "./carConfiguration.json"
 import * as utils from '@dcl-sdk/utils'
 import { EventUIEnum, EventUIImage } from "../UI/eventUIImage";
+import { DemoManager } from "../DemoMode/DemoManager";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -402,6 +403,8 @@ export class RaceMenuManager {
     private startRace(): void {
         if (!this.blockStartRaceBtn) {
             this.blockStartRaceBtn = true
+
+            DemoManager.hide()
 
             let self = this
             RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
