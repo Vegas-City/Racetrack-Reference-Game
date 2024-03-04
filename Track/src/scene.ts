@@ -52,6 +52,8 @@ export class Scene {
             debugMode: false,
             eventCallbacks: {
                 onStartEvent: () => {
+                    DemoManager.hide()
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -71,6 +73,8 @@ export class Scene {
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
+                    DemoManager.show()
+                    
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
