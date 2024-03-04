@@ -97,6 +97,10 @@ export class Scene {
                         DemoManager.show()
                     }, 5000)
                 },
+                onQuitEvent: () => {
+                    RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
+                    DemoManager.show()
+                },
                 onCheckpointEvent: () => {
                     let lap = TrackManager.GetLap()
                     if (!lap) return
