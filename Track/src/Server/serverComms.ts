@@ -257,17 +257,19 @@ export class ServerComms {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = _guid
             let track = ServerComms.player.tracks.find(track => track.guid === _guid)
-            let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
-            let bool = true;
-            if (pb != null) {
-                bool = pb.PB == 0
-            }
+            if(track.carPbsPerTrack!=undefined){
+                let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
+                let bool = true;
+                if (pb != null) {
+                    bool = pb.PB == 0
+                }
 
-            if(TrackManager.isPractice) {
-                TimeUI.showQualOrPbTime("Qualification", 50000)
-            }
-            else {
-                TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+                if(TrackManager.isPractice) {
+                    TimeUI.showQualOrPbTime("Qualification", 50000)
+                }
+                else {
+                    TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+                }
             }
         })
     }
