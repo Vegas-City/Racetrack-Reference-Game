@@ -3,6 +3,7 @@ import { Vector3 } from "@dcl/ecs-math";
 import { CarFactory } from "@vegascity/racetrack/src/car";
 import { ServerComms } from "../Server/serverComms";
 import * as carConfiguration from "./carConfiguration.json"
+import { Animator } from "@dcl/sdk/ecs";
 
 export class CarChoice {
     entity: Entity
@@ -14,6 +15,16 @@ export class CarChoice {
         this.entity = engine.addEntity()
 
         GltfContainer.create(this.entity, { src: _model })
+
+        Animator.create(this.entity, {
+            states: [
+                {
+                    clip: 'Idle',
+                    playing: false,
+                    loop: false
+                }
+            ]
+        })
         Transform.create(this.entity, _transform)
         this.originalScale = Vector3.clone(_transform.scale)
         this.hide()
