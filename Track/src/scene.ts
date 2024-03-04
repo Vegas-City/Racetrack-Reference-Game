@@ -22,6 +22,7 @@ import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
 import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
+import { DemoManager } from './DemoMode/DemoManager'
 
 export class Scene {
 
@@ -43,7 +44,7 @@ export class Scene {
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
 
-
+        new DemoManager()
 
         new TrackManager({
             position: Vector3.create(-32, 1, 16),
@@ -87,6 +88,8 @@ export class Scene {
                     if (GhostRecorder.instance != null) {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
+
+                    TrackManager.ghostCar.endGhost() // Hide the ghost car if there is one
 
                     utils.timers.setTimeout(() => {
                         Car.unload()

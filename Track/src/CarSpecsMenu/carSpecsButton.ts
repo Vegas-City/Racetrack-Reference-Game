@@ -1,5 +1,5 @@
-import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from "@dcl/ecs";
-import { Quaternion, Vector3 } from "@dcl/ecs-math";
+import { Entity, GltfContainer, InputAction, Material, MaterialTransparencyMode, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from "@dcl/ecs";
+import { Color4, Quaternion, Vector3 } from "@dcl/ecs-math";
 
 export type CarSpecsConfig = {
     parent: Entity
@@ -8,6 +8,7 @@ export type CarSpecsConfig = {
     scale: Vector3
     src: string
     srcLock?: string
+    srcTooltip?: string
     startLocked?: boolean
 }
 
@@ -21,6 +22,7 @@ export class CarSpecsButton {
     parentEntity: Entity
     buttonEntity: Entity
     lockIcon?: Entity
+    tooltip?: Entity
     locked: boolean = false
 
     constructor(_config: CarSpecsConfig) {
@@ -75,17 +77,66 @@ export class CarSpecsButton {
             GltfContainer.create(this.lockIcon, { src: _config.srcLock })
         }
 
+        if (_config.srcTooltip) {
+            this.tooltip = engine.addEntity()
+            Transform.create(this.tooltip, {
+                parent: this.parentEntity,
+                position: Vector3.create(-2, 0, 0.1),
+                rotation: Quaternion.fromEulerDegrees(0, 180, 0),
+                scale: Vector3.Zero()
+            })
+            MeshRenderer.setPlane(this.tooltip)
+            Material.setPbrMaterial(this.tooltip, {
+                texture: Material.Texture.Common({
+                    src: _config.srcTooltip
+                }),
+                alphaTexture: Material.Texture.Common({
+                    src: _config.srcTooltip
+                }),
+                emissiveTexture: Material.Texture.Common({
+                    src: _config.srcTooltip
+                }),
+                transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+                emissiveColor: Color4.White(),
+                emissiveIntensity: 1
+            })
+        }
+
         if (_config.startLocked) {
             this.lock()
         }
 
         engine.addSystem((dt: number) => {
-            if (!this.locked && inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_ENTER, this.buttonEntity)) {
-                this.isScalingUp = true
+            if (this.locked) {
+                this.isScalingUp = false
+            }
+
+            if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_ENTER, this.buttonEntity)) {
+                if (this.locked) {
+                    if (this.tooltip) {
+                        let tooltipTransform = Transform.getMutableOrNull(this.tooltip)
+                        if (tooltipTransform) {
+                            tooltipTransform.scale = Vector3.create(2.5, 2.5, 2.5)
+                        }
+                    }
+                }
+                else {
+                    this.isScalingUp = true
+                }
             }
 
             if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_LEAVE, this.buttonEntity)) {
-                this.isScalingUp = false
+                if (this.locked) {
+                    if (this.tooltip) {
+                        let tooltipTransform = Transform.getMutableOrNull(this.tooltip)
+                        if (tooltipTransform) {
+                            tooltipTransform.scale = Vector3.Zero()
+                        }
+                    }
+                }
+                else {
+                    this.isScalingUp = false
+                }
             }
 
             let parentTransform = Transform.getMutable(this.parentEntity)
