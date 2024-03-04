@@ -407,7 +407,7 @@ export class RaceMenuManager {
             DemoManager.hide()
 
             let self = this
-            RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+            RaceMenuManager.LoadTrack(RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex)
             utils.timers.setTimeout(() => {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)
