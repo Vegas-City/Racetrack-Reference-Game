@@ -35,7 +35,7 @@ export class Scene {
     }
 
     static LoadScene(): void {
-        setup(movePlayerTo, triggerSceneEmote)
+        setup(movePlayerTo, triggerSceneEmote) 
 
         new InputManager()
 
@@ -130,6 +130,9 @@ export class Scene {
 
                     if (TrackManager.isPractice) {
                         if (Math.round(lap.timeElapsed) < 50) {
+                            if(!ServerComms.player.practiceCompleted){
+                                EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
+                            }
                             ServerComms.completePractice()
                         }
                     }
