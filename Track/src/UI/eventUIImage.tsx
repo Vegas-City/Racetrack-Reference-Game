@@ -203,7 +203,8 @@ export class EventUIImage {
         return "msg_unlockedCompetition.png"
     }
 
-    static comparePlayerData() {
+    static comparePlayerData() { 
+        
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
         if(EventUIImage.pointIncrease == 0){
@@ -226,7 +227,7 @@ export class EventUIImage {
                 }
             });
 
-            if(newPB<oldPB){ 
+            if(newPB<oldPB && oldPB!=0){ 
                 EventUIImage.pointIncrease = -1 // We'll use this later
             }
         }
