@@ -22,6 +22,25 @@ export class FireWorkManager {
         engine.addSystem(this.update.bind(this))
     }
 
+    createFireworkParticle(_position){
+        let oldParticle:FireworkParticle = null
+
+        this.fireworkParticles.forEach(particle => {
+            if(oldParticle == null && particle.dead){
+                oldParticle = particle
+            }
+        });
+
+        
+        if(oldParticle!=null){
+            oldParticle.spawn(_position)
+        } else {
+            let newParticle = new FireworkParticle()
+            newParticle.spawn(_position)
+            this.fireworkParticles.push(newParticle)
+        }
+    }
+
     createExplosion(_position){
         let oldExplosion:Explosion = null
 
@@ -69,6 +88,10 @@ export class FireWorkManager {
 
         this.explosions.forEach(explosion => {
             explosion.update(_dt)
+        })
+
+        this.fireworkParticles.forEach(particle => {
+            particle.update(_dt)
         })
     }
 }

@@ -9,7 +9,6 @@ export class Explosion {
         constructor() {
             this.entity = engine.addEntity()
             Transform.create(this.entity)
-            GltfContainer.create(this.entity,{src:"models/fx/firework.glb"})
             Animator.create(this.entity, {
                 states: [
                     {
@@ -23,6 +22,7 @@ export class Explosion {
         }
     
         spawn(_position: Vector3) {
+            GltfContainer.create(this.entity,{src:"models/fx/fireworkSmall.glb"})
             Transform.getMutable(this.entity).scale = Vector3.create(2,2,2)
             Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(Math.random()*360,Math.random()*360,Math.random()*360)
             Transform.getMutable(this.entity).position = _position
@@ -32,6 +32,7 @@ export class Explosion {
         }
     
         die() {
+            GltfContainer.deleteFrom(this.entity)
             this.dead = true
             Animator.stopAllAnimations(this.entity)
             Transform.getMutable(this.entity).scale = Vector3.Zero()

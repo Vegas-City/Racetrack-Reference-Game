@@ -6,7 +6,9 @@ export class Rocket {
     entity:Entity
     dead:boolean = false
     life:number = 0
-    speed:number = 45
+    speed:number = 30
+    particleSpawnRate:number = 1/60
+    currentSpawnRate:number = 0
 
     constructor(){
         this.entity = engine.addEntity()
@@ -15,14 +17,15 @@ export class Rocket {
     }
 
     spawn(_position:Vector3, _rotation:Vector3){
+        this.currentSpawnRate=0
         Transform.getMutable(this.entity).position = _position
-        this.life = 0.5 + Math.random()*0.5
+        this.life = 0.75 + Math.random()*0.5
         this.show()
         this.dead = false
     }
 
     show(){
-        Transform.getMutable(this.entity).scale = Vector3.create(0.05,0.05,0.05)
+        Transform.getMutable(this.entity).scale = Vector3.create(0.02,0.05,0.02)
     }
 
     hide(){
@@ -38,6 +41,15 @@ export class Rocket {
     update(_dt:number){
         if(this.dead){
             return
+        }
+
+        this.currentSpawnRate+=_dt
+
+        if(this.currentSpawnRate>=this.particleSpawnRate){
+            FireWorkManager.instance.createFireworkParticle(Transform.get(this.entity).position)
+            FireWorkManager.instance.createFireworkParticle(Transform.get(this.entity).position)
+            FireWorkManager.instance.createFireworkParticle(Transform.get(this.entity).position)
+            this.currentSpawnRate=0
         }
 
         this.life -= _dt
