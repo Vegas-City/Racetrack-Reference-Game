@@ -24,6 +24,7 @@ import * as utils from '@dcl-sdk/utils'
 import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
 import { DemoManager } from './DemoMode/DemoManager'
 import { CrowdNPC } from './NPCs/crowdNPC'
+import { FireWorkManager } from './Fireworks/fireworkManager'
 
 export class Scene {
 
@@ -46,6 +47,8 @@ export class Scene {
         Scene.shopController.setupClickables()
 
         new DemoManager()
+
+        new FireWorkManager()
 
         new TrackManager({
             position: Vector3.create(-32, 1, 16),
