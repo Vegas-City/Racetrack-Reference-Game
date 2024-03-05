@@ -47,7 +47,15 @@ export class PitstopNPC {
 
         this.pitstopDialog = [
             {
-                text: "Welcome to the pitstop",
+                text: "Welcome to the pitstop! Here you can learn more about the performance of the 3 cars and check out the different designs. Which one is your favourite?",
+                isEndOfDialog: false 
+            },
+            {
+                text: "When you have learnt all you have to know start racing, perfect your driving skills and unlock all the 3 cars!",
+                isEndOfDialog: false
+            },
+            {
+                text: "I hope you will enjoy your time here!",
                 isEndOfDialog: true
             },
         ]
