@@ -25,6 +25,7 @@ import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, Po
 import { DemoManager } from './DemoMode/DemoManager'
 import { CrowdNPC } from './NPCs/crowdNPC'
 import { FireWorkManager } from './Fireworks/fireworkManager'
+import { AudioManager } from './audio/audioManager'
 
 export class Scene {
 
@@ -39,6 +40,8 @@ export class Scene {
         setup(movePlayerTo, triggerSceneEmote) 
 
         new InputManager()
+
+        new AudioManager()
 
         Scene.shopController = new ShopController()
         new ShopMenu()

@@ -13,13 +13,28 @@ export class FireWorkManager {
     fireworkParticles:FireworkParticle[] = []
     explosions:Explosion[] = []
 
+    launchPositions:Vector3[] = [
+        Vector3.create(36.08,4,105.44),
+        Vector3.create(49.10,5,71.06),
+        Vector3.create(69.01,5.5,124.43),
+        Vector3.create(42.51,14,103.50),
+        Vector3.create(87.47,16,88.58)
+    ]
+
     constructor(){
         FireWorkManager.instance = this
 
-        new FireWorkTrigger(Vector3.create(62,4,96))
+        new FireWorkTrigger(Vector3.create(62,2,96))
         new FireWorkTrigger(Vector3.create(-14,2,7.34))
 
         engine.addSystem(this.update.bind(this))
+
+        // Debug launch positions
+        this.launchPositions.forEach(pos => {
+            let launcher: Entity = engine.addEntity()
+            MeshRenderer.setBox(launcher)
+            Transform.create(launcher, {position:pos})
+        });
     }
 
     createFireworkParticle(_position){
@@ -75,7 +90,7 @@ export class FireWorkManager {
         if(_positionOveride.x == 0){
             launchPos = Vector3.create(95+Math.random()*2,20,86+Math.random()*2)
         }
-        debugger
+
         if(oldRocket!=null){
             oldRocket.spawn(launchPos,Quaternion.fromEulerDegrees(0,0,0),_fakeRocket)
         } else {
@@ -114,15 +129,17 @@ export class FireWorkTrigger {
                 entity: this.entity,
                 opts: {
                     button: InputAction.IA_POINTER,
-                    hoverText: 'Launch salvo'
+                    hoverText: 'Start display'
                 }
             },
             function () {
-                for(let i:number = 0; i<6; i++){
-                    utils.timers.setTimeout(()=>{
-                        FireWorkManager.instance.launchFireworks()    
-                    },Math.random()*150 + 350*i)
-                }
+                FireWorkManager.instance.launchPositions.forEach((pos,index) => {
+                    for(let salvo:number = 0; salvo<15;salvo++){
+                        utils.timers.setTimeout(()=>{
+                            FireWorkManager.instance.launchFireworks(pos)    
+                        },(index*100 + Math.random()*500)+3000*salvo)
+                    }
+                });
             }
         )
     }

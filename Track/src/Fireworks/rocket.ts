@@ -1,6 +1,8 @@
 import { Entity, GltfContainer, Transform, engine } from "@dcl/sdk/ecs";
 import { Quaternion, Vector3 } from "@dcl/sdk/math";
 import { FireWorkManager } from "./fireworkManager";
+import * as utils from '@dcl-sdk/utils'
+import { AudioManager } from "../audio/audioManager";
 
 export class Rocket {
     entity: Entity
@@ -30,7 +32,7 @@ export class Rocket {
             this.speed = 0.4 + Math.random() / 3
             this.particleSpawnRate = 1 / 15
         } else {
-            Transform.getMutable(this.parent).rotation = Quaternion.fromEulerDegrees(-45 + Math.random() * 90 - 90, 0, -45 + Math.random() * 90 - 90)
+            Transform.getMutable(this.parent).rotation = Quaternion.fromEulerDegrees(-20 + Math.random() * 40 - 90, 0, -20 + Math.random() * 40 - 90)
             this.life = 2 + Math.random() * 0.5
             this.speed = 0.5
             this.particleSpawnRate = 1 / 30
@@ -39,6 +41,8 @@ export class Rocket {
 
         this.show()
         this.dead = false
+
+        AudioManager.playLaunchSounds(_position)
     }
 
     show() {
@@ -52,10 +56,22 @@ export class Rocket {
     die() {
         this.dead = true
         if (!this.fakeRocket) {
-            FireWorkManager.instance.createExplosion(Transform.get(this.parent).position)
+            let pos:Vector3 = Transform.get(this.parent).position
+            FireWorkManager.instance.createExplosion(pos)
             for (let i: number = 0; i < 19; i++) {
-                FireWorkManager.instance.launchFireworks(Transform.get(this.parent).position, true)
+                FireWorkManager.instance.launchFireworks(pos, true)
             }
+            
+            AudioManager.playBoomSounds(pos)
+            utils.timers.setTimeout(()=>{
+                AudioManager.playBoomSounds(pos)
+             }, Math.random()*300 + 200)
+            
+            // delayed crackle
+            utils.timers.setTimeout(()=>{
+                AudioManager.playCrackleSounds(pos)  
+            },500 + Math.random()*1000)
+        
         }
         this.hide()
     }
