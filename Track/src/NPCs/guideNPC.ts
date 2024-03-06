@@ -40,6 +40,7 @@ export class GuideNPC {
                 onlyClickTrigger: false,
                 onlyExternalTrigger: false,
                 darkUI: true,
+                portrait: "images/portraits/guide_crop.png"
             }
         )
 
