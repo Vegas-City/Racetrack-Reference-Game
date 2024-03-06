@@ -6,6 +6,7 @@ import { DebugUI } from "./UI/debugUI";
 import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
 import { Helper, UserData } from "./Server/Helper";
+import { FireWorkManager } from "./Fireworks/fireworkManager";
 
 const passwordProtected: boolean = true
 const password: string = "letsgo"
@@ -26,6 +27,7 @@ export function main() {
             utils.timers.setTimeout(() => {
               Scene.LoadScene()
               Scene.LoadMenu()
+              new FireWorkManager()
               DebugUI.debugUIShow = true
             }, 1500)
           }
@@ -38,6 +40,7 @@ export function main() {
               }
               else {
                 Scene.LoadMenu()
+                new FireWorkManager()
               }
             }, 1500)
           }
@@ -59,6 +62,7 @@ export function main() {
           prompt.hide()
           utils.timers.setTimeout(function () {
             Scene.LoadMenu()
+            new FireWorkManager()
             DebugUI.debugUIShow = true
           }, 1000)
         }
