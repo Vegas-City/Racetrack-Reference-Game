@@ -31,8 +31,7 @@
         "leftWheel": "models/cars/car3/wheel_left.glb",
         "rightWheel": "models/cars/car3/wheel_right.glb",
         "steeringWheel": "models/cars/car3/steering_wheel.glb",
-        "brakeLights": "models/cars/car3/brakeLights.glb",
-        "dashboard": "models/cars/car3/dashboard.glb"
+        "brakeLights": "models/cars/car3/brakeLights.glb"
       },
       "images": {
         "carIcon": "images/ui/selectionUI/car3.png"
@@ -81,8 +80,7 @@
         "leftWheel": "models/cars/car2/wheel_left.glb",
         "rightWheel": "models/cars/car2/wheel_right.glb",
         "steeringWheel": "models/cars/car2/steering_wheel.glb",
-        "brakeLights": "models/cars/car2/brakeLights.glb",
-        "dashboard": "models/cars/car2/dashboard.glb"
+        "brakeLights": "models/cars/car2/brakeLights.glb"
       },
       "images": {
         "carIcon": "images/ui/selectionUI/car2.png"
@@ -131,8 +129,7 @@
         "leftWheel": "models/cars/car1/wheel_left.glb",
         "rightWheel": "models/cars/car1/wheel_right.glb",
         "steeringWheel": "models/cars/car1/steering_wheel.glb",
-        "brakeLights": "models/cars/car1/brakeLights.glb",
-        "dashboard": "models/cars/car1/dashboard.glb"
+        "brakeLights": "models/cars/car1/brakeLights.glb"
       },
       "images": {
         "carIcon": "images/ui/selectionUI/car1.png"
