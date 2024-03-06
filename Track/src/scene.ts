@@ -1,5 +1,5 @@
 import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
-import { InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
+import { GameMode, TrackManager } from "@vegascity/racetrack/src/racetrack"
 import { setup } from "@vegascity/racetrack/src/utils"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
@@ -16,16 +16,17 @@ import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import { ParticleSystem } from './particleSystem/particleSystem'
 import { ShopMenu } from './shop/ShopMenu'
 import { CarSpecsMenuManager } from './CarSpecsMenu/carSpecsMenuManager'
+import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
+import { DemoManager } from './DemoMode/DemoManager'
+import { CrowdNPC } from './NPCs/crowdNPC'
+import { AudioManager } from './audio/audioManager'
+import { FireWorkManager } from './Fireworks/fireworkManager'
+
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
-import { DemoManager } from './DemoMode/DemoManager'
-import { CrowdNPC } from './NPCs/crowdNPC'
-import { FireWorkManager } from './Fireworks/fireworkManager'
-import { AudioManager } from './audio/audioManager'
 
 export class Scene {
 
@@ -39,10 +40,7 @@ export class Scene {
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote) 
 
-        new InputManager()
-
         new AudioManager()
-
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
@@ -54,6 +52,7 @@ export class Scene {
         new FireWorkManager()
 
         new TrackManager({
+            gameMode: GameMode.RACE,
             position: Vector3.create(-32, 1, 16),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
             debugMode: false,
