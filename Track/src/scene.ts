@@ -20,7 +20,6 @@ import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, Po
 import { DemoManager } from './DemoMode/DemoManager'
 import { CrowdNPC } from './NPCs/crowdNPC'
 import { AudioManager } from './audio/audioManager'
-import { FireWorkManager } from './Fireworks/fireworkManager'
 
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
@@ -49,7 +48,6 @@ export class Scene {
 
         new DemoManager()
 
-        new FireWorkManager()
 
         new TrackManager({
             gameMode: GameMode.RACE,
