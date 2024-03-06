@@ -19,6 +19,9 @@ import { CarSpecsMenuManager } from './CarSpecsMenu/carSpecsMenuManager'
 import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
 import { DemoManager } from './DemoMode/DemoManager'
 import { CrowdNPC } from './NPCs/crowdNPC'
+import { AudioManager } from './audio/audioManager'
+import { FireWorkManager } from './Fireworks/fireworkManager'
+
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
@@ -37,6 +40,7 @@ export class Scene {
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote) 
 
+        new AudioManager()
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
@@ -44,6 +48,8 @@ export class Scene {
         Scene.shopController.setupClickables()
 
         new DemoManager()
+
+        new FireWorkManager()
 
         new TrackManager({
             gameMode: GameMode.RACE,
