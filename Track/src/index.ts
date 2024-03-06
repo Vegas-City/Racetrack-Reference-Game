@@ -74,12 +74,14 @@ export function main() {
         prompt.hide()
         utils.timers.setTimeout(function () {
           Scene.LoadMenu()
+          new FireWorkManager()
           prompt.hide()
         }, 1000)
       } else if (value.toLocaleLowerCase() == passwordDev) {
         prompt.hide()
         utils.timers.setTimeout(function () {
           Scene.LoadMenu()
+          new FireWorkManager()
           prompt.hide()
           DebugUI.debugUIShow = true
         }, 1000)
