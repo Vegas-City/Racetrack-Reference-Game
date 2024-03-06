@@ -12,7 +12,7 @@ export class PitstopNPC {
             
     constructor(){
 
-        new Info(Vector3.create(20.9, 1, 4.45))
+        new Info(Vector3.create(21, 1, 4.55))
 
         // NPC
         this.pitstopNPC = npc.create(
@@ -42,12 +42,21 @@ export class PitstopNPC {
                 onlyClickTrigger: false,
                 onlyExternalTrigger: false,
                 darkUI: true,
+                portrait: "images/portraits/pitstop_crop.png"
             }
         )
 
         this.pitstopDialog = [
             {
-                text: "Welcome to the pitstop",
+                text: "Welcome to the pitstop! Here you can learn more about the performance of the 3 cars and check out the different designs. Which one is your favourite?",
+                isEndOfDialog: false 
+            },
+            {
+                text: "When you have learnt all you have to know start racing, perfect your driving skills and unlock all the 3 cars!",
+                isEndOfDialog: false
+            },
+            {
+                text: "I hope you will enjoy your time here!",
                 isEndOfDialog: true
             },
         ]

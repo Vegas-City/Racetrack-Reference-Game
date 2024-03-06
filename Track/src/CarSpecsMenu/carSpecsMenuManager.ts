@@ -34,6 +34,7 @@ export class CarSpecsMenuManager {
             scale: Vector3.create(0.1, 1.9, 2.8),
             src: "models/carSpecs/car2.glb",
             srcLock: "models/carSpecs/lock.glb",
+            srcTooltip: "images/ui/tooltips/carTooltip.png",
             startLocked: true
         })
 
@@ -44,6 +45,7 @@ export class CarSpecsMenuManager {
             scale: Vector3.create(0.1, 1.9, 2.8),
             src: "models/carSpecs/car3.glb",
             srcLock: "models/carSpecs/lock.glb",
+            srcTooltip: "images/ui/tooltips/carTooltip.png",
             startLocked: true
         })
 

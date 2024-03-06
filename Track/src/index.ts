@@ -6,6 +6,7 @@ import { DebugUI } from "./UI/debugUI";
 import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
 import { Helper, UserData } from "./Server/Helper";
+import { FireWorkManager } from "./Fireworks/fireworkManager";
 
 const passwordProtected: boolean = true
 const password: string = "letsgo"
@@ -13,7 +14,7 @@ const passwordDev: string = "letsgodev"
 
 export function main() {
   setupUi()
-
+ 
   // wait for the realm and user data to be available
   Helper.init(() => {
     UserData.getUserData(() => {
@@ -22,18 +23,26 @@ export function main() {
         if (realmInfo != undefined) {
           console.log(`You are in the realm: `, realmInfo.realmName)
           if (realmInfo.isPreview) {
-            Scene.LoadScene()
-            Scene.LoadMenu()
-            DebugUI.debugUIShow = true
+            Scene.LoadBuildings()
+            utils.timers.setTimeout(() => {
+              Scene.LoadScene()
+              Scene.LoadMenu()
+              new FireWorkManager()
+              DebugUI.debugUIShow = true
+            }, 1500)
           }
           else {
-            Scene.LoadScene()
-            if (passwordProtected) {
-              showPrompt()
-            }
-            else {
-              Scene.LoadMenu()
-            }
+            Scene.LoadBuildings()
+            utils.timers.setTimeout(() => {
+              Scene.LoadScene()
+              if (passwordProtected) {
+                showPrompt()
+              }
+              else {
+                Scene.LoadMenu()
+                new FireWorkManager()
+              }
+            }, 1500)
           }
         }
       })
@@ -53,6 +62,7 @@ export function main() {
           prompt.hide()
           utils.timers.setTimeout(function () {
             Scene.LoadMenu()
+            new FireWorkManager()
             DebugUI.debugUIShow = true
           }, 1000)
         }
@@ -64,12 +74,14 @@ export function main() {
         prompt.hide()
         utils.timers.setTimeout(function () {
           Scene.LoadMenu()
+          new FireWorkManager()
           prompt.hide()
         }, 1000)
       } else if (value.toLocaleLowerCase() == passwordDev) {
         prompt.hide()
         utils.timers.setTimeout(function () {
           Scene.LoadMenu()
+          new FireWorkManager()
           prompt.hide()
           DebugUI.debugUIShow = true
         }, 1000)

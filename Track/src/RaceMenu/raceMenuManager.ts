@@ -10,6 +10,8 @@ import { ServerComms } from "../Server/serverComms";
 import * as carConfiguration from "./carConfiguration.json"
 import * as utils from '@dcl-sdk/utils'
 import { EventUIEnum, EventUIImage } from "../UI/eventUIImage";
+import { DemoManager } from "../DemoMode/DemoManager";
+import { CrowdNPC } from "../NPCs/crowdNPC";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -150,6 +152,7 @@ export class RaceMenuManager {
                 this.trackButton1.select()
                 Transform.getMutable(this.practiceIcon).scale = Vector3.One()
                 Transform.getMutable(this.competitionIcon).scale = Vector3.Zero()
+                RaceMenuManager.update()
             }).bind(this)
         })
 
@@ -162,6 +165,7 @@ export class RaceMenuManager {
             srcSelected: "models/selection/competition_selected.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcLock: "models/selection/lock.glb",
+            srcTooltip: "images/ui/tooltips/compTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllGameModes.bind(this),
             onSelectCallback: (() => {
@@ -171,6 +175,7 @@ export class RaceMenuManager {
                 this.trackButton4.show()
                 Transform.getMutable(this.practiceIcon).scale = Vector3.Zero()
                 Transform.getMutable(this.competitionIcon).scale = Vector3.One()
+                RaceMenuManager.update()
             }).bind(this),
             iconOffset: Vector3.create(-0.35, 0, 0),
             iconScale: Vector3.create(0.8, 0.8, 0.8)
@@ -187,6 +192,7 @@ export class RaceMenuManager {
             srcSelected: "models/selection/track1_selected.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startSelected: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -210,6 +216,7 @@ export class RaceMenuManager {
             srcLock: "models/selection/lock.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -233,6 +240,7 @@ export class RaceMenuManager {
             srcLock: "models/selection/lock.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -256,6 +264,7 @@ export class RaceMenuManager {
             srcLock: "models/selection/lock.glb",
             srcWhiteCup: "models/selection/whiteCup.glb",
             srcGoldCup: "models/selection/goldCup.glb",
+            srcTooltip: "images/ui/tooltips/trackTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
@@ -299,6 +308,7 @@ export class RaceMenuManager {
             src: "models/selection/car2b.glb",
             srcSelected: "models/selection/car2b_selected.glb",
             srcLock: "models/selection/lock.glb",
+            srcTooltip: "images/ui/tooltips/carTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
@@ -315,6 +325,7 @@ export class RaceMenuManager {
             src: "models/selection/car3b.glb",
             srcSelected: "models/selection/car3b_selected.glb",
             srcLock: "models/selection/lock.glb",
+            srcTooltip: "images/ui/tooltips/carTooltip.png",
             startLocked: true,
             deselectAllCallback: this.deselectAllCars.bind(this),
             onSelectCallback: (() => {
@@ -394,8 +405,11 @@ export class RaceMenuManager {
         if (!this.blockStartRaceBtn) {
             this.blockStartRaceBtn = true
 
+            DemoManager.hide()
+            CrowdNPC.instance.show()
+
             let self = this
-            RaceMenuManager.LoadTrack(TrackManager.isPractice ? 0 : this.currentTrackIndex)
+            RaceMenuManager.LoadTrack(RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex)
             utils.timers.setTimeout(() => {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)
@@ -436,7 +450,6 @@ export class RaceMenuManager {
         RaceMenuManager.instance.trackButton1.setUnqualified()
 
         //update tracks
-        let firstTimePlaying: boolean = true
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
@@ -454,7 +467,7 @@ export class RaceMenuManager {
 
             track.carPbsPerTrack.forEach(carPb => {
                 if (carPb.car == selectedCarGuid && carPb.PB > 0 && carPb.PB < track.targetTimeToUnlockNextTrack) {
-                    if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b") {
+                    if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b" && RaceMenuManager.instance.competitionButton.selected) {
                         RaceMenuManager.instance.trackButton1.setQualified()
                     }
                     else if (track.guid == "17e75c78-7f17-4b7f-8a13-9d1832ec1231") {
@@ -468,14 +481,14 @@ export class RaceMenuManager {
                     }
                 }
             })
-
-            if (track.pb > 0) {
-                firstTimePlaying = false
-            }
         })
 
-        if (!firstTimePlaying) {
+        if (ServerComms.player.practiceCompleted) {
             RaceMenuManager.instance.competitionButton.unlock()
+
+            if (RaceMenuManager.instance.practiceButton.selected) {
+                RaceMenuManager.instance.trackButton1.setQualified()
+            }
         }
 
         if ((RaceMenuManager.instance.trackButton2.selected && RaceMenuManager.instance.trackButton2.locked)

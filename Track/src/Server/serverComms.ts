@@ -14,6 +14,7 @@ import * as exampleLeaderboardData from "./exampleJsons/exampleLeaderboardData.j
 import { TimeUI } from "@vegascity/racetrack/src/ui"
 import { EventUIImage } from "../UI/eventUIImage"
 import { CarSpecsMenuManager } from "../CarSpecsMenu/carSpecsMenuManager"
+import { ShopMenu } from "../shop/ShopMenu"
 
 export class ServerComms {
     private static readonly TEST_MODE: boolean = false
@@ -106,8 +107,8 @@ export class ServerComms {
         }
         else {
             try {
-                if(ServerComms.player!=undefined || ServerComms.player != null){
-                     Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
+                if (ServerComms.player != undefined || ServerComms.player != null) {
+                    Object.assign(EventUIImage.oldPlayerData, ServerComms.player)
                 }
                 let response = await signedFetch({
                     url: this.getServerUrl() + "/api/racetrack/player?displayName=" + UserData.cachedData?.displayName,
@@ -121,9 +122,12 @@ export class ServerComms {
                         ServerComms.player = Object.assign(new PlayerData(), data.result)
                         RaceMenuManager.update()
                         CarSpecsMenuManager.update()
-                        if(_raceEnded){
+                        if (_raceEnded) {
                             EventUIImage.comparePlayerData()
                         }
+                        ShopMenu.items.forEach(wearable => {
+                            wearable.unlock(ServerComms.player.points)
+                        })
                     }
 
                 )
@@ -224,17 +228,49 @@ export class ServerComms {
         }
     }
 
-    public static setTrack(_guid: string): void {
+    public static completePractice() {
+        if (ServerComms.TEST_MODE) {
+            console.log("Practice completed.")
+        }
+        else {
+            try {
+                signedFetch({
+                    url: this.getServerUrl() + "/api/racetrack/practice",
+                    init: {
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'GET'
+                    }
+                }).then(async response => await JSON.parse(response.body)).then(
+                    data => {
+                        console.log("Returning Data: " + data)
+                    }
+                ).then(() => {
+                    ServerComms.getPlayerData()
+                })
+            } catch (ex) {
+                console.log("Error getting ghost data: " + ex)
+            }
+        }
+    }
+
+    public static setTrack(_guid: string) {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = _guid
             let track = ServerComms.player.tracks.find(track => track.guid === _guid)
-            let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
-            let bool = true;
-            if (pb != null) {
-                bool = pb.PB == 0
-            }
+            if(track.carPbsPerTrack!=undefined){
+                let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
+                let bool = true;
+                if (pb != null) {
+                    bool = pb.PB == 0
+                }
 
-            TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+                if(TrackManager.isPractice) {
+                    TimeUI.showQualOrPbTime("Qualification", 50000)
+                }
+                else {
+                    TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+                }
+            }
         })
     }
 

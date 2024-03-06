@@ -1,6 +1,5 @@
-import { Quaternion, Vector3 } from '@dcl/sdk/math'
-import { PhysicsManager } from "@vegascity/racetrack/src/physics"
-import { InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
+import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
+import { GameMode, TrackManager } from "@vegascity/racetrack/src/racetrack"
 import { setup } from "@vegascity/racetrack/src/utils"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
@@ -17,32 +16,41 @@ import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import { ParticleSystem } from './particleSystem/particleSystem'
 import { ShopMenu } from './shop/ShopMenu'
 import { CarSpecsMenuManager } from './CarSpecsMenu/carSpecsMenuManager'
+import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, PointerEvents, Transform, engine, inputSystem } from '@dcl/sdk/ecs'
+import { DemoManager } from './DemoMode/DemoManager'
+import { CrowdNPC } from './NPCs/crowdNPC'
+import { AudioManager } from './audio/audioManager'
+
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { Transform } from '@dcl/sdk/ecs'
 
 export class Scene {
 
     static loaded: boolean = false
     static shopController: ShopController
 
-    static LoadScene(): void {
-        setup(movePlayerTo, triggerSceneEmote)
-
+    static LoadBuildings(): void {
         new Buildings()
-        new InputManager()
-        new ServerComms()
+    }
 
+    static LoadScene(): void {
+        setup(movePlayerTo, triggerSceneEmote) 
+
+        new AudioManager()
         Scene.shopController = new ShopController()
+        new ShopMenu()
+        new ServerComms()
         Scene.shopController.updateCollection(UserData.cachedData.publicKey)
         Scene.shopController.setupClickables()
 
-        new ShopMenu()
+        new DemoManager()
+
 
         new TrackManager({
+            gameMode: GameMode.RACE,
             position: Vector3.create(-32, 1, 16),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
             debugMode: false,
@@ -85,9 +93,19 @@ export class Scene {
                         ServerComms.sendGhostCarData(GhostRecorder.instance.getGhostData())
                     }
 
+                    TrackManager.ghostCar.endGhost() // Hide the ghost car if there is one
+
                     utils.timers.setTimeout(() => {
                         Car.unload()
+                        RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
+                        DemoManager.show()
+                        CrowdNPC.instance.hide()
                     }, 5000)
+                },
+                onQuitEvent: () => {
+                    RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
+                    DemoManager.show()
+                    CrowdNPC.instance.hide()
                 },
                 onCheckpointEvent: () => {
                     let lap = TrackManager.GetLap()
@@ -114,11 +132,11 @@ export class Scene {
                     })
 
                     if (TrackManager.isPractice) {
-                        if (Math.round(lap.timeElapsed) < 60) {
-                            if (RaceMenuManager.instance.competitionButton.locked) {
+                        if (Math.round(lap.timeElapsed) < 50) {
+                            if(!ServerComms.player.practiceCompleted){
                                 EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
-                                RaceMenuManager.instance.competitionButton.unlock()
                             }
+                            ServerComms.completePractice()
                         }
                     }
                 }
@@ -149,13 +167,12 @@ export class Scene {
             respawnDirection: Vector3.create(0, 5, 20),
         })
 
-        new PhysicsManager()
         new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
         new NPCManager()
         new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
-        RaceMenuManager.LoadTrack(0) // load practice track by default
+        RaceMenuManager.LoadTrack(2) // load track 2 by default
 
         Minimap.InitialiseAssets({
             lapImages: ["images/ui/minimapUI/lap1.png", "images/ui/minimapUI/lap2.png"],
@@ -210,14 +227,62 @@ export class Scene {
         })
 
         new AvatarVisibilityManager()
+        Scene.InitialiseExperimentalMode()
 
         Scene.loaded = true
     }
 
-    static LoadMenu() {
+    static LoadMenu(): void {
         let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
         if (menuTransform) {
             menuTransform.scale = Vector3.One()
         }
+    }
+
+    private static InitialiseExperimentalMode(): void {
+        let experimentalModeEntity = engine.addEntity()
+        Transform.create(experimentalModeEntity, {
+            position: Vector3.create(-13, 2, 7),
+            scale: Vector3.create(0.6, 0.6, 0.6)
+        })
+        Material.setPbrMaterial(experimentalModeEntity, {
+            albedoColor: Color4.Black()
+        })
+        MeshRenderer.setSphere(experimentalModeEntity)
+        MeshCollider.setSphere(experimentalModeEntity)
+        PointerEvents.create(experimentalModeEntity, {
+            pointerEvents: [
+                {
+                    eventType: PointerEventType.PET_DOWN,
+                    eventInfo: {
+                        button: InputAction.IA_POINTER,
+                        hoverText: "Experimental Mode",
+                        maxDistance: 10
+                    }
+                }
+            ]
+        })
+
+        engine.addSystem((dt: number) => {
+            if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_DOWN, experimentalModeEntity)) {
+                TrackManager.experimentalMode = !TrackManager.experimentalMode
+                let hoverText = TrackManager.experimentalMode ? "Normal Mode" : "Experimental Mode"
+                PointerEvents.createOrReplace(experimentalModeEntity, {
+                    pointerEvents: [
+                        {
+                            eventType: PointerEventType.PET_DOWN,
+                            eventInfo: {
+                                button: InputAction.IA_POINTER,
+                                hoverText: hoverText,
+                                maxDistance: 10
+                            }
+                        }
+                    ]
+                })
+                Material.setPbrMaterial(experimentalModeEntity, {
+                    albedoColor: TrackManager.experimentalMode ? Color4.Red() : Color4.Black()
+                })
+            }
+        })
     }
 } 

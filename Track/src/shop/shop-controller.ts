@@ -63,12 +63,7 @@ export class ShopController {
         // make collectables spin to draw attention
         utils.perpetualMotions.startRotation(linkEntity, Quaternion.fromEulerDegrees(0, 45, 0))   
 
-        // pointerEventsSystem.onPointerDown({
-        //     entity: collider,
-        //     opts: { button: InputAction.IA_POINTER, hoverText: `BUY: ` + data.id, maxDistance: 10 }
-        // }, () => {
-        //     shopUI.show(data)
-        // })
+    
     }
 
     public async sendBuyRequest(id: string, price: number, collectionId:string) {
