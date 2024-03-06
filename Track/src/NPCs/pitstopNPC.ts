@@ -42,6 +42,7 @@ export class PitstopNPC {
                 onlyClickTrigger: false,
                 onlyExternalTrigger: false,
                 darkUI: true,
+                portrait: "images/portraits/pitstop_crop.png"
             }
         )
 

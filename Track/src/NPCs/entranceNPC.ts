@@ -43,6 +43,7 @@ export class EntranceNPC {
                 onlyClickTrigger: false,
                 onlyExternalTrigger: false,
                 darkUI: true,
+                portrait: "images/portraits/entrance_crop.png"
             }
         )           
 
