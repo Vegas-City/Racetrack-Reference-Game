@@ -7,7 +7,6 @@ export class Buildings {
     static buildingsParent: Entity
 
     constructor() {
- 
         // Parent
         Buildings.buildingsParent = engine.addEntity()
         Transform.create(Buildings.buildingsParent, {

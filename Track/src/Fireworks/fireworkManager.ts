@@ -16,7 +16,7 @@ export class FireWorkManager {
     constructor(){
         FireWorkManager.instance = this
 
-        new FireWorkTrigger(Vector3.create(62,2,96))
+        new FireWorkTrigger(Vector3.create(62,4,96))
         new FireWorkTrigger(Vector3.create(-14,2,7.34))
 
         engine.addSystem(this.update.bind(this))
@@ -60,7 +60,7 @@ export class FireWorkManager {
         }
     }
 
-    launchFireworks(){
+    launchFireworks(_positionOveride:Vector3 = Vector3.Zero(), _fakeRocket:boolean = false){
         
         let oldRocket:Rocket = null
 
@@ -70,13 +70,17 @@ export class FireWorkManager {
             }
         });
 
-        let launchPos:Vector3 = Vector3.create(70+Math.random()*2,1,94+Math.random()*2)
-        
+        let launchPos:Vector3 = _positionOveride
+
+        if(_positionOveride.x == 0){
+            launchPos = Vector3.create(95+Math.random()*2,20,86+Math.random()*2)
+        }
+        debugger
         if(oldRocket!=null){
-            oldRocket.spawn(launchPos,Quaternion.fromEulerDegrees(0,0,0))
+            oldRocket.spawn(launchPos,Quaternion.fromEulerDegrees(0,0,0),_fakeRocket)
         } else {
             let newRocket = new Rocket()
-            newRocket.spawn(launchPos,Quaternion.fromEulerDegrees(0,0,0))
+            newRocket.spawn(launchPos,Quaternion.fromEulerDegrees(0,0,0),_fakeRocket)
             this.rockets.push(newRocket)
         }
     }
@@ -114,7 +118,7 @@ export class FireWorkTrigger {
                 }
             },
             function () {
-                for(let i:number = 0; i<3; i++){
+                for(let i:number = 0; i<6; i++){
                     utils.timers.setTimeout(()=>{
                         FireWorkManager.instance.launchFireworks()    
                     },Math.random()*150 + 350*i)

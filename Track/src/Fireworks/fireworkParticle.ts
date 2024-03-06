@@ -15,7 +15,8 @@ export class FireworkParticle {
 
     spawn(_position: Vector3) {
         this.dead = false
-        Transform.getMutable(this.entity).position = Vector3.add(_position, Vector3.create(0.125 - Math.random()/4,Math.random(),0.125 - Math.random()/4))
+       // Transform.getMutable(this.entity).position = Vector3.add(_position, Vector3.create(Math.random()/4,Math.random()/4,Math.random()/4))
+        Transform.getMutable(this.entity).position = _position
         let randomSize:number = 0.1 + Math.random()/5
         Transform.getMutable(this.entity).scale = Vector3.create(randomSize,randomSize,randomSize)
     }
@@ -37,6 +38,6 @@ export class FireworkParticle {
             this.die()
         }
         Transform.getMutable(this.entity).scale = Vector3.create(newScale,newScale,newScale)
-        Transform.getMutable(this.entity).position = Vector3.create(position.x,position.y-_dt*3,position.z)
+        Transform.getMutable(this.entity).position = Vector3.create(position.x-_dt*(Math.random()),position.y-_dt*(Math.random()*4),position.z-_dt*(Math.random()))
     }
 }

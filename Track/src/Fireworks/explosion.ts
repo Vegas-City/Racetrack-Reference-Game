@@ -23,8 +23,8 @@ export class Explosion {
     
         spawn(_position: Vector3) {
             GltfContainer.create(this.entity,{src:"models/fx/fireworkSmall.glb"})
-            Transform.getMutable(this.entity).scale = Vector3.create(2,2,2)
-            Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(Math.random()*360,Math.random()*360,Math.random()*360)
+            Transform.getMutable(this.entity).scale = Vector3.create(4,4,4)
+            Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(Math.random()*20,Math.random()*360,Math.random()*20)
             Transform.getMutable(this.entity).position = _position
             this.life = 4
             Animator.playSingleAnimation(this.entity,"Animation",true)
