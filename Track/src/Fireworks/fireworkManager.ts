@@ -30,11 +30,11 @@ export class FireWorkManager {
         engine.addSystem(this.update.bind(this))
 
         // Debug launch positions
-        this.launchPositions.forEach(pos => {
-            let launcher: Entity = engine.addEntity()
-            MeshRenderer.setBox(launcher)
-            Transform.create(launcher, {position:pos})
-        });
+        // this.launchPositions.forEach(pos => {
+        //     let launcher: Entity = engine.addEntity()
+        //     MeshRenderer.setBox(launcher)
+        //     Transform.create(launcher, {position:pos})
+        // });
     }
 
     createFireworkParticle(_position){
