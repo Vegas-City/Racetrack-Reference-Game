@@ -26,6 +26,7 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
+import { ScheduleManager } from './party/scheduleManager'
 
 export class Scene {
 
@@ -39,6 +40,7 @@ export class Scene {
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote) 
 
+        new ScheduleManager()
         new AudioManager()
         Scene.shopController = new ShopController()
         new ShopMenu()
