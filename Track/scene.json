@@ -2,12 +2,12 @@
 	"ecs7": true,
 	"runtimeVersion": "7",
 	"display": {
-		"title": "Racetrack Reference Game",
+		"title": "Metaverse Track Days",
 		"description": "",
 		"navmapThumbnail": "images/scene-thumbnail.png",
 		"favicon": "favicon_asset"
 	},
-	"owner": "",
+	"owner": "Vegas City",
 	"contact": {
 		"name": "Vegas City",
 		"email": "info@vegascity.org"

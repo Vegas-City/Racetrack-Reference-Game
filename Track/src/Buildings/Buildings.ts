@@ -7,7 +7,6 @@ export class Buildings {
     static buildingsParent: Entity
 
     constructor() {
- 
         // Parent
         Buildings.buildingsParent = engine.addEntity()
         Transform.create(Buildings.buildingsParent, {
@@ -24,10 +23,6 @@ export class Buildings {
             let hq: Building = new Building("models/buildings/HQ.glb")
             let bridge: Building = new Building("models/buildings/Bridge.glb")
         },200)
-
-        // let fw:Entity = engine.addEntity()
-        // GltfContainer.create(fw,{src:"models/buildings/fw.glb"})
-        // Transform.create(fw,{position:Vector3.create(8,2,22)})
     }
 }
 
