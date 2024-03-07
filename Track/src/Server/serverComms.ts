@@ -42,7 +42,7 @@ export class ServerComms {
             case EnvironmentType.Test:
                 return `https://uat.vegascity.live/services/racetrack`
             case EnvironmentType.Live:
-                return `https://uat.vegascity.live/services/racetrack`
+                return `https://production.vegascity.live/services/racetrack`
             default:
                 throw Error("Live server URL is not defined")
         }
