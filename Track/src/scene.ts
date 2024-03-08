@@ -11,7 +11,6 @@ import { ShopController } from './shop/shop-controller'
 import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
-import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import { ParticleSystem } from './particleSystem/particleSystem'
 import { ShopMenu } from './shop/ShopMenu'
@@ -20,13 +19,14 @@ import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, Po
 import { DemoManager } from './DemoMode/DemoManager'
 import { CrowdNPC } from './NPCs/crowdNPC'
 import { AudioManager } from './audio/audioManager'
+import { LeaderboardUI } from './UI/leaderboardUI'
+import { ScheduleManager } from './party/scheduleManager'
 
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { ScheduleManager } from './party/scheduleManager'
 
 export class Scene {
 
@@ -38,7 +38,7 @@ export class Scene {
     }
 
     static LoadScene(): void {
-        setup(movePlayerTo, triggerSceneEmote) 
+        setup(movePlayerTo, triggerSceneEmote)
 
         new ScheduleManager()
         new AudioManager()
@@ -134,7 +134,7 @@ export class Scene {
 
                     if (TrackManager.isPractice) {
                         if (Math.round(lap.timeElapsed) < 50) {
-                            if(!ServerComms.player.practiceCompleted){
+                            if (!ServerComms.player.practiceCompleted) {
                                 EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
                             }
                             ServerComms.completePractice()
@@ -229,6 +229,7 @@ export class Scene {
 
         new AvatarVisibilityManager()
         Scene.InitialiseExperimentalMode()
+        new LeaderboardUI(Vector3.create(-46.3, 19, 26.6), Quaternion.fromEulerDegrees(0, -90, 0), Vector3.create(0.6, 0.6, 0.6), 6, 2.05)
 
         Scene.loaded = true
     }
