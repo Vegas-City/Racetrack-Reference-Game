@@ -7,6 +7,7 @@ import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
 import { Helper, UserData } from "./Server/Helper";
 import { FireWorkManager } from "./Fireworks/fireworkManager";
+import { NPCManager } from "./NPCs/NPCManager";
 
 const passwordProtected: boolean = true
 const password: string = "letsgo"
@@ -28,6 +29,7 @@ export function main() {
               Scene.LoadScene()
               Scene.LoadMenu()
               new FireWorkManager()
+              new NPCManager()
               DebugUI.debugUIShow = true
             }, 1500)
           }
@@ -41,6 +43,7 @@ export function main() {
               else {
                 Scene.LoadMenu()
                 new FireWorkManager()
+                new NPCManager()
               }
             }, 1500)
           }
@@ -63,6 +66,7 @@ export function main() {
           utils.timers.setTimeout(function () {
             Scene.LoadMenu()
             new FireWorkManager()
+            new NPCManager()
             DebugUI.debugUIShow = true
           }, 1000)
         }
@@ -75,6 +79,7 @@ export function main() {
         utils.timers.setTimeout(function () {
           Scene.LoadMenu()
           new FireWorkManager()
+          new NPCManager()
           prompt.hide()
         }, 1000)
       } else if (value.toLocaleLowerCase() == passwordDev) {
@@ -82,6 +87,7 @@ export function main() {
         utils.timers.setTimeout(function () {
           Scene.LoadMenu()
           new FireWorkManager()
+          new NPCManager()
           prompt.hide()
           DebugUI.debugUIShow = true
         }, 1000)
