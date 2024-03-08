@@ -26,6 +26,8 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
+import { LeaderboardUI } from './UI/leaderboardUI'
+import { Countdown3d } from './UI/countdown3d'
 
 export class Scene {
 
@@ -37,7 +39,7 @@ export class Scene {
     }
 
     static LoadScene(): void {
-        setup(movePlayerTo, triggerSceneEmote) 
+        setup(movePlayerTo, triggerSceneEmote)
 
         new AudioManager()
         Scene.shopController = new ShopController()
@@ -133,7 +135,7 @@ export class Scene {
 
                     if (TrackManager.isPractice) {
                         if (Math.round(lap.timeElapsed) < 50) {
-                            if(!ServerComms.player.practiceCompleted){
+                            if (!ServerComms.player.practiceCompleted) {
                                 EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
                             }
                             ServerComms.completePractice()
@@ -228,6 +230,9 @@ export class Scene {
 
         new AvatarVisibilityManager()
         Scene.InitialiseExperimentalMode()
+        Scene.CreateLeaderboards()
+        new Countdown3d(new Date('2024-03-08T00:40:00'), 27 * 60, Vector3.create(68, 2, 105), Quaternion.fromEulerDegrees(0, 0, 0), Vector3.create(1, 1, 1))
+        new Countdown3d(new Date('2024-03-08T00:41:00'), 27 * 60, Vector3.create(68, 2, 110), Quaternion.fromEulerDegrees(0, 0, 0), Vector3.create(1, 1, 1))
 
         Scene.loaded = true
     }
@@ -284,5 +289,10 @@ export class Scene {
                 })
             }
         })
+    }
+
+    private static CreateLeaderboards(): void {
+        new LeaderboardUI(Vector3.create(-46.3, 19, 26.6), Quaternion.fromEulerDegrees(0, -90, 0), Vector3.create(0.6, 0.6, 0.6), 6, 2.05)
+        new LeaderboardUI(Vector3.create(39, 10, 98), Quaternion.fromEulerDegrees(0, -75, 0), Vector3.create(0.3, 0.3, 0.3), 6, 2.05, false)
     }
 } 
