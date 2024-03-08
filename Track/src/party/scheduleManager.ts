@@ -4,10 +4,10 @@ export class ScheduleManager {
     updateFrequency:number = 1
     currentUpdateTime:number = 0
     scheduleList:Schedule[] = []
-    instance: ScheduleManager
+    static instance: ScheduleManager
 
     constructor(){
-        this.instance = this
+        ScheduleManager.instance = this
         engine.addSystem(this.update.bind(this))
     }
 
