@@ -25,7 +25,7 @@ export class FireWorkManager {
         FireWorkManager.instance = this
 
         new FireWorkTrigger(Vector3.create(62,2,96))
-        new FireWorkTrigger(Vector3.create(-14,2,7.34))
+        //new FireWorkTrigger(Vector3.create(-14,2,7.34))
 
         engine.addSystem(this.update.bind(this))
 
