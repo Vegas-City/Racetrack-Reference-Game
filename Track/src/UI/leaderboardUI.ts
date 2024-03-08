@@ -70,6 +70,20 @@ export class LeaderboardUI {
         this.initialise()
     }
 
+    show(): void {
+        let transform = Transform.getMutableOrNull(this.container)
+        if (transform) {
+            transform.scale = Vector3.One()
+        }
+    }
+
+    hide(): void {
+        let transform = Transform.getMutableOrNull(this.container)
+        if (transform) {
+            transform.scale = Vector3.Zero()
+        }
+    }
+
     private update(): void {
         if (this.container === undefined) {
             this.initialise()

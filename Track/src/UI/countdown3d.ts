@@ -149,10 +149,7 @@ export class Countdown3d {
                 src: "images/ui/numbersSpriteSheet.png",
             }),
             transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
-            emissiveTexture: Material.Texture.Common({
-                src: "images/ui/numbersSpriteSheet.png",
-            }),
-            emissiveColor: Color4.Blue(),
+            emissiveColor: Color4.White(),
             emissiveIntensity: 1
         }
     }
