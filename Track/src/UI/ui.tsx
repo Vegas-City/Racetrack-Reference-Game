@@ -3,10 +3,10 @@ import { SpeedometerUI, TimeUI, Countdown, ExitCarUI } from '@vegascity/racetrac
 import { Minimap } from '@vegascity/racetrack/src/ui'
 import { UiCanvasInformation, engine } from '@dcl/sdk/ecs'
 import { EventUIImage } from './eventUIImage'
-import * as  ui from 'dcl-ui-toolkit'
 import { PointsUi } from './pointsUi'
 import { popup, shopUI } from '../utils/ui-provider'
 import { NpcUtilsUi } from 'dcl-npc-toolkit'
+import * as  ui from 'dcl-ui-toolkit'
 
 const uiComponent = () => (
   [
