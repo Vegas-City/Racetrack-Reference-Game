@@ -8,6 +8,6 @@ export class NPCManager{
         new GuideNPC()
         new EntranceNPC()
         new PitstopNPC()
-        new CrowdNPC()
+        //new CrowdNPC() // have to move elsewhere because of password protection
     }
 }

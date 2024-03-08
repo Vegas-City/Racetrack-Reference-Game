@@ -50,7 +50,6 @@ export class Scene {
 
         new DemoManager()
 
-
         new TrackManager({
             gameMode: GameMode.RACE,
             position: Vector3.create(-32, 1, 16),
@@ -170,7 +169,7 @@ export class Scene {
         })
 
         new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
-        new NPCManager()
+        new CrowdNPC()
         new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
