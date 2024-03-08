@@ -28,6 +28,7 @@ import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
 import { LeaderboardUI } from './UI/leaderboardUI'
 import { Countdown3d } from './UI/countdown3d'
+import { ScheduleManager } from './party/scheduleManager'
 
 export class Scene {
 
@@ -41,6 +42,7 @@ export class Scene {
     static LoadScene(): void {
         setup(movePlayerTo, triggerSceneEmote)
 
+        new ScheduleManager()
         new AudioManager()
         Scene.shopController = new ShopController()
         new ShopMenu()
@@ -49,7 +51,6 @@ export class Scene {
         Scene.shopController.setupClickables()
 
         new DemoManager()
-
 
         new TrackManager({
             gameMode: GameMode.RACE,
@@ -170,7 +171,7 @@ export class Scene {
         })
 
         new CarSpecsMenuManager(Vector3.create(36, 0.9, 0))
-        new NPCManager()
+        new CrowdNPC()
         new ParticleSystem()
 
         new RaceMenuManager(Vector3.create(0, 0.9, 10.6))
