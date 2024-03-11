@@ -228,8 +228,8 @@ export class Scene {
         })
 
         new AvatarVisibilityManager()
-        Scene.InitialiseExperimentalMode()
         new LeaderboardUI(Vector3.create(-46.3, 19, 26.6), Quaternion.fromEulerDegrees(0, -90, 0), Vector3.create(0.6, 0.6, 0.6), 6, 2.05)
+        //Scene.InitialiseExperimentalMode()
 
         Scene.loaded = true
     }

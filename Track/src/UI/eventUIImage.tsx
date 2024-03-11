@@ -26,7 +26,7 @@ export class EventUIImage {
 
     static pointIncrease: number = 0
     static imageSource: string
-    static points:string = ""
+    static points: string = ""
 
     private static component = () => (
         <UiEntity
@@ -37,34 +37,34 @@ export class EventUIImage {
                     top: '25%',
                     right: '50%',
                 },
-                display: EventUIImage.eventVisibility && !EventUIImage.loadingImage  ? 'flex' : 'none',
+                display: EventUIImage.eventVisibility && !EventUIImage.loadingImage ? 'flex' : 'none',
             }}
         >
-        <UiEntity
-            key="EventUIImage"
-            uiTransform={{
-                position: {
-                    left:256
-                },
-                width:512,
-                height:512,
-            }}
-            uiBackground={{
-                textureMode: 'stretch',
-                texture: {
-                    src: "images/ui/events/"+EventUIImage.imageSource,
-                    wrapMode: 'repeat'
-                }
-            }}
-        >
-        </UiEntity>
-        <Label
+            <UiEntity
+                key="EventUIImage"
+                uiTransform={{
+                    position: {
+                        left: 256
+                    },
+                    width: 512,
+                    height: 512,
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/events/" + EventUIImage.imageSource,
+                        wrapMode: 'repeat'
+                    }
+                }}
+            >
+            </UiEntity>
+            <Label
                 key="NewCarEventLabel"
                 value={EventUIImage.points}
                 fontSize={60}
                 font="monospace"
                 textAlign="middle-center"
-                color={Color4.create(24/255, 110/255, 205/255, 1)}
+                color={Color4.create(24 / 255, 110 / 255, 205 / 255, 1)}
                 uiTransform={{
                     positionType: 'absolute',
                     width: 512,
@@ -90,10 +90,10 @@ export class EventUIImage {
             EventUIImage.loadingImage = true
             utils.timers.setTimeout(() => {
                 EventUIImage.loadingImage = false
-            },250)
+            }, 250)
             EventUIImage.points = ""
             EventUIImage.eventVisibility = true
-            switch(_event){
+            switch (_event) {
                 case EventUIEnum.preEvent:
                     EventUIImage.imageSource = this.getPreEventImage()
                     break
@@ -124,7 +124,7 @@ export class EventUIImage {
     }
 
     private static getPreEventImage(): string {
-        return "msg_holdEtoExit.png"
+        return "msg_instructions.png"
     }
 
     private static getLapEventImage(): string {
@@ -139,7 +139,7 @@ export class EventUIImage {
             return "msg_wellDone.png"
         } else {
             // But did the pb get quicker?
-            if(EventUIImage.pointIncrease == -1){ // No new points but we got a better PB
+            if (EventUIImage.pointIncrease == -1) { // No new points but we got a better PB
                 return "2D_wellDone.png"
             } else {
                 return "msg_tryAgain.png"
@@ -148,29 +148,29 @@ export class EventUIImage {
 
     }
 
-    private static animatePointIncrease():void{
+    private static animatePointIncrease(): void {
         EventUIImage.points = ""
 
-        utils.timers.setTimeout(()=>{
-            for(let i:number = 1; i<21; i++){
-                utils.timers.setTimeout(()=>{
-                EventUIImage.points = "+" + Math.floor((EventUIImage.pointIncrease/20)*i) + " PTS"
-                if(i==20){
-                    EventUIImage.points = "+" + EventUIImage.pointIncrease + " PTS"
-                }
-                },50*i)
+        utils.timers.setTimeout(() => {
+            for (let i: number = 1; i < 21; i++) {
+                utils.timers.setTimeout(() => {
+                    EventUIImage.points = "+" + Math.floor((EventUIImage.pointIncrease / 20) * i) + " PTS"
+                    if (i == 20) {
+                        EventUIImage.points = "+" + EventUIImage.pointIncrease + " PTS"
+                    }
+                }, 50 * i)
             }
-        },250)
+        }, 250)
     }
 
     private static getNewTrackEventImage(): string {
 
         let selectedCarIndex = RaceMenuManager.instance.carButton1.selected ? 0 : (RaceMenuManager.instance.carButton2.selected ? 1 : 2)
         let selectedCarGuid = carConfiguration.cars[selectedCarIndex].guid
-        
-        let trackImagePath:string = ""
 
-         // Work out which track
+        let trackImagePath: string = ""
+
+        // Work out which track
         ServerComms.player.tracks.forEach(track => {
             track.cars.forEach(car => {
                 if (car.guid == selectedCarGuid) {
@@ -203,31 +203,31 @@ export class EventUIImage {
         return "msg_unlockedCompetition.png"
     }
 
-    static comparePlayerData() { 
-        
+    static comparePlayerData() {
+
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
-        if(EventUIImage.pointIncrease == 0){
+        if (EventUIImage.pointIncrease == 0) {
             // Did the pb get quicker?
-            let oldPB:number = 0
-            let newPB:number = 0
+            let oldPB: number = 0
+            let newPB: number = 0
 
             EventUIImage.oldPlayerData.tracks.forEach(track => {
-                if(track.guid == ServerComms.currentTrack){ 
+                if (track.guid == ServerComms.currentTrack) {
                     oldPB = track.pb
                 }
             });
 
             ServerComms.player.tracks.forEach(track => {
-                if(track.guid == ServerComms.currentTrack){
+                if (track.guid == ServerComms.currentTrack) {
                     newPB = track.pb
-                    if(track.pb<track.targetTimeToUnlockNextTrack){
+                    if (track.pb < track.targetTimeToUnlockNextTrack) {
                         newPB = -1
-                    } 
+                    }
                 }
             });
 
-            if(newPB<oldPB && oldPB!=0){ 
+            if (newPB < oldPB && oldPB != 0) {
                 EventUIImage.pointIncrease = -1 // We'll use this later
             }
         }
