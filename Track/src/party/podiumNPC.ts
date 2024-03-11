@@ -13,14 +13,14 @@ export class PodiumNPCs {
     constructor(_leaderBoard:LeaderboardUI){
         this.leaderboard = _leaderBoard
 
-        this.gold = new PodiumNPC("models/npcs/M_skin_gold.glb",Vector3.create(70.89+0.2,3.23-0.88,93.77),Quaternion.fromEulerDegrees(0,-70,0))
-        this.silver = new PodiumNPC("models/npcs/F_skin_silver.glb",Vector3.create(71.8,2.98-0.88,95.8),Quaternion.fromEulerDegrees(0,-50,0))
-        this.bronze = new PodiumNPC("models/npcs/M_skin_bronze.glb",Vector3.create(70.6,2.73-0.88,91.6),Quaternion.fromEulerDegrees(0,-90,0))
+        this.gold = new PodiumNPC("models/npcs/podium_gold.glb",Vector3.create(70.89+0.2,3.23-0.88,93.77),Quaternion.fromEulerDegrees(0,-70,0))
+        this.silver = new PodiumNPC("models/npcs/podium_silver.glb",Vector3.create(71.8,2.98-0.88,95.8),Quaternion.fromEulerDegrees(0,-50,0))
+        this.bronze = new PodiumNPC("models/npcs/podium_bronze.glb",Vector3.create(70.6,2.73-0.88,91.6),Quaternion.fromEulerDegrees(0,-90,0))
 
         engine.addSystem(this.update.bind(this))
     } 
 
-    update(_dt:number){
+    update(_dt:number){ 
         this.currentUpdateSpeed += _dt
 
         if(this.currentUpdateSpeed>= this.updateSpeed){
@@ -67,7 +67,7 @@ export class PodiumNPC {
 
         Transform.create(this.textEntity, {parent: this.entity, rotation:Quaternion.fromEulerDegrees(0,180,0), position: Vector3.create(0,0,1), scale:Vector3.create(0.25,0.25,0.25)})
         TextShape.create(this.textEntity, {
-            text: "Loading",
+            text: "",
             outlineColor: Color3.Black(),
             outlineWidth: 0.15
         })
