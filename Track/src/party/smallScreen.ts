@@ -27,6 +27,14 @@ export class SmallScreen {
         Material.setPbrMaterial(this.entity, this.getRaceEndsMaterial())
     }
 
+    triggerWaiting(): void {
+        Material.setPbrMaterial(this.entity, this.getWaitingMaterial())
+    }
+
+    triggerCongrats(): void {
+        Material.setPbrMaterial(this.entity, this.getCongratsMaterial())
+    }
+
     private getOffMaterial(): PBMaterial_PbrMaterial {
         return {
             albedoColor: Color4.Black()
@@ -49,10 +57,36 @@ export class SmallScreen {
     private getRaceEndsMaterial(): PBMaterial_PbrMaterial {
         return {
             texture: Material.Texture.Common({
-                src: "images/ui/screens/screenLittle_02_raceEndsIn.png.png",
+                src: "images/ui/screens/screenLittle_02_raceEndsIn.png",
             }),
             emissiveTexture: Material.Texture.Common({
-                src: "images/ui/screens/screenLittle_02_raceEndsIn.png.png",
+                src: "images/ui/screens/screenLittle_02_raceEndsIn.png",
+            }),
+            emissiveColor: Color4.White(),
+            emissiveIntensity: 1
+        }
+    }
+
+    private getWaitingMaterial(): PBMaterial_PbrMaterial {
+        return {
+            texture: Material.Texture.Common({
+                src: "images/ui/screens/screenLittle_03_congrats.png",
+            }),
+            emissiveTexture: Material.Texture.Common({
+                src: "images/ui/screens/screenLittle_03_congrats.png",
+            }),
+            emissiveColor: Color4.White(),
+            emissiveIntensity: 1
+        }
+    }
+
+    private getCongratsMaterial(): PBMaterial_PbrMaterial {
+        return {
+            texture: Material.Texture.Common({
+                src: "images/ui/screens/screenLittle_03_congrats.png",
+            }),
+            emissiveTexture: Material.Texture.Common({
+                src: "images/ui/screens/screenLittle_03_congrats.png",
             }),
             emissiveColor: Color4.White(),
             emissiveIntensity: 1
