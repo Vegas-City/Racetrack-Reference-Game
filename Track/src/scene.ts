@@ -27,12 +27,14 @@ import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
+import { Config } from '@vegascity/racetrack/src/physics'
+import { Logger } from '@vegascity/vegas-city-logger'
 
 export class Scene {
 
     static loaded: boolean = false
     static shopController: ShopController
-
+    static logger: Logger = new Logger("RACETRACK", engine, Transform, null)
     static LoadBuildings(): void {
         new Buildings()
     }
@@ -57,6 +59,7 @@ export class Scene {
             debugMode: false,
             eventCallbacks: {
                 onStartEvent: () => {
+                    Scene.logger.minigameStarted("RACETRACK", "RACE_STARTED")
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -76,6 +79,7 @@ export class Scene {
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
+                    Scene.logger.minigameCompleted("RACETRACK", "RACE_COMPLETED")
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -104,11 +108,13 @@ export class Scene {
                     }, 5000)
                 },
                 onQuitEvent: () => {
+                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_QUIT")
                     RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                     DemoManager.show()
                     CrowdNPC.instance.hide()
                 },
                 onCheckpointEvent: () => {
+                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_CHECKPOINT")
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -120,6 +126,7 @@ export class Scene {
                     })
                 },
                 onLapCompleteEvent: () => {
+                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_LAP_COMPLETE")
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
