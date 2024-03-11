@@ -5,10 +5,12 @@ import { executeTask } from "@dcl/ecs";
 import { DebugUI } from "./UI/debugUI";
 import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
+import * as ecs from "@dcl/sdk/ecs"
 import { Helper, UserData } from "./Server/Helper";
 import { FireWorkManager } from "./Fireworks/fireworkManager";
 import { NPCManager } from "./NPCs/NPCManager";
 import { PartyManager } from "./party/partyManager";
+import { IntervalLogger } from "@vegascity/vegas-city-logger/dist/logger/IntervalLogger";
 
 const passwordProtected: boolean = true
 const password: string = "letsgo"
@@ -19,6 +21,9 @@ export function main() {
  
   // wait for the realm and user data to be available
   Helper.init(() => {
+
+    new IntervalLogger("RACETRACK",ecs.engine,ecs.Transform,10)
+
     UserData.getUserData(() => {
       executeTask(async () => {
         const { realmInfo } = await getRealm({})
