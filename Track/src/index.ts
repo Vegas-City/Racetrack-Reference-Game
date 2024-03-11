@@ -5,10 +5,11 @@ import { executeTask } from "@dcl/ecs";
 import { DebugUI } from "./UI/debugUI";
 import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
+import * as ecs from "@dcl/sdk/ecs"
 import { Helper, UserData } from "./Server/Helper";
-import { FireWorkManager } from "./Fireworks/fireworkManager";
 import { NPCManager } from "./NPCs/NPCManager";
 import { PartyManager } from "./party/partyManager";
+import { IntervalLogger } from "@vegascity/vegas-city-logger/dist/logger/IntervalLogger";
 
 const passwordProtected: boolean = true
 const password: string = "letsgo"
@@ -19,6 +20,9 @@ export function main() {
  
   // wait for the realm and user data to be available
   Helper.init(() => {
+
+    new IntervalLogger("RACETRACK",ecs.engine,ecs.Transform,10)
+
     UserData.getUserData(() => {
       executeTask(async () => {
         const { realmInfo } = await getRealm({})
@@ -28,8 +32,6 @@ export function main() {
             Scene.LoadBuildings()
             utils.timers.setTimeout(() => {
               Scene.LoadScene()
-              Scene.LoadMenu()
-              new FireWorkManager()
               new NPCManager()
               new PartyManager()
               DebugUI.debugUIShow = true
@@ -43,8 +45,6 @@ export function main() {
                 showPrompt()
               }
               else {
-                Scene.LoadMenu()
-                new FireWorkManager()
                 new NPCManager()
                 new PartyManager()
               }
@@ -61,14 +61,9 @@ export function main() {
       onAccept: (value: string) => {
         if (value.toLocaleLowerCase() == password) {
           prompt.hide()
-          utils.timers.setTimeout(function () {
-            Scene.LoadMenu()
-          }, 1000)
         } else if (value.toLocaleLowerCase() == passwordDev) {
           prompt.hide()
           utils.timers.setTimeout(function () {
-            Scene.LoadMenu()
-            new FireWorkManager()
             new NPCManager()
             new PartyManager()
             DebugUI.debugUIShow = true
@@ -81,8 +76,6 @@ export function main() {
       if (value.toLocaleLowerCase() == password) {
         prompt.hide()
         utils.timers.setTimeout(function () {
-          Scene.LoadMenu()
-          new FireWorkManager()
           new NPCManager()
           new PartyManager()
           prompt.hide()
@@ -90,8 +83,6 @@ export function main() {
       } else if (value.toLocaleLowerCase() == passwordDev) {
         prompt.hide()
         utils.timers.setTimeout(function () {
-          Scene.LoadMenu()
-          new FireWorkManager()
           new NPCManager()
           new PartyManager()
           prompt.hide()

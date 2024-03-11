@@ -4,6 +4,9 @@ import { DJ } from "./dj";
 import { Schedule, ScheduleManager } from "./scheduleManager";
 import { Countdown3d } from "../UI/countdown3d";
 import { PodiumNPCs } from "./podiumNPC";
+import { FireWorkManager } from "../Fireworks/fireworkManager";
+import { ConfettiManager } from "../Confetti/confettiManager";
+import { Scene } from "../scene";
 import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
 
@@ -13,8 +16,13 @@ export class PartyManager {
     podiumNPCs: PodiumNPCs
     bigScreen: BigScreen
     smallScreens: SmallScreen[] = []
+    fireworkManager: FireWorkManager
+    confettiManager: ConfettiManager
 
     constructor() {
+        this.fireworkManager = new FireWorkManager()
+        this.confettiManager = new ConfettiManager()
+
         this.leaderboard = new LeaderboardUI(Vector3.create(39, 10, 98), Quaternion.fromEulerDegrees(0, -75, 0), Vector3.create(0.3, 0.3, 0.3), 6, 2.05, false)
         this.leaderboard.hide()
 
@@ -65,6 +73,37 @@ export class PartyManager {
             )
         )
 
+        // Remove 3D race menu
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 14, 12),
+                Date.UTC(2024, 2, 17, 20, 27),
+                ()=>{
+                    Scene.LoadMenu()
+                },
+                ()=>{
+                    Scene.RemoveMenu()
+                }
+            )
+        )
+
+        // 60 seconds of fire works go off between 8.33-8.48 pm
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 33),
+                Date.UTC(2024, 2, 17, 20, 47), // -60 secs So the fire works don't overlap with the next bit
+                ()=>{
+                    // LAUNCH! pew pew pew
+                    this.fireworkManager.startDisplay()
+                    this.confettiManager.start()
+                },
+                ()=>{
+                    // It'll end itself.
+                }
+            )
+        )
+
+        // Leader board + winner stand npcs
         // Winner stand npcs
         ScheduleManager.instance.registerSchedule(
             new Schedule(

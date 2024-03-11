@@ -19,10 +19,14 @@ export class Buildings {
 
         utils.timers.setTimeout(()=>{
             let stadium: Building = new Building("models/buildings/Stadium.glb")
+        },200)
+
+        utils.timers.setTimeout(()=>{
             let tower: Building = new Building("models/buildings/Tower.glb")
             let hq: Building = new Building("models/buildings/HQ.glb")
             let bridge: Building = new Building("models/buildings/Bridge.glb")
-        },200)
+            let performanceBillboard: Building = new Building("models/buildings/PerformanceBillboard.glb")
+        },800)
     }
 }
 

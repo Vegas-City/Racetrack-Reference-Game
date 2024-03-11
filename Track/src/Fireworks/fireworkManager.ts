@@ -24,9 +24,6 @@ export class FireWorkManager {
     constructor(){
         FireWorkManager.instance = this
 
-        new FireWorkTrigger(Vector3.create(62,2,96))
-        //new FireWorkTrigger(Vector3.create(-14,2,7.34))
-
         engine.addSystem(this.update.bind(this))
 
         // Debug launch positions
@@ -113,34 +110,14 @@ export class FireWorkManager {
             particle.update(_dt)
         })
     }
-}
 
-export class FireWorkTrigger {
-    entity:Entity
-
-    constructor(_position:Vector3){
-        this.entity = engine.addEntity()
-        MeshRenderer.setSphere(this.entity)
-        MeshCollider.setSphere(this.entity)
-        Transform.create(this.entity,{position:_position})
-
-        pointerEventsSystem.onPointerDown(
-            {
-                entity: this.entity,
-                opts: {
-                    button: InputAction.IA_POINTER,
-                    hoverText: 'Start display'
-                }
-            },
-            function () {
-                FireWorkManager.instance.launchPositions.forEach((pos,index) => {
-                    for(let salvo:number = 0; salvo<15;salvo++){
-                        utils.timers.setTimeout(()=>{
-                            FireWorkManager.instance.launchFireworks(pos)    
-                        },(index*100 + Math.random()*500)+3000*salvo)
-                    }
-                });
+    startDisplay(){
+        FireWorkManager.instance.launchPositions.forEach((pos,index) => {
+            for(let salvo:number = 0; salvo<15;salvo++){
+                utils.timers.setTimeout(()=>{
+                    FireWorkManager.instance.launchFireworks(pos)    
+                },(index*100 + Math.random()*500)+4000*salvo)
             }
-        )
+        });
     }
 }
