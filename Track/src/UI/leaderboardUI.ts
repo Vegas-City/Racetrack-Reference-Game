@@ -23,7 +23,7 @@ export class LeaderboardUI {
     private hasPlayerData: boolean = true
 
     private trackNames: string[] = []
-    private playerScores = new Map<string, Map<string, number>>()
+    public playerScores = new Map<string, Map<string, number>>()
     private selfScores = new Map<string, number>()
     private selfRank: number = 0
 
