@@ -32,7 +32,6 @@ export function main() {
             Scene.LoadBuildings()
             utils.timers.setTimeout(() => {
               Scene.LoadScene()
-              Scene.LoadMenu()
               new NPCManager()
               new PartyManager()
               DebugUI.debugUIShow = true
@@ -46,7 +45,6 @@ export function main() {
                 showPrompt()
               }
               else {
-                Scene.LoadMenu()
                 new NPCManager()
                 new PartyManager()
               }
@@ -63,13 +61,9 @@ export function main() {
       onAccept: (value: string) => {
         if (value.toLocaleLowerCase() == password) {
           prompt.hide()
-          utils.timers.setTimeout(function () {
-            Scene.LoadMenu()
-          }, 1000)
         } else if (value.toLocaleLowerCase() == passwordDev) {
           prompt.hide()
           utils.timers.setTimeout(function () {
-            Scene.LoadMenu()
             new NPCManager()
             new PartyManager()
             DebugUI.debugUIShow = true
@@ -82,7 +76,6 @@ export function main() {
       if (value.toLocaleLowerCase() == password) {
         prompt.hide()
         utils.timers.setTimeout(function () {
-          Scene.LoadMenu()
           new NPCManager()
           new PartyManager()
           prompt.hide()
@@ -90,7 +83,6 @@ export function main() {
       } else if (value.toLocaleLowerCase() == passwordDev) {
         prompt.hide()
         utils.timers.setTimeout(function () {
-          Scene.LoadMenu()
           new NPCManager()
           new PartyManager()
           prompt.hide()

@@ -6,6 +6,7 @@ import { Countdown3d } from "../UI/countdown3d";
 import { PodiumNPCs } from "./podiumNPC";
 import { FireWorkManager } from "../Fireworks/fireworkManager";
 import { ConfettiManager } from "../Confetti/confettiManager";
+import { Scene } from "../scene";
 
 export class PartyManager {
     dj: DJ
@@ -46,10 +47,24 @@ export class PartyManager {
             )
         )
 
+        // Remove 3D race menu
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 14, 12),
+                Date.UTC(2024, 2, 17, 20, 27),
+                ()=>{
+                    Scene.LoadMenu()
+                },
+                ()=>{
+                    Scene.RemoveMenu()
+                }
+            )
+        )
+
         // 60 seconds of fire works go off between 8.33-8.48 pm
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 1, 17, 20, 33),
+                Date.UTC(2024, 2, 17, 20, 33),
                 Date.UTC(2024, 2, 17, 20, 47), // -60 secs So the fire works don't overlap with the next bit
                 ()=>{
                     // LAUNCH! pew pew pew

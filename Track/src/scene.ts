@@ -248,6 +248,13 @@ export class Scene {
         }
     }
 
+    static RemoveMenu(): void {
+        let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
+        if (menuTransform) {
+            menuTransform.scale = Vector3.Zero()
+        }
+    }
+
     private static InitialiseExperimentalMode(): void {
         let experimentalModeEntity = engine.addEntity()
         Transform.create(experimentalModeEntity, {
