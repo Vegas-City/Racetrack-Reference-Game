@@ -70,10 +70,10 @@ export class SmallScreen {
     private getWaitingMaterial(): PBMaterial_PbrMaterial {
         return {
             texture: Material.Texture.Common({
-                src: "images/ui/screens/screenLittle_03_congrats.png",
+                src: "images/ui/screens/screenLittle_04_winnersWillBeAnn.png",
             }),
             emissiveTexture: Material.Texture.Common({
-                src: "images/ui/screens/screenLittle_03_congrats.png",
+                src: "images/ui/screens/screenLittle_04_winnersWillBeAnn.png",
             }),
             emissiveColor: Color4.White(),
             emissiveIntensity: 1
