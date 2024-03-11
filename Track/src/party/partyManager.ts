@@ -4,11 +4,15 @@ import { DJ } from "./dj";
 import { Schedule, ScheduleManager } from "./scheduleManager";
 import { Countdown3d } from "../UI/countdown3d";
 import { PodiumNPCs } from "./podiumNPC";
+import { BigScreen } from "./bigScreen";
+import { SmallScreen } from "./smallScreen";
 
 export class PartyManager {
     dj: DJ
     leaderboard: LeaderboardUI
     podiumNPCs: PodiumNPCs
+    bigScreen: BigScreen
+    smallScreens: SmallScreen[] = []
 
     constructor() {
         this.leaderboard = new LeaderboardUI(Vector3.create(39, 10, 98), Quaternion.fromEulerDegrees(0, -75, 0), Vector3.create(0.3, 0.3, 0.3), 6, 2.05, false)
@@ -21,6 +25,29 @@ export class PartyManager {
         // Racing ends in... 8:00-8:27 pm
         new Countdown3d(new Date('2024-03-17T20:00:00'), 27 * 60, Vector3.create(87.8, 12.1, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
         new Countdown3d(new Date('2024-03-17T20:00:00'), 27 * 60, Vector3.create(79.5, 12.1, 76.6), Quaternion.fromEulerDegrees(0, -47, 0), Vector3.create(2, 2, 2))
+
+        this.bigScreen = new BigScreen(Vector3.create(85.55, 12.1, 89.17), Quaternion.fromEulerDegrees(0, 287.5, 0), Vector3.create(17.6, 9.8, 2))
+        this.smallScreens.push(new SmallScreen(Vector3.create(87.85, 12.1, 102.97), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(8.4, 4.5, 2)))
+        this.smallScreens.push(new SmallScreen(Vector3.create(79.5, 12.1, 76.53), Quaternion.fromEulerDegrees(0, -47.5, 0), Vector3.create(8.4, 4.5, 2)))
+
+        // Small screens
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 19, 30),
+                Date.UTC(2024, 2, 17, 20, 0),
+                () => {
+                    this.smallScreens.forEach(screen => {
+                        screen.prepareForPartyStart()
+                    })
+                },
+                () => {
+                    this.smallScreens.forEach(screen => {
+                        screen.prepareForRaceEnd()
+                    })
+                }
+            )
+        )
+        
 
         // DJ
         ScheduleManager.instance.registerSchedule(
@@ -38,20 +65,32 @@ export class PartyManager {
             )
         )
 
-        // Leader board + winner stand npcs
+        // Winner stand npcs
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 30),
+                Date.UTC(2024, 2, 17, 20, 45),
+                () => {
+                    this.podiumNPCs = new PodiumNPCs()
+                },
+                () => {
+                    if (this.podiumNPCs != undefined) {
+                        this.podiumNPCs.remove()
+                    }
+                }
+            )
+        )
+
+        // Leader board
         ScheduleManager.instance.registerSchedule(
             new Schedule(
                 Date.UTC(2024, 2, 17, 20, 0),
                 Date.UTC(2024, 2, 17, 20, 45),
                 () => {
                     this.leaderboard.show()
-                    this.podiumNPCs = new PodiumNPCs()
                 },
                 () => {
                     this.leaderboard.hide()
-                    if (this.podiumNPCs != undefined) {
-                        this.podiumNPCs.remove()
-                    }
                 }
             )
         )
