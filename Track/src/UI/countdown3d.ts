@@ -80,7 +80,7 @@ export class Countdown3d {
 
     private update(): void {
         const now = new Date()
-        const endDate = new Date(this.startDate.getTime() + ((this.duration + 1) * 1000))
+        const endDate = new Date(this.startDate.getTime() + (this.duration * 1000))
         if (now < this.startDate || now > endDate) {
             this.hide()
             return

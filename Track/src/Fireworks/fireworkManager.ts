@@ -1,4 +1,4 @@
-import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, Transform, engine, pointerEventsSystem } from "@dcl/ecs";
+import { Entity, InputAction, MeshCollider, MeshRenderer, Transform, engine, pointerEventsSystem } from "@dcl/ecs";
 import { Quaternion, Vector3 } from "@dcl/ecs-math";
 import { Rocket } from "./rocket";
 import { FireworkParticle } from "./fireworkParticle";
