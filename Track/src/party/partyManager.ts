@@ -111,6 +111,20 @@ export class PartyManager {
             )
         )
 
+        // Ceremony Music
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 31),
+                Date.UTC(2024, 2, 17, 20, 48),
+                () => {
+                    AudioManager.playMusic(5) //Ceremony music
+                }, 
+                () => {
+
+                }
+            )
+        )
+
         // Remove 3D race menu
         ScheduleManager.instance.registerSchedule(
             new Schedule(
