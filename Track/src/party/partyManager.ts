@@ -139,7 +139,7 @@ export class PartyManager {
                 Date.UTC(2024, 2, 17, 20, 30),
                 Date.UTC(2024, 2, 17, 20, 45),
                 () => {
-                    this.podiumNPCs = new PodiumNPCs()
+                    this.podiumNPCs = new PodiumNPCs(this.leaderboard)
                 },
                 () => {
                     if (this.podiumNPCs != undefined) {
