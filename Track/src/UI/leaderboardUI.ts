@@ -156,7 +156,7 @@ export class LeaderboardUI {
         index = 0
         for (let player of this.playerScores.keys()) {
             if (index < this.playerNameEntities.length) {
-                TextShape.getMutable(this.playerNameEntities[index]).text = this.playerScores.get(player).name.substring(0, 12)
+                TextShape.getMutable(this.playerNameEntities[index]).text = this.playerScores.get(player).name
             }
             else {
                 let nameEntity = engine.addEntity()
@@ -165,7 +165,7 @@ export class LeaderboardUI {
                     position: Vector3.create(0, -(this.verticalSpacing * 1.3) - (index * this.verticalSpacing), 0)
                 })
                 TextShape.create(nameEntity, {
-                    text: this.playerScores.get(player).name.substring(0, 12),
+                    text: this.playerScores.get(player).name,
                     textColor: LeaderboardUI.TEXT_COLOR,
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                 })
@@ -566,7 +566,7 @@ export class LeaderboardUI {
             for (let trackScores of track.scores) {
                 if (!this.playerScores.has(trackScores.walletAddress)) {
                     this.playerScores.set(trackScores.walletAddress, {
-                        name: trackScores.user,
+                        name: trackScores.user.substring(0, 12),
                         totalScore: 0,
                         scores: new Map<string, number>()
                     })
