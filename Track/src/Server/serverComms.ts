@@ -257,14 +257,14 @@ export class ServerComms {
         ServerComms.getPlayerData().then(() => {
             ServerComms.currentTrack = _guid
             let track = ServerComms.player.tracks.find(track => track.guid === _guid)
-            if(track.carPbsPerTrack!=undefined){
+            if (track && track.carPbsPerTrack != undefined) {
                 let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
                 let bool = true;
                 if (pb != null) {
                     bool = pb.PB == 0
                 }
 
-                if(TrackManager.isPractice) {
+                if (TrackManager.isPractice) {
                     TimeUI.showQualOrPbTime("Qualification", 50000)
                 }
                 else {

@@ -94,7 +94,7 @@ export class PartyManager {
                 Date.UTC(2024, 2, 17, 20, 30),
                 () => {
                     this.dj = new DJ()
-                },
+                }, 
                 () => {
                     if (this.dj != undefined) {
                         this.dj.remove()
