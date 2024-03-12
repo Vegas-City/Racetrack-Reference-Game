@@ -7,9 +7,9 @@ export class AudioManager {
   private static launchSounds: AudioEntity[] = []
   private static boomSounds: AudioEntity[] = []
   private static crackleSounds: AudioEntity[] = []
+  public static musicTracks : AudioEntity[] = []
 
   constructor() {
-
     // Building
     AudioManager.launchSounds = [
       new AudioEntity("audio/FireWorks/Candle11.mp3", 0.5, 4),
@@ -34,6 +34,18 @@ export class AudioManager {
       new AudioEntity("audio/FireWorks/Crackles1.mp3", 1, 5),
       new AudioEntity("audio/FireWorks/Crackles2.mp3", 1, 5)
     ]
+
+    AudioManager.musicTracks = [
+      new AudioEntity("audio/Music/track1.mp3", 1, 1, true),
+      new AudioEntity("audio/Music/track2.mp3", 1, 1, true),
+      new AudioEntity("audio/Music/track3.mp3", 1, 1, true),
+      new AudioEntity("audio/Music/track4.mp3", 1, 1, true),
+      new AudioEntity("audio/Music/background.mp3", 1, 1, true),
+    ]
+
+
+    engine.addSystem(this.update.bind(this))
+
   }
 
   static playLaunchSounds(_position:Vector3): void {
@@ -46,5 +58,26 @@ export class AudioManager {
 
   static playCrackleSounds(_position:Vector3): void {
     AudioManager.crackleSounds[Math.floor(Math.random()*AudioManager.crackleSounds.length)].playSound(_position)
+  }
+
+  static playMusic(_trackNumber:number):void{
+    // Stop all other background music tracks
+
+    console.log("PLAY MUSIC:" +_trackNumber)
+    AudioManager.stopAllMusic()
+
+    AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())
+  }
+
+  static stopAllMusic():void{
+    AudioManager.musicTracks.forEach(audioEntity => {
+      audioEntity.stopAll()
+    });
+  }
+
+  update(_dt:number){
+    AudioManager.musicTracks.forEach(musicTrack => {
+      musicTrack.update()
+    });
   }
 } 
