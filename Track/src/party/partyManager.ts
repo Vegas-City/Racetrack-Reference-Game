@@ -9,6 +9,7 @@ import { ConfettiManager } from "../Confetti/confettiManager";
 import { Scene } from "../scene";
 import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
+import { NPCManager } from "../NPCs/NPCManager";
 
 export class PartyManager {
     dj: DJ
@@ -109,6 +110,7 @@ export class PartyManager {
                 Date.UTC(2024, 2, 14, 12),
                 Date.UTC(2024, 2, 17, 20, 27),
                 () => {
+                    new NPCManager()
                     Scene.LoadMenu()
                 },
                 () => {
