@@ -1,6 +1,7 @@
 import { AudioSource, Entity, MeshRenderer, Transform, engine } from "@dcl/sdk/ecs";
 import { Vector3 } from "@dcl/sdk/math";
 import { AudioEntity } from "./audioEntity";
+import { PartyManager } from "../party/partyManager";
 
 export class AudioManager {
 
@@ -66,6 +67,12 @@ export class AudioManager {
     console.log("PLAY MUSIC:" +_trackNumber)
     AudioManager.stopAllMusic()
 
+    if(_trackNumber==4){
+      // We are asking for background music. Is the DJ on?
+      if(PartyManager.instance.dj!=undefined){
+        return // Don't play background music if the DJ is visible
+      }
+    }
     AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())
   }
 

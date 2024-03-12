@@ -10,6 +10,7 @@ import { Scene } from "../scene";
 import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
 import { NPCManager } from "../NPCs/NPCManager";
+import { AudioManager } from "../audio/audioManager";
 
 export class PartyManager {
     dj: DJ
@@ -20,7 +21,12 @@ export class PartyManager {
     fireworkManager: FireWorkManager
     confettiManager: ConfettiManager
 
+    static instance:PartyManager
+
     constructor() {
+
+        PartyManager.instance = this
+
         this.fireworkManager = new FireWorkManager()
         this.confettiManager = new ConfettiManager()
 
@@ -95,6 +101,7 @@ export class PartyManager {
                 Date.UTC(2024, 2, 17, 20, 30),
                 () => {
                     this.dj = new DJ()
+                    AudioManager.stopAllMusic()
                 }, 
                 () => {
                     if (this.dj != undefined) {
