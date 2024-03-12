@@ -42,6 +42,7 @@ export class AudioManager {
       new AudioEntity("audio/Music/track3.mp3", 1, 1, true),
       new AudioEntity("audio/Music/track4.mp3", 1, 1, true),
       new AudioEntity("audio/Music/background.mp3", 1, 1, true),
+      new AudioEntity("audio/Music/RT_music.mp3", 1, 1, true),
     ]
 
 
