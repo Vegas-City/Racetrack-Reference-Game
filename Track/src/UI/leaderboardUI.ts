@@ -1,7 +1,13 @@
-import { Entity, Material, MaterialTransparencyMode, MeshRenderer, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
+import { Entity, Material, MaterialTransparencyMode, MeshRenderer, PBMaterial_PbrMaterial, TextAlignMode, TextShape, Transform, TransformType, engine } from "@dcl/sdk/ecs";
 import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { ServerComms } from "../Server/serverComms";
-import { UserData } from "../Server/Helper";
+import { Helper, UserData } from "../Server/Helper";
+
+export type PlayerScoreData = {
+    name: string,
+    totalScore: number,
+    scores: Map<string, number>
+}
 
 export class LeaderboardUI {
     private static readonly MAX_ROWS: number = 5
@@ -23,7 +29,7 @@ export class LeaderboardUI {
     private hasPlayerData: boolean = true
 
     private trackNames: string[] = []
-    public playerScores = new Map<string, Map<string, number>>()
+    public playerScores = new Map<string, PlayerScoreData>()
     private selfScores = new Map<string, number>()
     private selfRank: number = 0
 
@@ -73,7 +79,7 @@ export class LeaderboardUI {
     show(): void {
         let transform = Transform.getMutableOrNull(this.container)
         if (transform) {
-            transform.scale = Vector3.One()
+            transform.scale = this.leaderboardTransform.scale
         }
     }
 
@@ -150,7 +156,7 @@ export class LeaderboardUI {
         index = 0
         for (let player of this.playerScores.keys()) {
             if (index < this.playerNameEntities.length) {
-                TextShape.getMutable(this.playerNameEntities[index]).text = player.substring(0, 12)
+                TextShape.getMutable(this.playerNameEntities[index]).text = this.playerScores.get(player).name
             }
             else {
                 let nameEntity = engine.addEntity()
@@ -159,7 +165,7 @@ export class LeaderboardUI {
                     position: Vector3.create(0, -(this.verticalSpacing * 1.3) - (index * this.verticalSpacing), 0)
                 })
                 TextShape.create(nameEntity, {
-                    text: player.substring(0, 12),
+                    text: this.playerScores.get(player).name,
                     textColor: LeaderboardUI.TEXT_COLOR,
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                 })
@@ -179,8 +185,8 @@ export class LeaderboardUI {
             let subIndex: number = 0
             for (let player of this.playerScores.keys()) {
                 if (subIndex < this.scoreEntities[index].length) {
-                    TextShape.getMutable(this.scoreEntities[index][subIndex]).text = this.formatTime(this.playerScores.get(player).get(track))
-                    TextShape.getMutable(this.scoreMilliEntities[index][subIndex]).text = this.formatTimeMilli(this.playerScores.get(player).get(track))
+                    TextShape.getMutable(this.scoreEntities[index][subIndex]).text = this.formatTime(this.playerScores.get(player).scores.get(track))
+                    TextShape.getMutable(this.scoreMilliEntities[index][subIndex]).text = this.formatTimeMilli(this.playerScores.get(player).scores.get(track))
                 }
                 else {
                     let scoreEntity = engine.addEntity()
@@ -189,7 +195,7 @@ export class LeaderboardUI {
                         position: Vector3.create((this.horizontalSpacing * 1.3) + (index * this.horizontalSpacing), -(this.verticalSpacing * 1.3) - (subIndex * this.verticalSpacing), 0)
                     })
                     TextShape.create(scoreEntity, {
-                        text: this.formatTime(this.playerScores.get(player).get(track)),
+                        text: this.formatTime(this.playerScores.get(player).scores.get(track)),
                         textColor: LeaderboardUI.TEXT_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
@@ -202,7 +208,7 @@ export class LeaderboardUI {
                         scale: Vector3.create(0.7, 0.7, 0.7)
                     })
                     TextShape.create(scoremilliEntity, {
-                        text: this.formatTimeMilli(this.playerScores.get(player).get(track)),
+                        text: this.formatTimeMilli(this.playerScores.get(player).scores.get(track)),
                         textColor: LeaderboardUI.MILLI_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
@@ -217,10 +223,7 @@ export class LeaderboardUI {
         index = 0
         if (this.trackNames.length > 0) {
             for (let player of this.playerScores.keys()) {
-                let totalScore: number = 0
-                for (let score of this.playerScores.get(player).keys()) {
-                    totalScore += this.playerScores.get(player).get(score)
-                }
+                let totalScore = this.playerScores.get(player).totalScore
 
                 if (index < this.totalScoreEntities.length) {
                     TextShape.getMutable(this.totalScoreEntities[index]).text = this.formatTime(totalScore)
@@ -267,20 +270,7 @@ export class LeaderboardUI {
 
         if (this.hasPlayerData) {
             if (this.avatarImageEntity !== undefined) {
-                Material.setPbrMaterial(this.avatarImageEntity, {
-                    texture: Material.Texture.Avatar({
-                        userId: UserData.cachedData.publicKey,
-                    }),
-                    alphaTexture: Material.Texture.Avatar({
-                        userId: UserData.cachedData.publicKey,
-                    }),
-                    transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
-                    emissiveTexture: Material.Texture.Avatar({
-                        userId: UserData.cachedData.publicKey,
-                    }),
-                    emissiveColor: Color4.Black(),
-                    emissiveIntensity: 0.5
-                })
+                this.updateAvatar()
             }
         }
 
@@ -450,16 +440,7 @@ export class LeaderboardUI {
                 scale: Vector3.create(7, 7, 7)
             })
             MeshRenderer.setPlane(this.avatarImageEntity)
-            Material.setPbrMaterial(this.avatarImageEntity, {
-                texture: Material.Texture.Avatar({
-                    userId: UserData.cachedData.publicKey,
-                }),
-                emissiveTexture: Material.Texture.Avatar({
-                    userId: UserData.cachedData.publicKey,
-                }),
-                emissiveColor: Color4.White(),
-                emissiveIntensity: 0.5
-            })
+            this.updateAvatar()
 
             this.playerNameEntity = engine.addEntity()
             Transform.create(this.playerNameEntity, {
@@ -583,38 +564,51 @@ export class LeaderboardUI {
 
         for (let track of ServerComms.leaderboard.result) {
             for (let trackScores of track.scores) {
-                if (!this.playerScores.has(trackScores.user)) {
-                    this.playerScores.set(trackScores.user, new Map<string, number>())
+                if (!this.playerScores.has(trackScores.walletAddress)) {
+                    this.playerScores.set(trackScores.walletAddress, {
+                        name: trackScores.user.substring(0, 12),
+                        totalScore: 0,
+                        scores: new Map<string, number>()
+                    })
                 }
-                if (trackScores.user === this.getSelfUsername()) {
+                if (trackScores.walletAddress === this.getSelfWalletAddress()) {
                     this.selfScores.set(track.trackName, trackScores.time)
                 }
 
-                let playerScores = this.playerScores.get(trackScores.user)
-                playerScores.set(track.trackName, trackScores.time)
+                let playerScores = this.playerScores.get(trackScores.walletAddress)
+                playerScores.scores.set(track.trackName, trackScores.time)
             }
         }
 
         // filter out players who haven't completed all tracks at least once
         for (let player of this.playerScores.keys()) {
-            if (this.playerScores.get(player).size !== this.trackNames.length) {
+            if (this.playerScores.get(player).scores.size !== this.trackNames.length) {
                 this.playerScores.delete(player)
             }
         }
 
         // sort scores from lowest total to greatest total
-        this.playerScores = new Map([...this.playerScores.entries()].sort((a, b) => this.playerScoresSort(a[1], b[1])))
+        this.playerScores = new Map([...this.playerScores.entries()].sort((a, b) => this.playerScoresSort(a[1].scores, b[1].scores)))
 
         // take the first MAX_ROWS rows
         let index: number = 0
         for (let player of this.playerScores.keys()) {
-            if (player === this.getSelfUsername()) {
+            if (player === this.getSelfWalletAddress()) {
                 this.selfRank = index + 1
             }
             if (index >= LeaderboardUI.MAX_ROWS) {
                 this.playerScores.delete(player)
             }
             index++
+        }
+
+        // calculate the total scores per player
+        for (let player of this.playerScores.keys()) {
+            let totalScore: number = 0
+            for (let score of this.playerScores.get(player).scores.keys()) {
+                totalScore += this.playerScores.get(player).scores.get(score)
+            }
+            this.playerScores.get(player).totalScore = totalScore
         }
     }
 
@@ -656,6 +650,10 @@ export class LeaderboardUI {
         return (this.formatTime(_time) + this.formatTimeMilli(_time)).replace(".", ":");
     }
 
+    private getSelfWalletAddress(): string {
+        return UserData.cachedData.publicKey
+    }
+
     private getSelfUsername(): string {
         return UserData.cachedData.displayName.substring(0, UserData.cachedData.displayName.lastIndexOf("#"))
     }
@@ -676,6 +674,48 @@ export class LeaderboardUI {
         let transform = Transform.getMutableOrNull(this.selfScoreContainer)
         if (transform) {
             transform.scale = Vector3.Zero()
+        }
+    }
+
+    private async updateAvatar(): Promise<void> {
+        await this.getAvatarMaterial(UserData.cachedData.publicKey).then(src => {
+            Material.setPbrMaterial(this.avatarImageEntity, src)
+        })
+    }
+
+    private async getAvatarMaterial(_id: string): Promise<PBMaterial_PbrMaterial> {
+        try {
+            return await ServerComms.getPlayerAvatar(_id).then(avatarSrc => {
+                return {
+                    texture: Material.Texture.Common({
+                        src: avatarSrc ?? ""
+                    }),
+                    alphaTexture: Material.Texture.Common({
+                        src: avatarSrc ?? ""
+                    }),
+                    transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+                    emissiveTexture: Material.Texture.Common({
+                        src: avatarSrc ?? ""
+                    }),
+                    emissiveColor: Color4.White(),
+                    emissiveIntensity: 0.5
+                }
+            })
+        } catch (error) {
+            return {
+                texture: Material.Texture.Common({
+                    src: "images/avatarSilhouette.png"
+                }),
+                alphaTexture: Material.Texture.Common({
+                    src: "images/avatarSilhouette.png"
+                }),
+                transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+                emissiveTexture: Material.Texture.Common({
+                    src: "images/avatarSilhouette.png"
+                }),
+                emissiveColor: Color4.White(),
+                emissiveIntensity: 0.5
+            }
         }
     }
 }

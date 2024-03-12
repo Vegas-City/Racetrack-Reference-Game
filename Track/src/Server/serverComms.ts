@@ -48,6 +48,19 @@ export class ServerComms {
         }
     }
 
+    public static getRealm(): string {
+        switch (Helper.getEnvironmentType()) {
+            case EnvironmentType.Localhost:
+                return "https://peer.decentraland.org"
+            case EnvironmentType.Test:
+                return Helper.getRealm()
+            case EnvironmentType.Live:
+                return Helper.getRealm()
+            default:
+                throw Error("Realm is not defined")
+        }
+    }
+
     public static async recordAttempt(_data: RecordAttemptData) {
         if (ServerComms.TEST_MODE) {
             console.log("Recording attempt:\nCheckpoint: " + _data.checkpoint + "\nTime: " + _data.time)
@@ -288,5 +301,19 @@ export class ServerComms {
         if (invalid) return 0
 
         return Math.floor(total)
+    }
+
+    public static async getPlayerAvatar(_id: string): Promise<string> {
+        try {
+            let url = ServerComms.getRealm() + "/lambdas/profile/" + _id
+
+            return await fetch(url).then(async response => {
+                return response.json().then(async json => {
+                    return json.avatars[0].avatar.snapshots.face256.toString()
+                })
+            })
+        } catch (e) {
+            throw e
+        }
     }
 }

@@ -1,9 +1,10 @@
-import { Entity, Material, MaterialTransparencyMode, MeshRenderer, PBMaterial_PbrMaterial, TextShape, Transform, engine } from "@dcl/ecs";
+import { Entity, Material, MaterialTransparencyMode, MeshRenderer, PBMaterial_PbrMaterial, TextAlignMode, TextShape, Transform, engine } from "@dcl/ecs";
 import { Color4, Quaternion, Vector3 } from "@dcl/ecs-math";
 import { LeaderboardUI } from "../UI/leaderboardUI";
 import { UserData } from "../Server/Helper";
 import { VideoScreens } from "./showManager/videoScreens";
 import { setupShow } from "./showManager/showSetup";
+import { ServerComms } from "../Server/serverComms";
 
 export class BigScreen {
     private static readonly REFRESH_TIME: number = 5
@@ -54,7 +55,7 @@ export class BigScreen {
 
     triggerWinningMoment(): void {
         Material.setPbrMaterial(this.entity, this.getWinningMomentMaterial())
-        
+
         let player1Transform = Transform.getMutableOrNull(this.player1Container)
         if (player1Transform) {
             player1Transform.scale = Vector3.create(1 / this.scale.x, 1 / this.scale.y, 1 / this.scale.z)
@@ -62,12 +63,12 @@ export class BigScreen {
 
         let player2Transform = Transform.getMutableOrNull(this.player2Container)
         if (player2Transform) {
-            player2Transform.scale = Vector3.create(1 / this.scale.x, 1 / this.scale.y, 1 / this.scale.z)
+            player2Transform.scale = Vector3.create(0.8 / this.scale.x, 0.8 / this.scale.y, 0.8 / this.scale.z)
         }
 
         let player3Transform = Transform.getMutableOrNull(this.player3Container)
         if (player3Transform) {
-            player3Transform.scale = Vector3.create(1 / this.scale.x, 1 / this.scale.y, 1 / this.scale.z)
+            player3Transform.scale = Vector3.create(0.8 / this.scale.x, 0.8 / this.scale.y, 0.8 / this.scale.z)
         }
     }
 
@@ -80,12 +81,8 @@ export class BigScreen {
             if (this.leaderboard.playerScores.size > 2) {
                 let index: number = 0
                 for (let player of this.leaderboard.playerScores.keys()) {
-                    let totalScore: number = 0
-                    for (let score of this.leaderboard.playerScores.get(player).keys()) {
-                        totalScore += this.leaderboard.playerScores.get(player).get(score)
-                    }
-
-                    this.updateText(index, player, totalScore)
+                    this.updateText(index, this.leaderboard.playerScores.get(player).name, this.leaderboard.playerScores.get(player).totalScore)
+                    this.updateAvatar(index, player)
                     index++
                 }
             }
@@ -96,28 +93,29 @@ export class BigScreen {
         this.player1Container = engine.addEntity()
         Transform.create(this.player1Container, {
             parent: this.entity,
-            position: Vector3.create(0, 0.2, -0.05),
+            position: Vector3.create(-0.11, 0.2, -0.05),
             scale: Vector3.Zero()
         })
 
         this.player2Container = engine.addEntity()
         Transform.create(this.player2Container, {
             parent: this.entity,
-            position: Vector3.create(-0.3, 0, -0.05),
+            position: Vector3.create(-0.3, -0.1, -0.05),
             scale: Vector3.Zero()
         })
 
         this.player3Container = engine.addEntity()
         Transform.create(this.player3Container, {
             parent: this.entity,
-            position: Vector3.create(0.3, 0, -0.05),
+            position: Vector3.create(0.15, -0.1, -0.05),
             scale: Vector3.Zero()
         })
 
         this.avatar1 = engine.addEntity()
         Transform.create(this.avatar1, {
             parent: this.player1Container,
-            position: Vector3.create(-0.3, 0, 0)
+            position: Vector3.create(-1.5, 0.15, 0),
+            scale: Vector3.create(2, 2, 2)
         })
 
         this.name1 = engine.addEntity()
@@ -126,7 +124,9 @@ export class BigScreen {
             position: Vector3.create(0, 0.55, 0)
         })
         TextShape.create(this.name1, {
-            text: ""
+            text: "",
+            fontSize: 10,
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.time1 = engine.addEntity()
@@ -135,13 +135,16 @@ export class BigScreen {
             position: Vector3.create(0, -0.55, 0)
         })
         TextShape.create(this.time1, {
-            text: ""
+            text: "",
+            fontSize: 8,
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.avatar2 = engine.addEntity()
         Transform.create(this.avatar2, {
             parent: this.player2Container,
-            position: Vector3.create(-0.3, 0, 0)
+            position: Vector3.create(-1.5, 0.15, 0),
+            scale: Vector3.create(2, 2, 2)
         })
 
         this.name2 = engine.addEntity()
@@ -150,7 +153,9 @@ export class BigScreen {
             position: Vector3.create(0, 0.55, 0)
         })
         TextShape.create(this.name2, {
-            text: ""
+            text: "",
+            fontSize: 10,
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.time2 = engine.addEntity()
@@ -159,13 +164,16 @@ export class BigScreen {
             position: Vector3.create(0, -0.55, 0)
         })
         TextShape.create(this.time2, {
-            text: ""
+            text: "",
+            fontSize: 8,
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.avatar3 = engine.addEntity()
         Transform.create(this.avatar3, {
             parent: this.player3Container,
-            position: Vector3.create(-0.3, 0, 0)
+            position: Vector3.create(-1.5, 0.15, 0),
+            scale: Vector3.create(2, 2, 2)
         })
 
         this.name3 = engine.addEntity()
@@ -174,7 +182,9 @@ export class BigScreen {
             position: Vector3.create(0, 0.55, 0)
         })
         TextShape.create(this.name3, {
-            text: ""
+            text: "",
+            fontSize: 10,
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.time3 = engine.addEntity()
@@ -183,7 +193,9 @@ export class BigScreen {
             position: Vector3.create(0, -0.55, 0)
         })
         TextShape.create(this.time3, {
-            text: ""
+            text: "",
+            fontSize: 8,
+            textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
     }
 
@@ -206,20 +218,39 @@ export class BigScreen {
         }
     }
 
-    private getAvatarMaterial(): PBMaterial_PbrMaterial {
-        return {
-            texture: Material.Texture.Avatar({
-                userId: UserData.cachedData.publicKey,
-            }),
-            alphaTexture: Material.Texture.Avatar({
-                userId: UserData.cachedData.publicKey,
-            }),
-            transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
-            emissiveTexture: Material.Texture.Avatar({
-                userId: UserData.cachedData.publicKey,
-            }),
-            emissiveColor: Color4.Black(),
-            emissiveIntensity: 0.5
+    private async getAvatarMaterial(_id: string): Promise<PBMaterial_PbrMaterial> {
+        try {
+            return await ServerComms.getPlayerAvatar(_id).then(avatarSrc => {
+                return {
+                    texture: Material.Texture.Common({
+                        src: avatarSrc ?? ""
+                    }),
+                    alphaTexture: Material.Texture.Common({
+                        src: avatarSrc ?? ""
+                    }),
+                    transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+                    emissiveTexture: Material.Texture.Common({
+                        src: avatarSrc ?? ""
+                    }),
+                    emissiveColor: Color4.White(),
+                    emissiveIntensity: 0.5
+                }
+            })
+        } catch (error) {
+            return {
+                texture: Material.Texture.Common({
+                    src: "images/avatarSilhouette.png"
+                }),
+                alphaTexture: Material.Texture.Common({
+                    src: "images/avatarSilhouette.png"
+                }),
+                transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+                emissiveTexture: Material.Texture.Common({
+                    src: "images/avatarSilhouette.png"
+                }),
+                emissiveColor: Color4.White(),
+                emissiveIntensity: 0.5
+            }
         }
     }
 
@@ -228,7 +259,7 @@ export class BigScreen {
             case 0: {
                 let nameText = TextShape.getMutableOrNull(this.name1)
                 if (nameText) {
-                    nameText.text = _name.substring(0, 12).toUpperCase()
+                    nameText.text = "1. " + _name.substring(0, 12).toUpperCase()
                 }
 
                 let timeText = TextShape.getMutableOrNull(this.time1)
@@ -240,7 +271,7 @@ export class BigScreen {
             case 1: {
                 let nameText = TextShape.getMutableOrNull(this.name2)
                 if (nameText) {
-                    nameText.text = _name.substring(0, 12).toUpperCase()
+                    nameText.text = "2. " + _name.substring(0, 12).toUpperCase()
                 }
 
                 let timeText = TextShape.getMutableOrNull(this.time2)
@@ -252,13 +283,39 @@ export class BigScreen {
             case 2: {
                 let nameText = TextShape.getMutableOrNull(this.name3)
                 if (nameText) {
-                    nameText.text = _name.substring(0, 12).toUpperCase()
+                    nameText.text = "3. " + _name.substring(0, 12).toUpperCase()
                 }
 
                 let timeText = TextShape.getMutableOrNull(this.time3)
                 if (timeText) {
                     timeText.text = this.formatTime(_time) + this.formatTimeMilli(_time)
                 }
+            }
+                break
+        }
+    }
+
+    private async updateAvatar(_index: number, _id: string): Promise<void> {
+        switch (_index) {
+            case 0: {
+                await this.getAvatarMaterial(_id).then(src => {
+                    MeshRenderer.setPlane(this.avatar1)
+                    Material.setPbrMaterial(this.avatar1, src)
+                })
+            }
+                break
+            case 1: {
+                await this.getAvatarMaterial(_id).then(src => {
+                    MeshRenderer.setPlane(this.avatar2)
+                    Material.setPbrMaterial(this.avatar2, src)
+                })
+            }
+                break
+            case 2: {
+                await this.getAvatarMaterial(_id).then(src => {
+                    MeshRenderer.setPlane(this.avatar3)
+                    Material.setPbrMaterial(this.avatar3, src)
+                })
             }
                 break
         }

@@ -1,4 +1,5 @@
 export type PlayerPB = {
+    walletAddress: string
     user: string
     time: number
 }
