@@ -41,35 +41,53 @@ export class PartyManager {
         // Small screens
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 19, 30),
-                Date.UTC(2024, 2, 17, 20, 0),
+                Date.UTC(2024, 2, 17, 19, 30, 0),
+                Date.UTC(2024, 2, 17, 19, 59, 59),
                 () => {
                     this.smallScreens.forEach(screen => {
                         screen.prepareForPartyStart()
                     })
                 },
-                () => {
-                    this.smallScreens.forEach(screen => {
-                        screen.prepareForRaceEnd()
-                    })
-                }
+                () => { }
             )
         )
 
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 20, 27),
-                Date.UTC(2024, 2, 17, 20, 33),
+                Date.UTC(2024, 2, 17, 20, 0, 0),
+                Date.UTC(2024, 2, 17, 20, 26, 59),
+                () => {
+                    this.smallScreens.forEach(screen => {
+                        screen.prepareForRaceEnd()
+                    })
+                },
+                () => { }
+            )
+        )
+
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 27, 0),
+                Date.UTC(2024, 2, 17, 20, 32, 59),
                 () => {
                     this.smallScreens.forEach(screen => {
                         screen.triggerWaiting()
                     })
                 },
+                () => { }
+            )
+        )
+
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 33),
+                Date.UTC(2024, 2, 17, 20, 48),
                 () => {
                     this.smallScreens.forEach(screen => {
                         screen.triggerCongrats()
                     })
-                }
+                },
+                () => { }
             )
         )
 

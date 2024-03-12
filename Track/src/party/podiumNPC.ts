@@ -10,44 +10,42 @@ export class PodiumNPCs {
     updateSpeed: number = 5
     currentUpdateSpeed: number = 0
 
-    constructor(_leaderBoard:LeaderboardUI){
+    constructor(_leaderBoard: LeaderboardUI) {
         this.leaderboard = _leaderBoard
 
-        this.gold = new PodiumNPC("models/npcs/podium_gold.glb",Vector3.create(70.89+0.2,3.23-0.88,93.77),Quaternion.fromEulerDegrees(0,-70,0))
-        this.silver = new PodiumNPC("models/npcs/podium_silver.glb",Vector3.create(71.8,2.98-0.88,95.8),Quaternion.fromEulerDegrees(0,-50,0))
-        this.bronze = new PodiumNPC("models/npcs/podium_bronze.glb",Vector3.create(70.6,2.73-0.88,91.6),Quaternion.fromEulerDegrees(0,-90,0))
+        this.gold = new PodiumNPC("models/npcs/podium_gold.glb", Vector3.create(70.89 + 0.2, 3.23 - 0.88, 93.77), Quaternion.fromEulerDegrees(0, -70, 0))
+        this.silver = new PodiumNPC("models/npcs/podium_silver.glb", Vector3.create(71.8, 2.98 - 0.88, 95.8), Quaternion.fromEulerDegrees(0, -50, 0))
+        this.bronze = new PodiumNPC("models/npcs/podium_bronze.glb", Vector3.create(70.6, 2.73 - 0.88, 91.6), Quaternion.fromEulerDegrees(0, -90, 0))
 
         engine.addSystem(this.update.bind(this))
-    } 
+    }
 
-    update(_dt:number){ 
+    update(_dt: number) {
         this.currentUpdateSpeed += _dt
 
-        if(this.currentUpdateSpeed>= this.updateSpeed){
-            this.currentUpdateSpeed= 0
+        if (this.currentUpdateSpeed >= this.updateSpeed) {
+            this.currentUpdateSpeed = 0
 
-            if(this.leaderboard.playerScores.size>0){
-                let index:number = 0
+            if (this.leaderboard.playerScores.size > 0) {
+                let index: number = 0
                 for (let player of this.leaderboard.playerScores.keys()) {
-                    let totalScore: number = 0
-                    for (let score of this.leaderboard.playerScores.get(player).keys()) {
-                        totalScore += this.leaderboard.playerScores.get(player).get(score)
-                    }
-    
-                    if(index==0){
-                        this.gold.updateText(player,totalScore)
-                    } else if(index ==1){
-                        this.silver.updateText(player,totalScore)
-                    } else if(index ==2){
-                        this.bronze.updateText(player,totalScore)
+                    let name = this.leaderboard.playerScores.get(player).name
+                    let totalScore = this.leaderboard.playerScores.get(player).totalScore
+
+                    if (index == 0) {
+                        this.gold.updateText(name, totalScore)
+                    } else if (index == 1) {
+                        this.silver.updateText(name, totalScore)
+                    } else if (index == 2) {
+                        this.bronze.updateText(name, totalScore)
                     }
                     index++
                 }
             }
         }
-    } 
+    }
 
-    remove(){ 
+    remove() {
         engine.removeEntity(this.gold.entity)
         engine.removeEntity(this.silver.entity)
         engine.removeEntity(this.bronze.entity)
@@ -58,14 +56,14 @@ export class PodiumNPC {
     entity: Entity
     textEntity: Entity
 
-    constructor(_modelPath:string, _position:Vector3, _rotation:Quaternion){
+    constructor(_modelPath: string, _position: Vector3, _rotation: Quaternion) {
         this.entity = engine.addEntity()
         this.textEntity = engine.addEntity()
 
-        GltfContainer.create(this.entity, {src:_modelPath})
-        Transform.create(this.entity, {position: _position, rotation: _rotation})
+        GltfContainer.create(this.entity, { src: _modelPath })
+        Transform.create(this.entity, { position: _position, rotation: _rotation })
 
-        Transform.create(this.textEntity, {parent: this.entity, rotation:Quaternion.fromEulerDegrees(0,180,0), position: Vector3.create(0,0,1), scale:Vector3.create(0.25,0.25,0.25)})
+        Transform.create(this.textEntity, { parent: this.entity, rotation: Quaternion.fromEulerDegrees(0, 180, 0), position: Vector3.create(0, 0, 1), scale: Vector3.create(0.25, 0.25, 0.25) })
         TextShape.create(this.textEntity, {
             text: "",
             outlineColor: Color3.Black(),
@@ -73,7 +71,7 @@ export class PodiumNPC {
         })
     }
 
-    updateText(_name:string, _time:number){
+    updateText(_name: string, _time: number) {
         TextShape.getMutable(this.textEntity).text = _name.substring(0, 12).toLocaleUpperCase() + "\n" + this.formatTime(_time) + this.formatTimeMilli(_time)
     }
 
