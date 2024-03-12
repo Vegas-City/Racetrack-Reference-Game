@@ -2,6 +2,8 @@ import { Entity, Material, MaterialTransparencyMode, MeshRenderer, PBMaterial_Pb
 import { Color4, Quaternion, Vector3 } from "@dcl/ecs-math";
 import { LeaderboardUI } from "../UI/leaderboardUI";
 import { UserData } from "../Server/Helper";
+import { VideoScreens } from "./showManager/videoScreens";
+import { setupShow } from "./showManager/showSetup";
 
 export class BigScreen {
     private static readonly REFRESH_TIME: number = 5
@@ -42,25 +44,74 @@ export class BigScreen {
         MeshRenderer.setPlane(this.entity)
         Material.setPbrMaterial(this.entity, this.getOffMaterial())
 
+        this.initialiseWinningMomentEntities()
+
+        VideoScreens.Initialise(this.entity)
+        setupShow()
+
+        engine.addSystem(this.update.bind(this))
+    }
+
+    triggerWinningMoment(): void {
+        Material.setPbrMaterial(this.entity, this.getWinningMomentMaterial())
+        
+        let player1Transform = Transform.getMutableOrNull(this.player1Container)
+        if (player1Transform) {
+            player1Transform.scale = Vector3.create(1 / this.scale.x, 1 / this.scale.y, 1 / this.scale.z)
+        }
+
+        let player2Transform = Transform.getMutableOrNull(this.player2Container)
+        if (player2Transform) {
+            player2Transform.scale = Vector3.create(1 / this.scale.x, 1 / this.scale.y, 1 / this.scale.z)
+        }
+
+        let player3Transform = Transform.getMutableOrNull(this.player3Container)
+        if (player3Transform) {
+            player3Transform.scale = Vector3.create(1 / this.scale.x, 1 / this.scale.y, 1 / this.scale.z)
+        }
+    }
+
+    update(_dt: number) {
+        this.elapsed += _dt
+
+        if (this.elapsed >= BigScreen.REFRESH_TIME) {
+            this.elapsed = 0
+
+            if (this.leaderboard.playerScores.size > 2) {
+                let index: number = 0
+                for (let player of this.leaderboard.playerScores.keys()) {
+                    let totalScore: number = 0
+                    for (let score of this.leaderboard.playerScores.get(player).keys()) {
+                        totalScore += this.leaderboard.playerScores.get(player).get(score)
+                    }
+
+                    this.updateText(index, player, totalScore)
+                    index++
+                }
+            }
+        }
+    }
+
+    private initialiseWinningMomentEntities(): void {
         this.player1Container = engine.addEntity()
         Transform.create(this.player1Container, {
             parent: this.entity,
             position: Vector3.create(0, 0.2, -0.05),
-            scale: Vector3.create(1 / _scale.x, 1 / _scale.y, 1 / _scale.z)
+            scale: Vector3.Zero()
         })
 
         this.player2Container = engine.addEntity()
         Transform.create(this.player2Container, {
             parent: this.entity,
             position: Vector3.create(-0.3, 0, -0.05),
-            scale: Vector3.create(1 / _scale.x, 1 / _scale.y, 1 / _scale.z)
+            scale: Vector3.Zero()
         })
 
         this.player3Container = engine.addEntity()
         Transform.create(this.player3Container, {
             parent: this.entity,
             position: Vector3.create(0.3, 0, -0.05),
-            scale: Vector3.create(1 / _scale.x, 1 / _scale.y, 1 / _scale.z)
+            scale: Vector3.Zero()
         })
 
         this.avatar1 = engine.addEntity()
@@ -134,33 +185,6 @@ export class BigScreen {
         TextShape.create(this.time3, {
             text: ""
         })
-
-        engine.addSystem(this.update.bind(this))
-    }
-
-    triggerWinningMoment(): void {
-        Material.setPbrMaterial(this.entity, this.getWinningMomentMaterial())
-    }
-
-    update(_dt: number) {
-        this.elapsed += _dt
-
-        if (this.elapsed >= BigScreen.REFRESH_TIME) {
-            this.elapsed = 0
-
-            if (this.leaderboard.playerScores.size > 2) {
-                let index: number = 0
-                for (let player of this.leaderboard.playerScores.keys()) {
-                    let totalScore: number = 0
-                    for (let score of this.leaderboard.playerScores.get(player).keys()) {
-                        totalScore += this.leaderboard.playerScores.get(player).get(score)
-                    }
-
-                    this.updateText(index, player, totalScore)
-                    index++
-                }
-            }
-        }
     }
 
     private getOffMaterial(): PBMaterial_PbrMaterial {
