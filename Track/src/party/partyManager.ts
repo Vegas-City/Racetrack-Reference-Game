@@ -9,6 +9,8 @@ import { ConfettiManager } from "../Confetti/confettiManager";
 import { Scene } from "../scene";
 import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
+import { NPCManager } from "../NPCs/NPCManager";
+import { AudioManager } from "../audio/audioManager";
 
 export class PartyManager {
     dj: DJ
@@ -19,7 +21,12 @@ export class PartyManager {
     fireworkManager: FireWorkManager
     confettiManager: ConfettiManager
 
+    static instance:PartyManager
+
     constructor() {
+
+        PartyManager.instance = this
+
         this.fireworkManager = new FireWorkManager()
         this.confettiManager = new ConfettiManager()
 
@@ -112,7 +119,8 @@ export class PartyManager {
                 Date.UTC(2024, 2, 17, 20, 30),
                 () => {
                     this.dj = new DJ()
-                },
+                    AudioManager.stopAllMusic()
+                }, 
                 () => {
                     if (this.dj != undefined) {
                         this.dj.remove()
@@ -121,12 +129,27 @@ export class PartyManager {
             )
         )
 
+        // Ceremony Music
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 31),
+                Date.UTC(2024, 2, 17, 20, 48),
+                () => {
+                    AudioManager.playMusic(5) //Ceremony music
+                }, 
+                () => {
+
+                }
+            )
+        )
+
         // Remove 3D race menu
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 14, 12),
+                Date.UTC(2024, 2, 14, 11, 50), // Allow racing 10m before event time for testing
                 Date.UTC(2024, 2, 17, 20, 27),
                 () => {
+                    new NPCManager()
                     Scene.LoadMenu()
                 },
                 () => {

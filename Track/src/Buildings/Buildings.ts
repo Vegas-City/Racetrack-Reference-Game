@@ -25,6 +25,7 @@ export class Buildings {
             let tower: Building = new Building("models/buildings/Tower.glb")
             let hq: Building = new Building("models/buildings/HQ.glb")
             let bridge: Building = new Building("models/buildings/Bridge.glb")
+            let podiumAndStart: Building = new Building("models/buildings/PodiumAndStart.glb")
             let performanceBillboard: Building = new Building("models/buildings/PerformanceBillboard.glb")
         },800)
     }
