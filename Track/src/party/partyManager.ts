@@ -9,6 +9,7 @@ import { ConfettiManager } from "../Confetti/confettiManager";
 import { Scene } from "../scene";
 import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
+import { NPCManager } from "../NPCs/NPCManager";
 
 export class PartyManager {
     dj: DJ
@@ -106,9 +107,10 @@ export class PartyManager {
         // Remove 3D race menu
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 14, 12),
+                Date.UTC(2024, 2, 14, 11, 50), // Allow racing 10m before event time for testing
                 Date.UTC(2024, 2, 17, 20, 27),
                 () => {
+                    new NPCManager()
                     Scene.LoadMenu()
                 },
                 () => {
