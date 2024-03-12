@@ -12,6 +12,7 @@ import * as utils from '@dcl-sdk/utils'
 import { EventUIEnum, EventUIImage } from "../UI/eventUIImage";
 import { DemoManager } from "../DemoMode/DemoManager";
 import { CrowdNPC } from "../NPCs/crowdNPC";
+import { AudioManager } from "../audio/audioManager";
 
 export class RaceMenuManager {
     static instance: RaceMenuManager
@@ -409,7 +410,9 @@ export class RaceMenuManager {
             CrowdNPC.instance.show()
 
             let self = this
-            RaceMenuManager.LoadTrack(RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex)
+            let trackNumber = RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex
+            AudioManager.playMusic(trackNumber)
+            RaceMenuManager.LoadTrack(trackNumber)
             utils.timers.setTimeout(() => {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
                 CarPerspectives.enterCar(Car.instances[0].data)

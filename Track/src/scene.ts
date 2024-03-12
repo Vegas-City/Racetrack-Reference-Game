@@ -80,6 +80,7 @@ export class Scene {
                 },
                 onEndEvent: () => {
                     Scene.logger.minigameCompleted("RACETRACK", "RACE_COMPLETED")
+                    AudioManager.playMusic(4) // background music
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -109,6 +110,7 @@ export class Scene {
                 },
                 onQuitEvent: () => {
                     Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_QUIT")
+                    AudioManager.playMusic(4) // background music
                     RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                     DemoManager.show()
                     CrowdNPC.instance.hide()

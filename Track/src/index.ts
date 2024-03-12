@@ -10,6 +10,7 @@ import { Helper, UserData } from "./Server/Helper";
 import { NPCManager } from "./NPCs/NPCManager";
 import { PartyManager } from "./party/partyManager";
 import { IntervalLogger } from "@vegascity/vegas-city-logger/dist/logger/IntervalLogger";
+import { AudioManager } from "./audio/audioManager";
 
 
 export function main() {
@@ -33,6 +34,9 @@ export function main() {
               DebugUI.debugUIShow = true
             }
           }, 1500)
+          utils.timers.setTimeout(()=>{
+            AudioManager.playMusic(4) // background music
+          }, 3000)
         }
       })
     })
