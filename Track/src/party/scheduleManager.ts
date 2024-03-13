@@ -29,11 +29,19 @@ export class ScheduleManager {
         this.scheduleList.forEach(scheduleItem => {
             if(scheduleItem.startTime < currentDate && scheduleItem.endTime > currentDate && !scheduleItem.startCallbackFired){
                 scheduleItem.startCallbackFired = true
-                scheduleItem.startCallback()
+                try {
+                    scheduleItem.startCallback()
+                } catch (error){
+                    console.log("Error on schedule start call back: " + error)
+                }
             }
             if(scheduleItem.endTime < currentDate && !scheduleItem.endCallbackFired && scheduleItem.startCallbackFired){ // Only fire end call back if start call back has been called once
                 scheduleItem.endCallbackFired = true
-                scheduleItem.endCallback()
+                try {
+                    scheduleItem.endCallback()
+                } catch (error){
+                    console.log("Error on schedule end call back: " + error)
+                }
             }
         });
 

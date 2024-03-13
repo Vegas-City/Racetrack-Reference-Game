@@ -5,9 +5,12 @@ import { PitstopNPC } from "./pitstopNPC";
 
 export class NPCManager{
     constructor(){
+        try {
         new GuideNPC()
         new EntranceNPC()
         new PitstopNPC()
-        //new CrowdNPC() // have to move elsewhere because of password protection
+        } catch (error){
+            console.log("NPC creation error: " + error)
+        }
     }
 }
