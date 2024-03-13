@@ -60,11 +60,11 @@ export class PodiumNPC {
         this.entity = engine.addEntity()
         this.textEntity = engine.addEntity()
 
-        GltfContainer.create(this.entity, { src: _modelPath })
-        Transform.create(this.entity, { position: _position, rotation: _rotation })
+        GltfContainer.createOrReplace(this.entity, { src: _modelPath })
+        Transform.createOrReplace(this.entity, { position: _position, rotation: _rotation })
 
-        Transform.create(this.textEntity, { rotation: Quaternion.fromEulerDegrees(0, 108, 0), position: _textPosition, scale: Vector3.create(0.25, 0.25, 0.25) })
-        TextShape.create(this.textEntity, {
+        Transform.createOrReplace(this.textEntity, { rotation: Quaternion.fromEulerDegrees(0, 108, 0), position: _textPosition, scale: Vector3.create(0.25, 0.25, 0.25) })
+        TextShape.createOrReplace(this.textEntity, {
             text: "",
             outlineColor: Color3.White(),
             outlineWidth: 0.15,
@@ -73,7 +73,10 @@ export class PodiumNPC {
     }
 
     updateText(_name: string, _time: number) {
-        TextShape.getMutable(this.textEntity).text = _name.substring(0, 12).toLocaleUpperCase()// + "\n" + this.formatTime(_time) + this.formatTimeMilli(_time) // no score for now
+        let textShape = TextShape.getMutableOrNull(this.textEntity)
+        if (textShape) {
+            textShape.text = _name.substring(0, 12).toLocaleUpperCase()// + "\n" + this.formatTime(_time) + this.formatTimeMilli(_time) // no score for now
+        }
     }
 
     private formatTime(_time: number): string {

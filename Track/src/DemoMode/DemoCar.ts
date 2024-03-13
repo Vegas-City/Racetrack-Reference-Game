@@ -4,30 +4,30 @@ import { GhostPoint } from "@vegascity/racetrack/src/ghostCar";
 import * as ghostData from "./DemoData.json"
 
 export class DemoCar {
-    parent:Entity
-    entity:Entity
-    hidden:boolean = true
+    parent: Entity
+    entity: Entity
+    hidden: boolean = true
 
-    points: GhostPoint[] = [] 
+    points: GhostPoint[] = []
 
     pointIndex: number = 0
     currentUpdateTime: number = 0
-    targetPoint: GhostPoint = {checkPoint:0,position:Vector3.create(0,0,0),rotation:Quaternion.fromEulerDegrees(0,0,0)}
-    lastPoint: GhostPoint= {checkPoint:0,position:Vector3.create(0,0,0),rotation:Quaternion.fromEulerDegrees(0,0,0)}
+    targetPoint: GhostPoint = { checkPoint: 0, position: Vector3.create(0, 0, 0), rotation: Quaternion.fromEulerDegrees(0, 0, 0) }
+    lastPoint: GhostPoint = { checkPoint: 0, position: Vector3.create(0, 0, 0), rotation: Quaternion.fromEulerDegrees(0, 0, 0) }
     currentLerp: number = 0
-    
-    constructor(_startpoint:number, _modelPath:string){
+
+    constructor(_startpoint: number, _modelPath: string) {
         this.pointIndex = _startpoint
-        this.currentUpdateTime = _startpoint *0.075
+        this.currentUpdateTime = _startpoint * 0.075
 
         this.parent = engine.addEntity()
         this.entity = engine.addEntity()
-        Transform.createOrReplace(this.parent, {position:Vector3.create(0,-0.8,0)})
-        Transform.createOrReplace(this.entity, {parent:this.parent})
+        Transform.createOrReplace(this.parent, { position: Vector3.create(0, -0.8, 0) })
+        Transform.createOrReplace(this.entity, { parent: this.parent })
 
-        GltfContainer.createOrReplace(this.entity,{src:_modelPath})
+        GltfContainer.createOrReplace(this.entity, { src: _modelPath })
 
-        Animator.create(this.entity, {
+        Animator.createOrReplace(this.entity, {
             states: [
                 {
                     clip: 'Spin',
@@ -37,42 +37,42 @@ export class DemoCar {
                 }
             ]
         })
-        
+
         //Load data
         ghostData.points.forEach(point => {
             this.points.push({
-                checkPoint:point.cp,
+                checkPoint: point.cp,
                 position: point.p,
                 rotation: point.r
             })
-        }); 
+        });
     }
 
-    hide(){
+    hide() {
         let transform = Transform.getMutableOrNull(this.entity)
-        if(transform!=null){
+        if (transform != null) {
             transform.scale = Vector3.Zero()
             this.hidden = true
         }
     }
 
-    show(){
+    show() {
         let transform = Transform.getMutableOrNull(this.entity)
-        if(transform!=null){
+        if (transform != null) {
             transform.scale = Vector3.One()
             this.hidden = false
         }
     }
 
-    update(_dt:number){
-        if(this.hidden){
+    update(_dt: number) {
+        if (this.hidden) {
             return
         }
 
         let transform = Transform.getMutableOrNull(this.entity)
-        if (!transform){
+        if (!transform) {
             return
-        } 
+        }
 
         this.currentUpdateTime += _dt
         this.currentLerp += _dt
@@ -95,7 +95,7 @@ export class DemoCar {
             this.targetPoint = this.points[this.pointIndex]
             this.currentLerp = 0
         }
-            
+
         // Drive the course //
         transform.position = Vector3.lerp(this.lastPoint.position, this.targetPoint.position, this.currentLerp / 0.075)
         transform.rotation = this.targetPoint.rotation

@@ -17,27 +17,33 @@ export class Rocket {
     constructor() {
         this.parent = engine.addEntity()
         this.entity = engine.addEntity()
-        Transform.create(this.parent)
-        Transform.create(this.entity, { parent: this.parent })
-        GltfContainer.create(this.entity, { src: "models/fx/rocket.glb" })
+        Transform.createOrReplace(this.parent)
+        Transform.createOrReplace(this.entity, { parent: this.parent })
+        GltfContainer.createOrReplace(this.entity, { src: "models/fx/rocket.glb" })
     }
 
     spawn(_position: Vector3, _rotation: Vector3, _fakeRocket: boolean = false) {
         this.fakeRocket = _fakeRocket
         this.currentSpawnRate = 0
-        Transform.getMutable(this.parent).position = _position
+
+        let parentTransform = Transform.getMutableOrNull(this.parent)
+        if (parentTransform) parentTransform.position = _position
         if (this.fakeRocket) {
-            Transform.getMutable(this.parent).rotation = Quaternion.fromEulerDegrees(Math.random() * 360, Math.random() * 360, Math.random() * 360)
+            if (parentTransform) parentTransform.rotation = Quaternion.fromEulerDegrees(Math.random() * 360, Math.random() * 360, Math.random() * 360)
             this.life = 0.5 + Math.random() * 0.5
             this.speed = 0.4 + Math.random() / 3
             this.particleSpawnRate = 1 / 15
         } else {
-            Transform.getMutable(this.parent).rotation = Quaternion.fromEulerDegrees(-20 + Math.random() * 40 - 90, 0, -20 + Math.random() * 40 - 90)
+            if (parentTransform) parentTransform.rotation = Quaternion.fromEulerDegrees(-20 + Math.random() * 40 - 90, 0, -20 + Math.random() * 40 - 90)
             this.life = 2 + Math.random() * 0.5
             this.speed = 0.5
             this.particleSpawnRate = 1 / 30
         }
-        Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(90, 0, 0)
+
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.rotation = Quaternion.fromEulerDegrees(90, 0, 0)
+        }
 
         this.show()
         this.dead = false
@@ -46,49 +52,58 @@ export class Rocket {
     }
 
     show() {
-        Transform.getMutable(this.entity).scale = Vector3.create(0.02, 0.05, 0.02)
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.create(0.02, 0.05, 0.02)
+        }
     }
 
     hide() {
-        Transform.getMutable(this.entity).scale = Vector3.Zero()
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.Zero()
+        }
     }
 
     die() {
         this.dead = true
         if (!this.fakeRocket) {
-            let pos:Vector3 = Transform.get(this.parent).position
-            FireWorkManager.instance.createExplosion(pos)
-            for (let i: number = 0; i < 19; i++) {
-                FireWorkManager.instance.launchFireworks(pos, true)
-            }
-            
-            AudioManager.playBoomSounds(pos)
-            utils.timers.setTimeout(()=>{
+            let parentTransform = Transform.getMutableOrNull(this.parent)
+            if (parentTransform) {
+                let pos: Vector3 = parentTransform.position
+                FireWorkManager.instance.createExplosion(pos)
+                for (let i: number = 0; i < 19; i++) {
+                    FireWorkManager.instance.launchFireworks(pos, true)
+                }
+
                 AudioManager.playBoomSounds(pos)
-             }, Math.random()*300 + 200)
-            
-            // delayed crackle
-            utils.timers.setTimeout(()=>{
-                AudioManager.playCrackleSounds(pos)  
-            },500 + Math.random()*1000)
-        
+                utils.timers.setTimeout(() => {
+                    AudioManager.playBoomSounds(pos)
+                }, Math.random() * 300 + 200)
+
+                // delayed crackle
+                utils.timers.setTimeout(() => {
+                    AudioManager.playCrackleSounds(pos)
+                }, 500 + Math.random() * 1000)
+            }
         }
         this.hide()
     }
 
     update(_dt: number) {
-        if (this.dead) {
-            return
-        }
+        if (this.dead) return
+
+        let parentTransform = Transform.getMutableOrNull(this.parent)
+        if (!parentTransform) return
 
         this.currentSpawnRate += _dt
 
         if (this.currentSpawnRate >= this.particleSpawnRate) {
             if (this.fakeRocket) {
-                FireWorkManager.instance.createFireworkParticle(Transform.get(this.parent).position)
+                FireWorkManager.instance.createFireworkParticle(parentTransform.position)
             } else {
-                FireWorkManager.instance.createFireworkParticle(Transform.get(this.parent).position)
-                FireWorkManager.instance.createFireworkParticle(Transform.get(this.parent).position)
+                FireWorkManager.instance.createFireworkParticle(parentTransform.position)
+                FireWorkManager.instance.createFireworkParticle(parentTransform.position)
             }
             this.currentSpawnRate = 0
         }
@@ -98,11 +113,12 @@ export class Rocket {
         if (this.life <= 0) {
             this.die()
         }
-        let lastPosition: Vector3 = Transform.getMutable(this.parent).position
 
-        const forwardDir = Vector3.normalize(Vector3.rotate(Vector3.Forward(), Transform.get(this.parent).rotation))
+        let lastPosition: Vector3 = parentTransform.position
+
+        const forwardDir = Vector3.normalize(Vector3.rotate(Vector3.Forward(), parentTransform.rotation))
         const velocity = Vector3.create(forwardDir.x * this.speed, forwardDir.y * this.speed, forwardDir.z * this.speed)
 
-        Transform.getMutable(this.parent).position = Vector3.create(lastPosition.x + velocity.x, lastPosition.y + velocity.y, lastPosition.z + velocity.z)
+        parentTransform.position = Vector3.create(lastPosition.x + velocity.x, lastPosition.y + velocity.y, lastPosition.z + velocity.z)
     }
 }

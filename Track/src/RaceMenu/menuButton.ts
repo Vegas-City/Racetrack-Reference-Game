@@ -58,13 +58,13 @@ export class MenuButton {
         if (_config.iconScale) this.iconScale = _config.iconScale
 
         this.parentEntity = engine.addEntity()
-        Transform.create(this.parentEntity, {
+        Transform.createOrReplace(this.parentEntity, {
             parent: _config.parent,
             position: _config.position
         })
 
         this.buttonEntity = engine.addEntity()
-        Transform.create(this.buttonEntity, {
+        Transform.createOrReplace(this.buttonEntity, {
             parent: _config.parent,
             position: _config.position,
             rotation: _config.rotation,
@@ -72,7 +72,7 @@ export class MenuButton {
         })
         if (MenuButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
-        PointerEvents.create(this.buttonEntity, {
+        PointerEvents.createOrReplace(this.buttonEntity, {
             pointerEvents: [
                 {
                     eventType: PointerEventType.PET_HOVER_ENTER,
@@ -94,53 +94,53 @@ export class MenuButton {
         })
 
         this.entityUnselected = engine.addEntity()
-        Transform.create(this.entityUnselected, {
+        Transform.createOrReplace(this.entityUnselected, {
             parent: this.parentEntity,
         })
-        GltfContainer.create(this.entityUnselected, { src: _config.src })
+        GltfContainer.createOrReplace(this.entityUnselected, { src: _config.src })
 
         if (_config.srcSelected) {
             this.entitySelected = engine.addEntity()
-            Transform.create(this.entitySelected, {
+            Transform.createOrReplace(this.entitySelected, {
                 parent: this.parentEntity,
                 scale: Vector3.Zero()
             })
-            GltfContainer.create(this.entitySelected, { src: _config.srcSelected })
+            GltfContainer.createOrReplace(this.entitySelected, { src: _config.srcSelected })
         }
 
         if (_config.srcLock) {
             this.lockIcon = engine.addEntity()
-            Transform.create(this.lockIcon, {
+            Transform.createOrReplace(this.lockIcon, {
                 parent: this.parentEntity,
                 position: this.iconOffset,
                 scale: Vector3.Zero()
             })
-            GltfContainer.create(this.lockIcon, { src: _config.srcLock })
+            GltfContainer.createOrReplace(this.lockIcon, { src: _config.srcLock })
         }
 
         if (_config.srcWhiteCup) {
             this.whiteCup = engine.addEntity()
-            Transform.create(this.whiteCup, {
+            Transform.createOrReplace(this.whiteCup, {
                 parent: this.parentEntity,
                 position: this.iconOffset,
                 scale: this.iconScale
             })
-            GltfContainer.create(this.whiteCup, { src: _config.srcWhiteCup })
+            GltfContainer.createOrReplace(this.whiteCup, { src: _config.srcWhiteCup })
         }
 
         if (_config.srcGoldCup) {
             this.goldCup = engine.addEntity()
-            Transform.create(this.goldCup, {
+            Transform.createOrReplace(this.goldCup, {
                 parent: this.parentEntity,
                 position: this.iconOffset,
                 scale: Vector3.Zero()
             })
-            GltfContainer.create(this.goldCup, { src: _config.srcGoldCup })
+            GltfContainer.createOrReplace(this.goldCup, { src: _config.srcGoldCup })
         }
 
         if (_config.srcTooltip) {
             this.tooltip = engine.addEntity()
-            Transform.create(this.tooltip, {
+            Transform.createOrReplace(this.tooltip, {
                 parent: this.parentEntity,
                 position: Vector3.create(-3, 0, 0.1),
                 rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -185,7 +185,7 @@ export class MenuButton {
             if (this.locked) {
                 this.isScalingUp = false
             }
-            
+
             if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_ENTER, this.buttonEntity)) {
                 if (this.locked) {
                     if (this.tooltip) {
@@ -214,28 +214,36 @@ export class MenuButton {
                 }
             }
 
-            let parentTransform = Transform.getMutable(this.parentEntity)
-            let currentScale = parentTransform.scale.x - 1
-            if (this.isScalingUp) {
-                let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
-                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
-            }
-            else {
-                let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
-                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+            let parentTransform = Transform.getMutableOrNull(this.parentEntity)
+            if (parentTransform) {
+                let currentScale = parentTransform.scale.x - 1
+                if (this.isScalingUp) {
+                    let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
+                    parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
+                else {
+                    let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
+                    parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
             }
         })
     }
 
     show(): void {
         this.addAllPointerEvents()
-        Transform.getMutable(this.parentEntity).scale = Vector3.One()
+        let parentTransform = Transform.getMutableOrNull(this.parentEntity)
+        if (parentTransform) {
+            parentTransform.scale = Vector3.One()
+        }
         this.hidden = false
     }
 
     hide(): void {
         this.removeSelectPointerEvent()
-        Transform.getMutable(this.parentEntity).scale = Vector3.Zero()
+        let parentTransform = Transform.getMutableOrNull(this.parentEntity)
+        if (parentTransform) {
+            parentTransform.scale = Vector3.Zero()
+        }
         this.hidden = true
     }
 
@@ -256,13 +264,22 @@ export class MenuButton {
 
         this.locked = true
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = this.iconScale
+            let transform = Transform.getMutableOrNull(this.lockIcon)
+            if (transform) {
+                transform.scale = this.iconScale
+            }
         }
         if (this.whiteCup) {
-            Transform.getMutable(this.whiteCup).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.whiteCup)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
         if (this.goldCup) {
-            Transform.getMutable(this.goldCup).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.goldCup)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
 
         this.removeSelectPointerEvent()
@@ -274,13 +291,22 @@ export class MenuButton {
         this.locked = false
         this.qualified = false
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.lockIcon)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
         if (this.whiteCup) {
-            Transform.getMutable(this.whiteCup).scale = this.iconScale
+            let transform = Transform.getMutableOrNull(this.whiteCup)
+            if (transform) {
+                transform.scale = this.iconScale
+            }
         }
         if (this.goldCup) {
-            Transform.getMutable(this.goldCup).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.goldCup)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
 
         this.addAllPointerEvents()
@@ -291,13 +317,22 @@ export class MenuButton {
 
         this.qualified = true
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.lockIcon)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
         if (this.whiteCup) {
-            Transform.getMutable(this.whiteCup).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.whiteCup)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
         if (this.goldCup) {
-            Transform.getMutable(this.goldCup).scale = this.iconScale
+            let transform = Transform.getMutableOrNull(this.goldCup)
+            if (transform) {
+                transform.scale = this.iconScale
+            }
         }
     }
 
@@ -306,13 +341,22 @@ export class MenuButton {
 
         this.qualified = false
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.lockIcon)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
         if (this.whiteCup) {
-            Transform.getMutable(this.whiteCup).scale = this.iconScale
+            let transform = Transform.getMutableOrNull(this.whiteCup)
+            if (transform) {
+                transform.scale = this.iconScale
+            }
         }
         if (this.goldCup) {
-            Transform.getMutable(this.goldCup).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.goldCup)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
     }
 
@@ -321,12 +365,26 @@ export class MenuButton {
         if (!this.entitySelected) return
 
         if (this.selected) {
-            Transform.getMutable(this.entitySelected).scale = Vector3.One()
-            Transform.getMutable(this.entityUnselected).scale = Vector3.Zero()
+            let transformSelected = Transform.getMutableOrNull(this.entitySelected)
+            if (transformSelected) {
+                transformSelected.scale = Vector3.One()
+            }
+
+            let transformUnselected = Transform.getMutableOrNull(this.entityUnselected)
+            if (transformUnselected) {
+                transformUnselected.scale = Vector3.Zero()
+            }
         }
         else {
-            Transform.getMutable(this.entitySelected).scale = Vector3.Zero()
-            Transform.getMutable(this.entityUnselected).scale = Vector3.One()
+            let transformSelected = Transform.getMutableOrNull(this.entitySelected)
+            if (transformSelected) {
+                transformSelected.scale = Vector3.Zero()
+            }
+
+            let transformUnselected = Transform.getMutableOrNull(this.entityUnselected)
+            if (transformUnselected) {
+                transformUnselected.scale = Vector3.One()
+            }
         }
     }
 
@@ -358,14 +416,18 @@ export class MenuButton {
     }
 
     private removeSelectPointerEvent(): void {
-        let pointerEvents = PointerEvents.getMutable(this.buttonEntity).pointerEvents
+        let pointerEvents = PointerEvents.getMutableOrNull(this.buttonEntity)?.pointerEvents
+
+        if (!pointerEvents) return
         if (pointerEvents.length < 3) return
 
         pointerEvents.splice(0, -1)
     }
 
     private addSelectPointerEvent(): void {
-        let pointerEvents = PointerEvents.getMutable(this.buttonEntity).pointerEvents
+        let pointerEvents = PointerEvents.getMutableOrNull(this.buttonEntity)?.pointerEvents
+
+        if (!pointerEvents) return
         if (pointerEvents.length > 2) return
 
         pointerEvents.push({

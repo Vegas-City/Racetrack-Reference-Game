@@ -18,7 +18,7 @@ export abstract class VideoScreens {
         // S1
         VideoScreens.S1 = engine.addEntity()
         MeshRenderer.setPlane(VideoScreens.S1)
-        Transform.create(VideoScreens.S1, {
+        Transform.createOrReplace(VideoScreens.S1, {
             parent: _parent,
             position: Vector3.create(0, 0, -0.01)
         })

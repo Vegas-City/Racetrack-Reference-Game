@@ -42,6 +42,9 @@ export class Scene {
 
         new ScheduleManager()
         new AudioManager()
+        utils.timers.setTimeout(()=>{
+            AudioManager.playMusic(4)
+        },2000)
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
@@ -257,7 +260,7 @@ export class Scene {
 
     private static InitialiseExperimentalMode(): void {
         let experimentalModeEntity = engine.addEntity()
-        Transform.create(experimentalModeEntity, {
+        Transform.createOrReplace(experimentalModeEntity, {
             position: Vector3.create(-13, 2, 7),
             scale: Vector3.create(0.6, 0.6, 0.6)
         })
@@ -266,7 +269,7 @@ export class Scene {
         })
         MeshRenderer.setSphere(experimentalModeEntity)
         MeshCollider.setSphere(experimentalModeEntity)
-        PointerEvents.create(experimentalModeEntity, {
+        PointerEvents.createOrReplace(experimentalModeEntity, {
             pointerEvents: [
                 {
                     eventType: PointerEventType.PET_DOWN,

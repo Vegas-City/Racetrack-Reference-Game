@@ -9,7 +9,7 @@ export class SmallScreen {
         this.scale = Vector3.clone(_scale)
 
         this.entity = engine.addEntity()
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             position: _pos,
             rotation: Quaternion.multiply(_rot, Quaternion.fromEulerDegrees(0, 180, 0)),
             scale: _scale
