@@ -64,14 +64,15 @@ export class AudioManager {
 
   static playMusic(_trackNumber:number):void{
     // Stop all other background music tracks
-
-    console.log("PLAY MUSIC:" +_trackNumber)
     AudioManager.stopAllMusic()
 
     if(_trackNumber==4){
-      // We are asking for background music. Is the DJ on?
-      if(PartyManager.instance.dj!=undefined){
-        return // Don't play background music if the DJ is visible
+      // Check to see if the ceremony music is playing
+      let currentDate:number = Date.now()
+
+      if(PartyManager.instance.ceremonyMusicStart > currentDate && PartyManager.instance.ceremonyMusicEnd < currentDate){
+        // play ceremony instead of background
+        _trackNumber = 5
       }
     }
     AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())
