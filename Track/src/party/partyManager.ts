@@ -180,8 +180,8 @@ export class PartyManager {
         // Winner stand npcs
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 20, 30),
-                Date.UTC(2024, 2, 17, 20, 45),
+                Date.UTC(2024, 2, 17, 20, 33),
+                Date.UTC(2024, 2, 18, 20, 33),
                 () => {
                     this.podiumNPCs = new PodiumNPCs(this.leaderboard)
                 },
