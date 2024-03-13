@@ -3,57 +3,68 @@ import { Quaternion, Vector3 } from "@dcl/sdk/math";
 import { Car } from "@vegascity/racetrack/src/car";
 
 export class Particle {
-    entity:Entity
-    dead:boolean = true
-    size:number = 0
+    entity: Entity
+    dead: boolean = true
+    size: number = 0
     originalY: number
 
-    constructor(_position:Vector3){
+    constructor(_position: Vector3) {
         this.entity = engine.addEntity()
 
-        GltfContainer.create(this.entity, {src:"models/fx/smokeball.glb"})
-        Transform.create(this.entity, {scale:Vector3.Zero()})
+        GltfContainer.createOrReplace(this.entity, { src: "models/fx/smokeball.glb" })
+        Transform.createOrReplace(this.entity, { scale: Vector3.Zero() })
 
         this.spawn(_position)
     }
 
-    spawn(_position:Vector3){
-        if(Car.instances.length==0){
-            return
-        }
-        
-        if(Car.instances[0].data.speed<=7){
-            return
-        }
+    spawn(_position: Vector3) {
+        if (Car.instances.length < 1) return
+        if (Car.instances[0].data.speed <= 7) return
+
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (!transform) return
+
         this.dead = false
-        if(!Car.instances[0].data.isDrifting){
-            this.size = Math.abs(Car.instances[0].data.speed)/325
+        if (!Car.instances[0].data.isDrifting) {
+            this.size = Math.abs(Car.instances[0].data.speed) / 325
         } else {
-            this.size = Math.abs(Car.instances[0].data.speed)/120
+            this.size = Math.abs(Car.instances[0].data.speed) / 120
         }
-        Transform.getMutable(this.entity).position = _position
-        Transform.getMutable(this.entity).scale = Vector3.create(this.size,this.size,this.size)
-        
-        let base:Entity = Car.instances[0].data.carEntity
-        this.originalY = Quaternion.toEulerAngles(Transform.get(base).rotation).y
+        transform.position = _position
+        transform.scale = Vector3.create(this.size, this.size, this.size)
 
-        Transform.getMutable(this.entity).rotation = Quaternion.fromEulerDegrees(Math.random()*360,Math.random()*360,Math.random()*360)
+        let base = Car.instances[0].data.carEntity
+
+        if (base) {
+            let baseTransform = Transform.getMutableOrNull(base)
+            if (baseTransform) {
+                this.originalY = Quaternion.toEulerAngles(baseTransform.rotation).y
+            }
+        }
+
+        transform.rotation = Quaternion.fromEulerDegrees(Math.random() * 360, Math.random() * 360, Math.random() * 360)
     }
 
-    die(){
+    die() {
         this.dead = true
-        Transform.getMutable(this.entity).scale = Vector3.Zero()
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.Zero()
+        }
     }
 
-    update(_dt:number){
-        if(this.dead){
+    update(_dt: number) {
+        if (this.dead) {
             return
         }
-        this.size -= _dt/2
-        Transform.getMutable(this.entity).scale = Vector3.create(this.size,this.size,this.size)
-        Transform.getMutable(this.entity).position = Vector3.create(Transform.getMutable(this.entity).position.x,Transform.getMutable(this.entity).position.y+_dt*2,Transform.getMutable(this.entity).position.z)
+        this.size -= _dt / 2
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.create(this.size, this.size, this.size)
+            transform.position = Vector3.create(transform.position.x, transform.position.y + _dt * 2, transform.position.z)
+        }
 
-        if(this.size<=0){
+        if (this.size <= 0) {
             this.die()
         }
     }

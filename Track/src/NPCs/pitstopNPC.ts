@@ -9,8 +9,8 @@ export class PitstopNPC {
 
     pitstopDialog: npc.Dialog[]
     pitstopNPC: Entity
-            
-    constructor(){
+
+    constructor() {
 
         new Info(Vector3.create(21, 1, 4.55))
 
@@ -18,7 +18,7 @@ export class PitstopNPC {
         this.pitstopNPC = npc.create(
             {
                 position: Vector3.create(21, 1, 4.51),
-                rotation: Quaternion.fromEulerDegrees(0,180,0),
+                rotation: Quaternion.fromEulerDegrees(0, 180, 0),
                 scale: Vector3.create(1, 1, 1),
             },
             //NPC Data Object
@@ -27,11 +27,11 @@ export class PitstopNPC {
                 model: 'models/npcs/PitStopNPC.glb',
                 onActivate: () => {
                     npc.talk(this.pitstopNPC, this.pitstopDialog)
-                    npc.playAnimation(this.pitstopNPC,"Talk")
+                    npc.playAnimation(this.pitstopNPC, "Talk")
                 },
-                onWalkAway: () => { 
+                onWalkAway: () => {
                     console.log('test on walk away function')
-                    npc.playAnimation(this.pitstopNPC,"Idle")
+                    npc.playAnimation(this.pitstopNPC, "Idle")
                 },
                 faceUser: true,
                 reactDistance: 3,
@@ -49,7 +49,7 @@ export class PitstopNPC {
         this.pitstopDialog = [
             {
                 text: "Welcome to the pitstop! Here you can learn more about the performance of the 3 cars and check out the different designs. Which one is your favourite?",
-                isEndOfDialog: false 
+                isEndOfDialog: false
             },
             {
                 text: "When you have learnt all you have to know start racing, perfect your driving skills and unlock all the 3 cars!",

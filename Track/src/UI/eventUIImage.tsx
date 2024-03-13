@@ -90,6 +90,7 @@ export class EventUIImage {
                     },
                     width: 75,
                     height: 75,
+                    display: EventUIImage.points.length > 0 ? 'flex' : 'none',
                 }}
                 uiBackground={{
                     textureMode: 'stretch',
@@ -351,6 +352,7 @@ export class EventUIImage {
                 return "msg_unlockedCar2.png"
             case 3:
                 return "msg_unlockedCar3.png"
+            default: return ""
         }
     }
 

@@ -11,8 +11,12 @@ import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
 import { NPCManager } from "../NPCs/NPCManager";
 import { AudioManager } from "../audio/audioManager";
+import { LightingModuleManager } from "../LightingModule/src/lightingModuleManager";
+import * as dj from '../dj/index'
 
 export class PartyManager {
+    static instance: PartyManager
+
     dj: DJ
     leaderboard: LeaderboardUI
     podiumNPCs: PodiumNPCs
@@ -20,8 +24,7 @@ export class PartyManager {
     smallScreens: SmallScreen[] = []
     fireworkManager: FireWorkManager
     confettiManager: ConfettiManager
-
-    static instance: PartyManager
+    lightingModuleManager: LightingModuleManager
 
     ceremonyMusicStart: number = Date.UTC(2024, 2, 17, 20, 31)
     ceremonyMusicEnd: number = Date.UTC(2024, 2, 17, 20, 48)
@@ -30,11 +33,17 @@ export class PartyManager {
 
         PartyManager.instance = this
 
-        this.fireworkManager = new FireWorkManager()
-        this.confettiManager = new ConfettiManager()
+        if(!this.fireworkManager){
+            this.fireworkManager = new FireWorkManager()
+        }
+        if(!this.confettiManager){
+            this.confettiManager = new ConfettiManager()
+        }
 
-        this.leaderboard = new LeaderboardUI(Vector3.create(39, 10, 98), Quaternion.fromEulerDegrees(0, -75, 0), Vector3.create(0.3, 0.3, 0.3), 6, 2.05, false)
-        this.leaderboard.hide()
+        if(!this.leaderboard){
+            this.leaderboard = new LeaderboardUI(Vector3.create(39, 10, 98), Quaternion.fromEulerDegrees(0, -75, 0), Vector3.create(0.3, 0.3, 0.3), 6, 2.05, false)
+            this.leaderboard.hide()
+        }
 
         // Party starts in... 7:30-8:00 pm
         new Countdown3d(Date.UTC(2024, 2, 17, 19, 30), 30 * 60, Vector3.create(87.8, 11.4, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
@@ -44,7 +53,9 @@ export class PartyManager {
         new Countdown3d(Date.UTC(2024, 2, 17, 20, 0), 27 * 60, Vector3.create(87.8, 11.4, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
         new Countdown3d(Date.UTC(2024, 2, 17, 20, 0), 27 * 60, Vector3.create(79.5, 11.4, 76.6), Quaternion.fromEulerDegrees(0, -47, 0), Vector3.create(2, 2, 2))
 
-        this.bigScreen = new BigScreen(Vector3.create(85.55, 12.1, 89.17), Quaternion.fromEulerDegrees(0, 287.5, 0), Vector3.create(17.6, 9.8, 2), this.leaderboard)
+        if(!this.bigScreen){
+            this.bigScreen = new BigScreen(Vector3.create(85.55, 12.1, 89.17), Quaternion.fromEulerDegrees(0, 287.5, 0), Vector3.create(17.6, 9.8, 2), this.leaderboard)
+        }
         this.smallScreens.push(new SmallScreen(Vector3.create(87.85, 12.1, 102.97), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(8.4, 4.5, 2)))
         this.smallScreens.push(new SmallScreen(Vector3.create(79.5, 12.1, 76.53), Quaternion.fromEulerDegrees(0, -47.5, 0), Vector3.create(8.4, 4.5, 2)))
 
@@ -149,7 +160,7 @@ export class PartyManager {
         // Remove 3D race menu
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 14, 11, 50), // Allow racing 10m before event time for testing
+                Date.UTC(2024, 1, 14, 11, 50), // Allow racing 10m before event time for testing
                 Date.UTC(2024, 2, 17, 20, 27),
                 () => {
                     new NPCManager()
@@ -206,5 +217,44 @@ export class PartyManager {
                 }
             )
         )
+
+        // Lazer show
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 0),
+                Date.UTC(2024, 2, 17, 20, 30),
+                () => {
+                    this.startLightShow()
+                },
+                () => {
+                    this.endLightShow()
+                }
+            )
+        )
+    }
+
+    private startLightShow(): void {
+         new dj.Set({
+            position: Vector3.create(66, 5, 95),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(1, 1, 1),
+
+            url: "",
+            volume: 1,
+            showDJ: false
+        });
+
+        const whitelist: string[] = [
+            '0x--------------------------1',
+            '0x--------------------------2',
+            '0x--------------------------3',
+        ];
+        this.lightingModuleManager = new LightingModuleManager(
+            whitelist
+        );
+    }
+
+    private endLightShow(): void {
+        this.lightingModuleManager.end()
     }
 }

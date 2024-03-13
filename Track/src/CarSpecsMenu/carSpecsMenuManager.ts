@@ -14,7 +14,7 @@ export class CarSpecsMenuManager {
 
     constructor(_position: Vector3) {
         this.baseEntity = engine.addEntity()
-        Transform.create(this.baseEntity, {
+        Transform.createOrReplace(this.baseEntity, {
             position: _position,
             rotation: Quaternion.fromEulerDegrees(0, 180, 0)
         })

@@ -30,11 +30,13 @@ export function setupUi() {
 }
 
 function UIScaler() {
-  let canvas = UiCanvasInformation.get(engine.RootEntity)
-  UIDimensions.width = canvas.width
-  UIDimensions.height = canvas.height
-  UIDimensions.minScale = Math.min(canvas.width, canvas.height)
-  UIDimensions.scaler = UIDimensions.minScale / 2000
+  let canvas = UiCanvasInformation.getMutableOrNull(engine.RootEntity)
+  if (canvas) {
+    UIDimensions.width = canvas.width
+    UIDimensions.height = canvas.height
+    UIDimensions.minScale = Math.min(canvas.width, canvas.height)
+    UIDimensions.scaler = UIDimensions.minScale / 2000
+  }
 }
 
 export let UIDimensions: any = {

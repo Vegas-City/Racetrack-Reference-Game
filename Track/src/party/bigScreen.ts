@@ -36,7 +36,7 @@ export class BigScreen {
         this.scale = Vector3.clone(_scale)
 
         this.entity = engine.addEntity()
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             position: _pos,
             rotation: Quaternion.multiply(_rot, Quaternion.fromEulerDegrees(0, 180, 0)),
             scale: _scale
@@ -81,7 +81,7 @@ export class BigScreen {
             if (this.leaderboard.playerScores.size > 2) {
                 let index: number = 0
                 for (let player of this.leaderboard.playerScores.keys()) {
-                    this.updateText(index, this.leaderboard.playerScores.get(player).name, this.leaderboard.playerScores.get(player).totalScore)
+                    this.updateText(index, this.leaderboard.playerScores.get(player)?.name ?? "", this.leaderboard.playerScores.get(player)?.totalScore ?? 0)
                     this.updateAvatar(index, player)
                     index++
                 }
@@ -91,108 +91,108 @@ export class BigScreen {
 
     private initialiseWinningMomentEntities(): void {
         this.player1Container = engine.addEntity()
-        Transform.create(this.player1Container, {
+        Transform.createOrReplace(this.player1Container, {
             parent: this.entity,
             position: Vector3.create(-0.11, 0.2, -0.05),
             scale: Vector3.Zero()
         })
 
         this.player2Container = engine.addEntity()
-        Transform.create(this.player2Container, {
+        Transform.createOrReplace(this.player2Container, {
             parent: this.entity,
             position: Vector3.create(-0.3, -0.1, -0.05),
             scale: Vector3.Zero()
         })
 
         this.player3Container = engine.addEntity()
-        Transform.create(this.player3Container, {
+        Transform.createOrReplace(this.player3Container, {
             parent: this.entity,
             position: Vector3.create(0.15, -0.1, -0.05),
             scale: Vector3.Zero()
         })
 
         this.avatar1 = engine.addEntity()
-        Transform.create(this.avatar1, {
+        Transform.createOrReplace(this.avatar1, {
             parent: this.player1Container,
             position: Vector3.create(-1.5, 0.15, 0),
             scale: Vector3.create(2, 2, 2)
         })
 
         this.name1 = engine.addEntity()
-        Transform.create(this.name1, {
+        Transform.createOrReplace(this.name1, {
             parent: this.player1Container,
             position: Vector3.create(0, 0.55, 0)
         })
-        TextShape.create(this.name1, {
+        TextShape.createOrReplace(this.name1, {
             text: "",
             fontSize: 10,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.time1 = engine.addEntity()
-        Transform.create(this.time1, {
+        Transform.createOrReplace(this.time1, {
             parent: this.player1Container,
             position: Vector3.create(0, -0.55, 0)
         })
-        TextShape.create(this.time1, {
+        TextShape.createOrReplace(this.time1, {
             text: "",
             fontSize: 8,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.avatar2 = engine.addEntity()
-        Transform.create(this.avatar2, {
+        Transform.createOrReplace(this.avatar2, {
             parent: this.player2Container,
             position: Vector3.create(-1.5, 0.15, 0),
             scale: Vector3.create(2, 2, 2)
         })
 
         this.name2 = engine.addEntity()
-        Transform.create(this.name2, {
+        Transform.createOrReplace(this.name2, {
             parent: this.player2Container,
             position: Vector3.create(0, 0.55, 0)
         })
-        TextShape.create(this.name2, {
+        TextShape.createOrReplace(this.name2, {
             text: "",
             fontSize: 10,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.time2 = engine.addEntity()
-        Transform.create(this.time2, {
+        Transform.createOrReplace(this.time2, {
             parent: this.player2Container,
             position: Vector3.create(0, -0.55, 0)
         })
-        TextShape.create(this.time2, {
+        TextShape.createOrReplace(this.time2, {
             text: "",
             fontSize: 8,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.avatar3 = engine.addEntity()
-        Transform.create(this.avatar3, {
+        Transform.createOrReplace(this.avatar3, {
             parent: this.player3Container,
             position: Vector3.create(-1.5, 0.15, 0),
             scale: Vector3.create(2, 2, 2)
         })
 
         this.name3 = engine.addEntity()
-        Transform.create(this.name3, {
+        Transform.createOrReplace(this.name3, {
             parent: this.player3Container,
             position: Vector3.create(0, 0.55, 0)
         })
-        TextShape.create(this.name3, {
+        TextShape.createOrReplace(this.name3, {
             text: "",
             fontSize: 10,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT
         })
 
         this.time3 = engine.addEntity()
-        Transform.create(this.time3, {
+        Transform.createOrReplace(this.time3, {
             parent: this.player3Container,
             position: Vector3.create(0, -0.55, 0)
         })
-        TextShape.create(this.time3, {
+        TextShape.createOrReplace(this.time3, {
             text: "",
             fontSize: 8,
             textAlign: TextAlignMode.TAM_MIDDLE_LEFT

@@ -21,14 +21,12 @@ import { CrowdNPC } from './NPCs/crowdNPC'
 import { AudioManager } from './audio/audioManager'
 import { LeaderboardUI } from './UI/leaderboardUI'
 import { ScheduleManager } from './party/scheduleManager'
-
+import { Logger } from '@vegascity/vegas-city-logger'
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { Config } from '@vegascity/racetrack/src/physics'
-import { Logger } from '@vegascity/vegas-city-logger'
 
 export class Scene {
 
@@ -44,10 +42,13 @@ export class Scene {
 
         new ScheduleManager()
         new AudioManager()
+        utils.timers.setTimeout(()=>{
+            AudioManager.playMusic(4)
+        },2000)
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
-        Scene.shopController.updateCollection(UserData.cachedData.publicKey)
+        Scene.shopController.updateCollection(UserData.cachedData?.publicKey ?? "")
         Scene.shopController.setupClickables()
 
         new DemoManager()
@@ -259,7 +260,7 @@ export class Scene {
 
     private static InitialiseExperimentalMode(): void {
         let experimentalModeEntity = engine.addEntity()
-        Transform.create(experimentalModeEntity, {
+        Transform.createOrReplace(experimentalModeEntity, {
             position: Vector3.create(-13, 2, 7),
             scale: Vector3.create(0.6, 0.6, 0.6)
         })
@@ -268,7 +269,7 @@ export class Scene {
         })
         MeshRenderer.setSphere(experimentalModeEntity)
         MeshCollider.setSphere(experimentalModeEntity)
-        PointerEvents.create(experimentalModeEntity, {
+        PointerEvents.createOrReplace(experimentalModeEntity, {
             pointerEvents: [
                 {
                     eventType: PointerEventType.PET_DOWN,
