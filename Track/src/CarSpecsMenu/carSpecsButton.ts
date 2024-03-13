@@ -27,13 +27,13 @@ export class CarSpecsButton {
 
     constructor(_config: CarSpecsConfig) {
         this.parentEntity = engine.addEntity()
-        Transform.create(this.parentEntity, {
+        Transform.createOrReplace(this.parentEntity, {
             parent: _config.parent,
             position: _config.position
         })
 
         this.buttonEntity = engine.addEntity()
-        Transform.create(this.buttonEntity, {
+        Transform.createOrReplace(this.buttonEntity, {
             parent: _config.parent,
             position: _config.position,
             rotation: _config.rotation,
@@ -41,7 +41,7 @@ export class CarSpecsButton {
         })
         if (CarSpecsButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
-        PointerEvents.create(this.buttonEntity, {
+        PointerEvents.createOrReplace(this.buttonEntity, {
             pointerEvents: [
                 {
                     eventType: PointerEventType.PET_HOVER_ENTER,
@@ -63,23 +63,23 @@ export class CarSpecsButton {
         })
 
         this.entity = engine.addEntity()
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             parent: this.parentEntity,
         })
-        GltfContainer.create(this.entity, { src: _config.src })
+        GltfContainer.createOrReplace(this.entity, { src: _config.src })
 
         if (_config.srcLock) {
             this.lockIcon = engine.addEntity()
-            Transform.create(this.lockIcon, {
+            Transform.createOrReplace(this.lockIcon, {
                 parent: this.parentEntity,
                 scale: Vector3.Zero()
             })
-            GltfContainer.create(this.lockIcon, { src: _config.srcLock })
+            GltfContainer.createOrReplace(this.lockIcon, { src: _config.srcLock })
         }
 
         if (_config.srcTooltip) {
             this.tooltip = engine.addEntity()
-            Transform.create(this.tooltip, {
+            Transform.createOrReplace(this.tooltip, {
                 parent: this.parentEntity,
                 position: Vector3.create(-2, 0, 0.1),
                 rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -139,15 +139,17 @@ export class CarSpecsButton {
                 }
             }
 
-            let parentTransform = Transform.getMutable(this.parentEntity)
-            let currentScale = parentTransform.scale.x - 1
-            if (this.isScalingUp) {
-                let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
-                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
-            }
-            else {
-                let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
-                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+            let parentTransform = Transform.getMutableOrNull(this.parentEntity)
+            if (parentTransform) {
+                let currentScale = parentTransform.scale.x - 1
+                if (this.isScalingUp) {
+                    let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
+                    parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
+                else {
+                    let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
+                    parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
             }
         })
     }
@@ -157,7 +159,10 @@ export class CarSpecsButton {
 
         this.locked = true
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = Vector3.One()
+            let transform = Transform.getMutableOrNull(this.lockIcon)
+            if (transform) {
+                transform.scale = Vector3.One()
+            }
         }
     }
 
@@ -166,7 +171,10 @@ export class CarSpecsButton {
 
         this.locked = false
         if (this.lockIcon) {
-            Transform.getMutable(this.lockIcon).scale = Vector3.Zero()
+            let transform = Transform.getMutableOrNull(this.lockIcon)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
         }
     }
 }

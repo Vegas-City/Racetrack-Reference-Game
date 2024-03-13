@@ -8,7 +8,7 @@ export class AudioManager {
   private static launchSounds: AudioEntity[] = []
   private static boomSounds: AudioEntity[] = []
   private static crackleSounds: AudioEntity[] = []
-  public static musicTracks : AudioEntity[] = []
+  public static musicTracks: AudioEntity[] = []
 
   constructor() {
     // Building
@@ -46,35 +46,37 @@ export class AudioManager {
     ]
   }
 
-  static playLaunchSounds(_position:Vector3): void {
-    AudioManager.launchSounds[Math.floor(Math.random()*AudioManager.launchSounds.length)].playSound(_position)
+  static playLaunchSounds(_position: Vector3): void {
+    AudioManager.launchSounds[Math.floor(Math.random() * AudioManager.launchSounds.length)].playSound(_position)
   }
 
-  static playBoomSounds(_position:Vector3): void {
-    AudioManager.boomSounds[Math.floor(Math.random()*AudioManager.boomSounds.length)].playSound(Vector3.add(_position,Vector3.create(0,-4,0)))
+  static playBoomSounds(_position: Vector3): void {
+    AudioManager.boomSounds[Math.floor(Math.random() * AudioManager.boomSounds.length)].playSound(Vector3.add(_position, Vector3.create(0, -4, 0)))
   }
 
-  static playCrackleSounds(_position:Vector3): void {
-    AudioManager.crackleSounds[Math.floor(Math.random()*AudioManager.crackleSounds.length)].playSound(_position)
+  static playCrackleSounds(_position: Vector3): void {
+    AudioManager.crackleSounds[Math.floor(Math.random() * AudioManager.crackleSounds.length)].playSound(_position)
   }
 
-  static playMusic(_trackNumber:number):void{
+  static playMusic(_trackNumber: number): void {
     // Stop all other background music tracks
     AudioManager.stopAllMusic()
 
-    if(_trackNumber==4){
+    if (_trackNumber == 4) {
       // Check to see if the ceremony music is playing
-      let currentDate:number = Date.now()
+      let currentDate: number = Date.now()
 
-      if(PartyManager.instance.ceremonyMusicStart > currentDate && PartyManager.instance.ceremonyMusicEnd < currentDate){
-        // play ceremony instead of background
-        _trackNumber = 5
+      if (PartyManager.instance) {
+        if (PartyManager.instance.ceremonyMusicStart > currentDate && PartyManager.instance.ceremonyMusicEnd < currentDate) {
+          // play ceremony instead of background
+          _trackNumber = 5
+        }
       }
     }
     AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())
   }
 
-  static stopAllMusic():void{
+  static stopAllMusic(): void {
     AudioManager.musicTracks.forEach(audioEntity => {
       audioEntity.stopAll()
     });

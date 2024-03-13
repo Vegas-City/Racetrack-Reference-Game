@@ -14,9 +14,9 @@ export class CarChoice {
         this.carIndex = _carIndex
         this.entity = engine.addEntity()
 
-        GltfContainer.create(this.entity, { src: _model })
+        GltfContainer.createOrReplace(this.entity, { src: _model })
 
-        Animator.create(this.entity, {
+        Animator.createOrReplace(this.entity, {
             states: [
                 {
                     clip: 'Idle',
@@ -25,7 +25,7 @@ export class CarChoice {
                 }
             ]
         })
-        Transform.create(this.entity, _transform)
+        Transform.createOrReplace(this.entity, _transform)
         this.originalScale = Vector3.clone(_transform.scale)
         this.hide()
     }
@@ -80,10 +80,16 @@ export class CarChoice {
     }
 
     show() {
-        Transform.getMutable(this.entity).scale = Vector3.clone(this.originalScale)
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.clone(this.originalScale)
+        }
     }
 
     hide() {
-        Transform.getMutable(this.entity).scale = Vector3.Zero()
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.Zero()
+        }
     }
 }
