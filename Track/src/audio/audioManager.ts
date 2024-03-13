@@ -44,10 +44,6 @@ export class AudioManager {
       new AudioEntity("audio/Music/background.mp3", 1, 1, true),
       new AudioEntity("audio/Music/RT_music.mp3", 1, 1, true),
     ]
-
-
-    engine.addSystem(this.update.bind(this))
-
   }
 
   static playLaunchSounds(_position:Vector3): void {
@@ -81,12 +77,6 @@ export class AudioManager {
   static stopAllMusic():void{
     AudioManager.musicTracks.forEach(audioEntity => {
       audioEntity.stopAll()
-    });
-  }
-
-  update(_dt:number){
-    AudioManager.musicTracks.forEach(musicTrack => {
-      musicTrack.update()
     });
   }
 } 
