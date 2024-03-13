@@ -1,5 +1,6 @@
 import { AudioSource, Entity, MeshRenderer, Transform, engine } from "@dcl/ecs"
 import { Vector3 } from "@dcl/ecs-math"
+import { AvatarAnchorPointType, AvatarAttach } from "@dcl/sdk/ecs"
 
 export class AudioEntity {
     entities: Entity[] = []
@@ -12,11 +13,22 @@ export class AudioEntity {
 
         for (let index = 0; index < _numberOfEntities; index++) {
             let entity = engine.addEntity()
-            Transform.create(entity, { position: Vector3.create(2, 2, 2), scale: Vector3.create(0.001, 0.001, 0.001) })
+            
+            if(_followPlayer){
+                let parent:Entity = engine.addEntity()
+                Transform.create(parent, { position: Vector3.create(0, 0, 0), scale: Vector3.create(0.001, 0.001, 0.001) })
+                Transform.create(entity, {parent:parent, position: Vector3.create(0, 2, 0), scale: Vector3.create(0.001, 0.001, 0.001) })
+                AvatarAttach.create(parent, {
+                    anchorPointId: AvatarAnchorPointType.AAPT_NAME_TAG,
+                })
+            } else {
+                Transform.create(entity, { position: Vector3.create(2, 2, 2), scale: Vector3.create(0.001, 0.001, 0.001) })
+            }
             AudioSource.create(entity, {
                 audioClipUrl: _audioPath,
                 playing: false,
-                volume: _volume
+                volume: _volume,
+                loop: _followPlayer
             })
             MeshRenderer.setBox(entity)
             this.entities.push(entity)
@@ -40,14 +52,5 @@ export class AudioEntity {
         this.entities.forEach(entity => {
             AudioSource.getMutable(entity).playing = false
         });
-    }
-
-    update(){
-        if(this.followPlayer){
-            let playerPos = Transform.get(engine.PlayerEntity).position
-            this.entities.forEach(entity => {
-                Transform.getMutable(entity).position = Vector3.add(playerPos,Vector3.create(0,2,0))
-            });
-        }
     }
 }
