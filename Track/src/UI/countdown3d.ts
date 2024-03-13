@@ -5,7 +5,7 @@ export class Countdown3d {
     static readonly SPACING: number = 0.65
     static instances: Countdown3d[] = []
 
-    startDate: Date
+    startDate: number
     duration: number
 
     scale: Vector3
@@ -17,7 +17,7 @@ export class Countdown3d {
     secDigit1: Entity
     secDigit2: Entity
 
-    constructor(_startDate: Date, _duration: number, _position: Vector3, _rotation: Quaternion, _scale: Vector3) {
+    constructor(_startDate: number, _duration: number, _position: Vector3, _rotation: Quaternion, _scale: Vector3) {
         this.startDate = _startDate
         this.duration = _duration
         this.scale = Vector3.clone(_scale)
@@ -79,8 +79,8 @@ export class Countdown3d {
     }
 
     private update(): void {
-        const now = new Date()
-        const endDate = new Date(this.startDate.getTime() + (this.duration * 1000))
+        const now = Date.now()
+        const endDate = this.startDate + (this.duration * 1000)
         if (now < this.startDate || now > endDate) {
             this.hide()
             return
@@ -88,7 +88,7 @@ export class Countdown3d {
 
         this.show()
 
-        const elapsed = Math.floor((now.getTime() - this.startDate.getTime()) / 1000)
+        const elapsed = Math.floor((now - this.startDate) / 1000)
         const rem = this.duration - elapsed
         const minutes = Math.floor(rem / 60)
         const seconds = rem % 60
