@@ -11,8 +11,12 @@ import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
 import { NPCManager } from "../NPCs/NPCManager";
 import { AudioManager } from "../audio/audioManager";
+import { LightingModuleManager } from "../LightingModule/src/lightingModuleManager";
+import * as dj from '../dj/index'
 
 export class PartyManager {
+    static instance: PartyManager
+
     dj: DJ
     leaderboard: LeaderboardUI
     podiumNPCs: PodiumNPCs
@@ -20,8 +24,7 @@ export class PartyManager {
     smallScreens: SmallScreen[] = []
     fireworkManager: FireWorkManager
     confettiManager: ConfettiManager
-
-    static instance: PartyManager
+    lightingModuleManager: LightingModuleManager
 
     ceremonyMusicStart: number = Date.UTC(2024, 2, 17, 20, 31)
     ceremonyMusicEnd: number = Date.UTC(2024, 2, 17, 20, 48)
@@ -206,5 +209,44 @@ export class PartyManager {
                 }
             )
         )
+
+        // Lazer show
+        ScheduleManager.instance.registerSchedule(
+            new Schedule(
+                Date.UTC(2024, 2, 17, 20, 0),
+                Date.UTC(2024, 2, 17, 20, 30),
+                () => {
+                    this.startLightShow()
+                },
+                () => {
+                    this.endLightShow()
+                }
+            )
+        )
+    }
+
+    private startLightShow(): void {
+         new dj.Set({
+            position: Vector3.create(66, 5, 95),
+            rotation: Quaternion.fromEulerDegrees(0, 90, 0),
+            scale: Vector3.create(1, 1, 1),
+
+            url: null,
+            volume: 1,
+            showDJ: false
+        });
+
+        const whitelist: string[] = [
+            '0x--------------------------1',
+            '0x--------------------------2',
+            '0x--------------------------3',
+        ];
+        this.lightingModuleManager = new LightingModuleManager(
+            whitelist
+        );
+    }
+
+    private endLightShow(): void {
+        this.lightingModuleManager.end()
     }
 }
