@@ -4,7 +4,7 @@ import { EmitterSystem } from "./system/emitterSystem";
 import { Utils } from "./helpers/utils";
 import { Color3, Quaternion, Vector3 } from "@dcl/sdk/math";
 import { SyncSystem } from "../../dj";
-import { engine } from "@dcl/sdk/ecs";
+import { Entity, Transform, engine } from "@dcl/sdk/ecs";
 
 export class LightingModuleManager {
 
@@ -208,18 +208,22 @@ export class LightingModuleManager {
 
         //const djEmitterCount = 0
         const djEmitterCount = 6
-        const djPosition: Vector3 = Vector3.create(75, 5, 91)
-        const emitterSpacing: number = 1
+        const djPosition: Vector3 = Vector3.create(76-3, 16, 71+1.2)
+
+        let parent: Entity = engine.addEntity()
+        Transform.create(parent, {position:djPosition, rotation: Quaternion.fromEulerDegrees(50,-73,0)})
+        const emitterSpacing: number = 2
         for (let i = 0; i < djEmitterCount; i++) {
 
             // hack
-            let shiftEmitter = 10
+            let shiftEmitter = 16
             if (i < 3) {
-                shiftEmitter = 4
+                shiftEmitter = 2
             }
 
             let emitter: Emitter = new Emitter(
-                Vector3.create(djPosition.x - (emitterSpacing * djEmitterCount / 2) + (i * emitterSpacing) + shiftEmitter, djPosition.y + Math.sin(Math.PI * i / (djEmitterCount - 1)) * 2, djPosition.z - Math.sin(Math.PI * i / (djEmitterCount - 1)) * 1),
+                parent,
+                Vector3.create((emitterSpacing * djEmitterCount / 2) + (i * emitterSpacing) + shiftEmitter,Math.sin(Math.PI * i / (djEmitterCount - 1)) * 2, Math.sin(Math.PI * i / (djEmitterCount - 1)) * 1),
                 Quaternion.fromEulerDegrees(-60, 0, 0)
             )
             emitter.timeOffset = (1 * 60 / SyncSystem.getInstance().getBPM()) * Math.floor(Math.abs((djEmitterCount - 1) / 2 - i)) / Math.floor((djEmitterCount - 1) / 2)

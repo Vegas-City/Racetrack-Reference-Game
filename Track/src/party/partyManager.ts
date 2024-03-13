@@ -213,7 +213,7 @@ export class PartyManager {
         // Lazer show
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 13, 10, 0),
+                Date.UTC(2024, 2, 17, 20, 0),
                 Date.UTC(2024, 2, 17, 20, 30),
                 () => {
                     this.startLightShow()

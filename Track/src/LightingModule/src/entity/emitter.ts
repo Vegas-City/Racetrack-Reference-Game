@@ -46,13 +46,14 @@ export class Emitter {
 
     /* constructor */
 
-    constructor(_position: Vector3 = Vector3.Zero(), _rotation: Quaternion = Quaternion.Identity(), _useGraphic: boolean = true) {
+    constructor(_parent:Entity,_position: Vector3 = Vector3.Zero(), _rotation: Quaternion = Quaternion.Identity(), _useGraphic: boolean = true) {
         // initialise the transform
         this.position = _position
         this.rotation = _rotation
 
         this.entity = engine.addEntity()
         Transform.create(this.entity, {
+            parent: _parent,
             position: Vector3.clone(_position),
             rotation: Quaternion.create(_rotation.x, _rotation.y, _rotation.z, _rotation.w)
         })

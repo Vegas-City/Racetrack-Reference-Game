@@ -7,7 +7,7 @@ export class Beam {
     entity: Entity
     renderer: Entity
 
-    length: number = 13 //18
+    length: number = 30 //18
     angleAroundEmitter: number = 0
     rotation: Vector3 = Vector3.Zero()
 
