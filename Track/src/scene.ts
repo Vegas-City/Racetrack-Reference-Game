@@ -21,14 +21,12 @@ import { CrowdNPC } from './NPCs/crowdNPC'
 import { AudioManager } from './audio/audioManager'
 import { LeaderboardUI } from './UI/leaderboardUI'
 import { ScheduleManager } from './party/scheduleManager'
-
+import { Logger } from '@vegascity/vegas-city-logger'
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { Config } from '@vegascity/racetrack/src/physics'
-import { Logger } from '@vegascity/vegas-city-logger'
 
 export class Scene {
 
