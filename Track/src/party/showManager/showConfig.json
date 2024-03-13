@@ -1,0 +1,22 @@
+{
+    "defaultVideo": "",
+    "shows": [
+        {
+            "title": "Demo Show",
+            "link": "https://5eb7131de84bb.streamlock.net/vod/mp4:racetrackdj/playlist.m3u8",
+            "duration": {
+                "hours": 0,
+                "minutes": 30,
+                "seconds": 0
+            },
+            "startDate_UTC": {
+                "year": 2024,
+                "month": 3,
+                "day": 17,
+                "hour": 20,
+                "minute": 0,
+                "second": 0
+            }
+        }
+    ]
+}
