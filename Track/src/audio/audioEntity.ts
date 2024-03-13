@@ -7,24 +7,24 @@ export class AudioEntity {
     currentEntity: number = 0
     followPlayer: boolean
 
-    constructor(_audioPath: string, _volume: number, _numberOfEntities: number, _followPlayer:boolean = false) {
+    constructor(_audioPath: string, _volume: number, _numberOfEntities: number, _followPlayer: boolean = false) {
 
         this.followPlayer = _followPlayer
 
         for (let index = 0; index < _numberOfEntities; index++) {
             let entity = engine.addEntity()
-            
-            if(_followPlayer){
-                let parent:Entity = engine.addEntity()
-                Transform.create(parent, { position: Vector3.create(0, 0, 0), scale: Vector3.create(0.001, 0.001, 0.001) })
-                Transform.create(entity, {parent:parent, position: Vector3.create(0, 2, 0), scale: Vector3.create(0.001, 0.001, 0.001) })
-                AvatarAttach.create(parent, {
+
+            if (_followPlayer) {
+                let parent: Entity = engine.addEntity()
+                Transform.createOrReplace(parent, { position: Vector3.create(0, 0, 0), scale: Vector3.create(0.001, 0.001, 0.001) })
+                Transform.createOrReplace(entity, { parent: parent, position: Vector3.create(0, 2, 0), scale: Vector3.create(0.001, 0.001, 0.001) })
+                AvatarAttach.createOrReplace(parent, {
                     anchorPointId: AvatarAnchorPointType.AAPT_NAME_TAG,
                 })
             } else {
-                Transform.create(entity, { position: Vector3.create(2, 2, 2), scale: Vector3.create(0.001, 0.001, 0.001) })
+                Transform.createOrReplace(entity, { position: Vector3.create(2, 2, 2), scale: Vector3.create(0.001, 0.001, 0.001) })
             }
-            AudioSource.create(entity, {
+            AudioSource.createOrReplace(entity, {
                 audioClipUrl: _audioPath,
                 playing: false,
                 volume: _volume,
@@ -34,23 +34,34 @@ export class AudioEntity {
             this.entities.push(entity)
         }
     }
- 
-    playSound(_position:Vector3) {
-        Transform.getMutable(this.entities[this.currentEntity]).position = _position
-        AudioSource.getMutable(this.entities[this.currentEntity]).playing = true
+
+    playSound(_position: Vector3) {
+        let transform = Transform.getMutableOrNull(this.entities[this.currentEntity])
+        let audioSource = AudioSource.getMutableOrNull(this.entities[this.currentEntity])
+
+        if (transform) {
+            transform.position = _position
+        }
+        if (audioSource) {
+            audioSource.playing = true
+        }
+
         this.incrementEntity()
     }
 
-    incrementEntity(){
-        this.currentEntity = this.currentEntity+1
-        if(this.currentEntity>this.entities.length-1){
+    incrementEntity() {
+        this.currentEntity = this.currentEntity + 1
+        if (this.currentEntity > this.entities.length - 1) {
             this.currentEntity = 0
         }
     }
 
-    stopAll(){
+    stopAll() {
         this.entities.forEach(entity => {
-            AudioSource.getMutable(entity).playing = false
+            let audioSource = AudioSource.getMutableOrNull(entity)
+            if (audioSource) {
+                audioSource.playing = false
+            }
         });
     }
 }

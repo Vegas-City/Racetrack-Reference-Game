@@ -6,24 +6,24 @@ export class CrowdNPC {
     entity: Entity
     static instance: CrowdNPC
 
-    constructor(){
+    constructor() {
         CrowdNPC.instance = this
         this.entity = engine.addEntity()
-        Transform.create(this.entity, { parent: Buildings.buildingsParent, scale:Vector3.Zero()})
-        GltfContainer.create(this.entity, { src: "models/npcs/Crowd.glb" })        
+        Transform.createOrReplace(this.entity, { parent: Buildings.buildingsParent, scale: Vector3.Zero() })
+        GltfContainer.createOrReplace(this.entity, { src: "models/npcs/Crowd.glb" })
     }
 
-    hide(){
+    hide() {
         let transform = Transform.getMutableOrNull(this.entity)
-        if(transform!=null){
-            transform.scale=Vector3.Zero()
+        if (transform != null) {
+            transform.scale = Vector3.Zero()
         }
     }
 
-    show(){
+    show() {
         let transform = Transform.getMutableOrNull(this.entity)
-        if(transform!=null){
-            transform.scale=Vector3.One()
+        if (transform != null) {
+            transform.scale = Vector3.One()
         }
     }
 }
