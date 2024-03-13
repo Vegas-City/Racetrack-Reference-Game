@@ -35,14 +35,13 @@ export class FireWorkManager {
     }
 
     createFireworkParticle(_position) {
-        let oldParticle: FireworkParticle = null
+        let oldParticle: FireworkParticle | null = null
 
-        this.fireworkParticles.forEach(particle => {
+        for (let particle of this.fireworkParticles) {
             if (oldParticle == null && particle.dead) {
                 oldParticle = particle
             }
-        });
-
+        }
 
         if (oldParticle != null) {
             oldParticle.spawn(_position)
@@ -54,14 +53,13 @@ export class FireWorkManager {
     }
 
     createExplosion(_position) {
-        let oldExplosion: Explosion = null
+        let oldExplosion: Explosion | null = null
 
-        this.explosions.forEach(explosion => {
+        for (let explosion of this.explosions) {
             if (oldExplosion == null && explosion.dead) {
                 oldExplosion = explosion
             }
-        });
-
+        }
 
         if (oldExplosion != null) {
             oldExplosion.spawn(_position)
@@ -74,13 +72,13 @@ export class FireWorkManager {
 
     launchFireworks(_positionOveride: Vector3 = Vector3.Zero(), _fakeRocket: boolean = false) {
 
-        let oldRocket: Rocket = null
+        let oldRocket: Rocket | null = null
 
-        this.rockets.forEach(rocket => {
+        for (let rocket of this.rockets) {
             if (oldRocket == null && rocket.dead) {
                 oldRocket = rocket
             }
-        });
+        }
 
         let launchPos: Vector3 = _positionOveride
 

@@ -15,11 +15,11 @@ export class AudioStream {
         this.entity = engine.addEntity()
 
         // initialise the audio stream (hidden video stream used for stability)
-        VideoPlayer.create(this.entity, {
+        VideoPlayer.createOrReplace(this.entity, {
             src: _url,
             playing: false,
         })
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             position: Vector3.create(8, -8, 8),
             scale: Vector3.Zero()
         })
@@ -37,7 +37,7 @@ export class AudioStream {
             return 0
         }
 
-        return videoPlayer.volume
+        return videoPlayer.volume ?? 1
     }
 
     isLooping(): boolean {
@@ -46,7 +46,7 @@ export class AudioStream {
             return false
         }
 
-        return videoPlayer.loop
+        return videoPlayer.loop ?? false
     }
 
     play(): AudioStream {

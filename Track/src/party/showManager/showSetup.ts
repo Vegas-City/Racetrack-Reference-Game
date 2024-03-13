@@ -50,7 +50,7 @@ export function setupShow() {
             //   debugger 
             const showRange = SHOW_MGR.showSchedule.findShowToPlayByDate(new Date())
             logger.info("SHOW_MGR.addPlayVideoListeners", "START COUNTDOWN TO NEXT SHOW", event)
-            const showArr = []
+            const showArr: showMgmt.ShowType[] = []
             if (showRange.nextShow && showRange.nextShow.show) {
                 showArr.push(showRange.nextShow.show)
             }

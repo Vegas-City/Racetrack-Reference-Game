@@ -9,20 +9,12 @@ import { Transform } from "@dcl/ecs";
 
 export class EmitterSystem {
     time: number = 0
-    // bpm: number = 60
-    // beat: number = 0
-    // beatStartTime: number = new Date().getTime()
-    // beatTimer: number = 0
-    // private onBeatHandlers: ((_isPrimary: boolean, _beat: number) => void )[] = []
     isBeat: boolean = false
     isPrimaryBeat: boolean = false
     kickBack: number = 0
     kickBackVelocity: number = 0
     kickBackSpring: number = 120
     kickBackDampener: number = 9
-    // onBeat(_callback: (_isPrimary: boolean, _beat: number) => void):void{
-    //     this.onBeatHandlers.push(_callback)
-    // }
 
     update(_deltaTime: number): void {
 
@@ -33,28 +25,7 @@ export class EmitterSystem {
 
         const dt = Math.min(1, _deltaTime)
         this.time += dt
-        // let isBeat = false
-        // let isPrimaryBeat = false
-        // const sPerBeat = 60 / this.bpm
-        // this.beatTimer = (new Date().getTime() - this.beatStartTime) / 1000
-        // while (this.beatTimer - this.beat * sPerBeat >= sPerBeat) {
-        //     isBeat = true
-        //     this.beat++
-        //     if (this.beat >= 4) {
-        //         this.beatStartTime += sPerBeat * 4 * 1000
-        //         this.beatTimer -= sPerBeat * 4
-        //         isPrimaryBeat = true
-        //         this.beat = 0
-        //     }
-        //     this.kickBackVelocity += isPrimaryBeat ? 5 : 2
-        //     if (this.onBeatHandlers !== undefined && this.onBeatHandlers !== null) {
-        //         for(let handler of this.onBeatHandlers){
-        //             if(handler !== undefined && handler !== null){
-        //                 handler(isPrimaryBeat, this.beat)
-        //             }
-        //         }
-        //     }
-        // }
+
         if (this.isBeat) {
             this.kickBackVelocity += this.isPrimaryBeat ? 5 : 2
         }
@@ -176,13 +147,13 @@ export class EmitterSystem {
                 beam.angleAroundEmitter = 0
             }
 
-            let rDiff = emitter.targetColor.r - emitter.material.emissiveColor.r
-            let gDiff = emitter.targetColor.g - emitter.material.emissiveColor.g
-            let bDiff = emitter.targetColor.b - emitter.material.emissiveColor.b
+            let rDiff = emitter.targetColor.r - (emitter.material.emissiveColor?.r ?? 0)
+            let gDiff = emitter.targetColor.g - (emitter.material.emissiveColor?.g ?? 0)
+            let bDiff = emitter.targetColor.b - (emitter.material.emissiveColor?.b ?? 0)
             rDiff = Utils.getSign(rDiff) * Math.min(Math.abs(rDiff), dt / emitter.colorBlendDuration)
             gDiff = Utils.getSign(gDiff) * Math.min(Math.abs(gDiff), dt / emitter.colorBlendDuration)
             bDiff = Utils.getSign(bDiff) * Math.min(Math.abs(bDiff), dt / emitter.colorBlendDuration)
-            emitter.material.emissiveColor = Color3.create(emitter.material.emissiveColor.r + rDiff, emitter.material.emissiveColor.g + gDiff, emitter.material.emissiveColor.b + bDiff)
+            emitter.material.emissiveColor = Color3.create((emitter.material.emissiveColor?.r ?? 0) + rDiff, (emitter.material.emissiveColor?.g ?? 0) + gDiff, (emitter.material.emissiveColor?.b ?? 0) + bDiff)
 
 
             emitter.pulseTime = Math.max(0, emitter.pulseTime - dt)

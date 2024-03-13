@@ -65,7 +65,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.maxSpeed -= 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.maxSpeed -= 1
                     }}
                 >
                 </UiEntity>
@@ -84,7 +84,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="MaxSpeedValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.maxSpeed + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.maxSpeed + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -114,7 +114,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.maxSpeed += 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.maxSpeed += 1
                     }}
                 >
                 </UiEntity>
@@ -151,7 +151,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.minSpeed -= 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.minSpeed -= 1
                     }}
                 >
                 </UiEntity>
@@ -170,7 +170,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="MinSpeedValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.minSpeed + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.minSpeed + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -200,7 +200,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.minSpeed += 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.minSpeed += 1
                     }}
                 >
                 </UiEntity>
@@ -236,7 +236,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.accelerationF -= 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.accelerationF -= 1
                     }}
                 >
                 </UiEntity>
@@ -255,7 +255,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="AccelerationFValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.accelerationF + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.accelerationF + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -285,7 +285,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.accelerationF += 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.accelerationF += 1
                     }}
                 >
                 </UiEntity>
@@ -321,7 +321,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.accelerationB -= 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.accelerationB -= 1
                     }}
                 >
                 </UiEntity>
@@ -340,7 +340,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="AccelerationBValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.accelerationB + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.accelerationB + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -370,7 +370,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.accelerationB += 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.accelerationB += 1
                     }}
                 >
                 </UiEntity>
@@ -408,7 +408,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.deceleration -= 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.deceleration -= 1
                     }}
                 >
                 </UiEntity>
@@ -427,7 +427,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="DecelerationValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.deceleration + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.deceleration + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -457,7 +457,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.deceleration += 1
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.deceleration += 1
                     }}
                 >
                 </UiEntity>
@@ -493,7 +493,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.steerSpeed -= 0.5
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.steerSpeed -= 0.5
                     }}
                 >
                 </UiEntity>
@@ -512,7 +512,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="SteerValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.steerSpeed + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.steerSpeed + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -542,7 +542,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.steerSpeed += 0.5
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.steerSpeed += 0.5
                     }}
                 >
                 </UiEntity>
@@ -578,7 +578,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.grip -= 0.5
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.grip -= 0.5
                     }}
                 >
                 </UiEntity>
@@ -597,7 +597,7 @@ export class DebugUI {
                 </Label>
                 <Label
                     key="GripValue"
-                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes.grip + "") : ""}
+                    value={Car.instances.length > 0 ? (Car.instances[0].data.carAttributes?.grip + "") : ""}
                     fontSize={20}
                     font="monospace"
                     textAlign="middle-center"
@@ -627,7 +627,7 @@ export class DebugUI {
                         }
                     }}
                     onMouseDown={() => {
-                        if (Car.instances.length > 0) Car.instances[0].data.carAttributes.grip += 0.5
+                        if (Car.instances.length > 0 && Car.instances[0].data.carAttributes) Car.instances[0].data.carAttributes.grip += 0.5
                     }}
                 >
                 </UiEntity>

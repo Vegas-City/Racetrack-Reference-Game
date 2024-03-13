@@ -159,7 +159,7 @@ export class ServerComms {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
                 body: JSON.stringify({
-                    user: player.publicKey || "GUEST_" + player.userId,
+                    user: player?.publicKey || "GUEST_" + player?.userId,
                     wearableId: _wearableId,
                 })
             }
@@ -175,7 +175,7 @@ export class ServerComms {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
                 body: JSON.stringify({
-                    user: player.publicKey || "GUEST_" + player.userId,
+                    user: player?.publicKey || "GUEST_" + player?.userId,
                     wearableId: _wearableId,
                 })
             }
@@ -216,7 +216,7 @@ export class ServerComms {
     }
 
     public static async sendGhostCarData(_data: GhostData) {
-        let publicKey = UserData.cachedData.publicKey || "GUEST_" + UserData.cachedData.userId
+        let publicKey = UserData.cachedData?.publicKey || "GUEST_" + UserData.cachedData?.userId
         try {
             let response = await signedFetch({
                 url: this.getServerUrl() + "/api/racetrack/ghostcardata",

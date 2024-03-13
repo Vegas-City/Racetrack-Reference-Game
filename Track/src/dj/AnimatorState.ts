@@ -1,7 +1,6 @@
 /* imports */
 
 import { Animator, Entity, PBAnimationState } from "@dcl/sdk/ecs"
-import { Utils } from "./Utils"
 
 /* class definition */
 
@@ -37,10 +36,10 @@ export class AnimatorState {
         this.name = _name
         this.startFrame = _startFrame
         this.endFrame = _endFrame
-        this.beats = Utils.coalesce(_beats, 0)
-        this.leadFrames = Utils.coalesce(_leadFrames, 0)
-        this.tailFrames = Utils.coalesce(_tailFrames, 0)
-        this.offsetFrames = Utils.coalesce(_offsetFrames, 0)
+        this.beats = _beats ?? 0
+        this.leadFrames = _leadFrames ?? 0
+        this.tailFrames = _tailFrames ?? 0
+        this.offsetFrames = _offsetFrames ?? 0
 
         // initialise state
         this.isPlaying = false

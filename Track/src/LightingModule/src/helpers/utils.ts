@@ -11,7 +11,7 @@ export abstract class Utils {
     static hasFlag(enumValue: number, flag: number): boolean {
         return (enumValue & flag) === flag
     }
-    static getRandomItem<T>(_array: T[]): T {
+    static getRandomItem<T>(_array: T[]): T | null {
         return _array !== undefined && _array !== null && _array.length > 0 ? _array[Math.floor(Math.random() * _array.length - 0.0001)] : null
     }
     static getSign(number: number): number {

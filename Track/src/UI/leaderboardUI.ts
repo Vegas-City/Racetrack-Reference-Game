@@ -77,6 +77,8 @@ export class LeaderboardUI {
     }
 
     show(): void {
+        if (!this.container) return
+
         let transform = Transform.getMutableOrNull(this.container)
         if (transform) {
             transform.scale = this.leaderboardTransform.scale
@@ -84,6 +86,8 @@ export class LeaderboardUI {
     }
 
     hide(): void {
+        if (!this.container) return
+
         let transform = Transform.getMutableOrNull(this.container)
         if (transform) {
             transform.scale = Vector3.Zero()
@@ -167,7 +171,7 @@ export class LeaderboardUI {
             if (index < this.playerNameEntities.length) {
                 let textShapePlayerName = TextShape.getMutableOrNull(this.playerNameEntities[index])
                 if (textShapePlayerName) {
-                    textShapePlayerName.text = this.playerScores.get(player).name
+                    textShapePlayerName.text = this.playerScores.get(player)?.name ?? ""
                 }
             }
             else {
@@ -177,7 +181,7 @@ export class LeaderboardUI {
                     position: Vector3.create(0, -(this.verticalSpacing * 1.3) - (index * this.verticalSpacing), 0)
                 })
                 TextShape.createOrReplace(nameEntity, {
-                    text: this.playerScores.get(player).name,
+                    text: this.playerScores.get(player)?.name ?? "",
                     textColor: LeaderboardUI.TEXT_COLOR,
                     textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                 })
@@ -199,11 +203,11 @@ export class LeaderboardUI {
                 if (subIndex < this.scoreEntities[index].length) {
                     let textShapeScore = TextShape.getMutableOrNull(this.scoreEntities[index][subIndex])
                     if (textShapeScore) {
-                        textShapeScore.text = this.formatTime(this.playerScores.get(player).scores.get(track))
+                        textShapeScore.text = this.formatTime(this.playerScores.get(player)?.scores.get(track) ?? 0)
                     }
                     let textShapeScoreMilli = TextShape.getMutableOrNull(this.scoreMilliEntities[index][subIndex])
                     if (textShapeScoreMilli) {
-                        textShapeScoreMilli.text = this.formatTimeMilli(this.playerScores.get(player).scores.get(track))
+                        textShapeScoreMilli.text = this.formatTimeMilli(this.playerScores.get(player)?.scores.get(track) ?? 0)
                     }
                 }
                 else {
@@ -213,7 +217,7 @@ export class LeaderboardUI {
                         position: Vector3.create((this.horizontalSpacing * 1.3) + (index * this.horizontalSpacing), -(this.verticalSpacing * 1.3) - (subIndex * this.verticalSpacing), 0)
                     })
                     TextShape.createOrReplace(scoreEntity, {
-                        text: this.formatTime(this.playerScores.get(player).scores.get(track)),
+                        text: this.formatTime(this.playerScores.get(player)?.scores.get(track) ?? 0),
                         textColor: LeaderboardUI.TEXT_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
@@ -226,7 +230,7 @@ export class LeaderboardUI {
                         scale: Vector3.create(0.7, 0.7, 0.7)
                     })
                     TextShape.createOrReplace(scoremilliEntity, {
-                        text: this.formatTimeMilli(this.playerScores.get(player).scores.get(track)),
+                        text: this.formatTimeMilli(this.playerScores.get(player)?.scores.get(track) ?? 0),
                         textColor: LeaderboardUI.MILLI_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
@@ -241,7 +245,7 @@ export class LeaderboardUI {
         index = 0
         if (this.trackNames.length > 0) {
             for (let player of this.playerScores.keys()) {
-                let totalScore = this.playerScores.get(player).totalScore
+                let totalScore = this.playerScores.get(player)?.totalScore ?? 0
 
                 if (index < this.totalScoreEntities.length) {
                     let textShapeTotalScore = TextShape.getMutableOrNull(this.totalScoreEntities[index])
@@ -309,12 +313,12 @@ export class LeaderboardUI {
                 if (index < this.selfScoreEntities.length) {
                     let textShapeSelfScore = TextShape.getMutableOrNull(this.selfScoreEntities[index])
                     if (textShapeSelfScore) {
-                        textShapeSelfScore.text = this.formatTime(this.selfScores.get(track))
+                        textShapeSelfScore.text = this.formatTime(this.selfScores.get(track) ?? 0)
                     }
 
                     let textShapeSelfScoreMilli = TextShape.getMutableOrNull(this.selfScoreMilliEntities[index])
                     if (textShapeSelfScoreMilli) {
-                        textShapeSelfScoreMilli.text = this.formatTimeMilli(this.selfScores.get(track))
+                        textShapeSelfScoreMilli.text = this.formatTimeMilli(this.selfScores.get(track) ?? 0)
                     }
                 }
                 else {
@@ -324,7 +328,7 @@ export class LeaderboardUI {
                         position: Vector3.create((this.horizontalSpacing * 1.3) + (index * this.horizontalSpacing), 0, 0)
                     })
                     TextShape.createOrReplace(selfScoreEntity, {
-                        text: this.formatTime(this.selfScores.get(track)),
+                        text: this.formatTime(this.selfScores.get(track) ?? 0),
                         textColor: LeaderboardUI.TEXT_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
@@ -337,13 +341,13 @@ export class LeaderboardUI {
                         scale: Vector3.create(0.7, 0.7, 0.7)
                     })
                     TextShape.createOrReplace(selfScoreMilliEntity, {
-                        text: this.formatTimeMilli(this.selfScores.get(track)),
+                        text: this.formatTimeMilli(this.selfScores.get(track) ?? 0),
                         textColor: LeaderboardUI.MILLI_COLOR,
                         textAlign: TextAlignMode.TAM_MIDDLE_LEFT
                     })
                     this.selfScoreMilliEntities.push(selfScoreMilliEntity)
                 }
-                selfTotal += this.selfScores.get(track)
+                selfTotal += this.selfScores.get(track) ?? 0
                 index++
             }
 
@@ -390,9 +394,11 @@ export class LeaderboardUI {
                 }
             }
 
-            let selfRankTextShape = TextShape.getMutableOrNull(this.selfRankEntity)
-            if (selfRankTextShape) {
-                selfRankTextShape.text = this.selfRank.toString()
+            if (this.selfRankEntity) {
+                let selfRankTextShape = TextShape.getMutableOrNull(this.selfRankEntity)
+                if (selfRankTextShape) {
+                    selfRankTextShape.text = this.selfRank.toString()
+                }
             }
         }
 
@@ -610,13 +616,13 @@ export class LeaderboardUI {
                 }
 
                 let playerScores = this.playerScores.get(trackScores.walletAddress)
-                playerScores.scores.set(track.trackName, trackScores.time)
+                playerScores?.scores.set(track.trackName, trackScores.time)
             }
         }
 
         // filter out players who haven't completed all tracks at least once
         for (let player of this.playerScores.keys()) {
-            if (this.playerScores.get(player).scores.size !== this.trackNames.length) {
+            if (this.playerScores.get(player)?.scores.size !== this.trackNames.length) {
                 this.playerScores.delete(player)
             }
         }
@@ -638,11 +644,14 @@ export class LeaderboardUI {
 
         // calculate the total scores per player
         for (let player of this.playerScores.keys()) {
-            let totalScore: number = 0
-            for (let score of this.playerScores.get(player).scores.keys()) {
-                totalScore += this.playerScores.get(player).scores.get(score)
+            let p = this.playerScores.get(player)
+            if (p) {
+                let totalScore: number = 0
+                for (let score of p.scores.keys()) {
+                    totalScore += p.scores.get(score) ?? 0
+                }
+                p.totalScore = totalScore
             }
-            this.playerScores.get(player).totalScore = totalScore
         }
     }
 
@@ -650,8 +659,8 @@ export class LeaderboardUI {
         let total1: number = 0
         let total2: number = 0
         for (let track of this.trackNames) {
-            total1 += _value1.get(track)
-            total2 += _value2.get(track)
+            total1 += _value1.get(track) ?? 0
+            total2 += _value2.get(track) ?? 0
         }
         return total1 - total2
     }
@@ -685,11 +694,12 @@ export class LeaderboardUI {
     }
 
     private getSelfWalletAddress(): string {
-        return UserData.cachedData.publicKey
+        return UserData.cachedData?.publicKey ?? ""
     }
 
     private getSelfUsername(): string {
-        return UserData.cachedData.displayName.substring(0, UserData.cachedData.displayName.lastIndexOf("#"))
+        let displayName = UserData.cachedData?.displayName ?? ""
+        return displayName.substring(0, displayName.lastIndexOf("#"))
     }
 
     private getTruncatedSelfUsername(): string {
@@ -698,6 +708,8 @@ export class LeaderboardUI {
     }
 
     private showSelfScores(): void {
+        if (!this.selfScoreContainer) return
+
         let transform = Transform.getMutableOrNull(this.selfScoreContainer)
         if (transform) {
             transform.scale = Vector3.One()
@@ -705,6 +717,8 @@ export class LeaderboardUI {
     }
 
     private hideSelfScores(): void {
+        if (!this.selfScoreContainer) return
+
         let transform = Transform.getMutableOrNull(this.selfScoreContainer)
         if (transform) {
             transform.scale = Vector3.Zero()
@@ -712,8 +726,10 @@ export class LeaderboardUI {
     }
 
     private async updateAvatar(): Promise<void> {
-        await this.getAvatarMaterial(UserData.cachedData.publicKey).then(src => {
-            Material.setPbrMaterial(this.avatarImageEntity, src)
+        await this.getAvatarMaterial(UserData.cachedData?.publicKey ?? "").then(src => {
+            if (this.avatarImageEntity) {
+                Material.setPbrMaterial(this.avatarImageEntity, src)
+            }
         })
     }
 

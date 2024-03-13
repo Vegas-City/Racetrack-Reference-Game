@@ -231,7 +231,7 @@ export class PartyManager {
             rotation: Quaternion.fromEulerDegrees(0, 90, 0),
             scale: Vector3.create(1, 1, 1),
 
-            url: null,
+            url: "",
             volume: 1,
             showDJ: false
         });

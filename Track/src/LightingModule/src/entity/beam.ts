@@ -13,13 +13,13 @@ export class Beam {
 
     constructor(_parentEmitter: Emitter) {
         this.entity = engine.addEntity()
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             parent: _parentEmitter.entity,
             scale: Vector3.Zero()
         })
 
         this.renderer = engine.addEntity()
-        Transform.create(this.renderer, {
+        Transform.createOrReplace(this.renderer, {
             parent: this.entity,
             rotation: Quaternion.fromEulerDegrees(90, 0, 0)
         })
@@ -37,10 +37,10 @@ export class Beam {
             castShadows: _material.castShadows,
             transparencyMode: _material.transparencyMode,
             alphaTexture: Material.Texture.Common({
-                src: _material.alphaTexture
+                src: _material.alphaTexture ?? ""
             }),
             emissiveTexture: Material.Texture.Common({
-                src: _material.emissiveTexture
+                src: _material.emissiveTexture ?? ""
             })
         })
     }

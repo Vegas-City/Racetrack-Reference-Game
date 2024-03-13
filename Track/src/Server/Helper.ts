@@ -88,9 +88,9 @@ export abstract class Helper {
             })
 
         onEnterSceneObservable.add(
-            (_eventData: { userId: string }, _eventState: ObserverEventState): void => {        
-                UserData.getUserData(()=>{
-                    if (_eventData.userId.toLowerCase() !== UserData.cachedData.userId.toLowerCase()) {
+            (_eventData: { userId: string }, _eventState: ObserverEventState): void => {
+                UserData.getUserData(() => {
+                    if (_eventData.userId.toLowerCase() !== UserData.cachedData?.userId.toLowerCase()) {
                         return
                     } else {
                         Helper.isInScene = true

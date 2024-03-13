@@ -24,20 +24,20 @@ export class MixTable {
         this.entity = engine.addEntity()
 
         // initialise the transform
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             position: Utils.coalesce(_config.position, Vector3.Zero()),
             rotation: Utils.coalesce(_config.rotation, Quaternion.Identity()),
             scale: Utils.coalesce(_config.scale, Vector3.One())
         })
 
         // initialise the model
-        GltfContainer.create(this.entity, {
+        GltfContainer.createOrReplace(this.entity, {
             src: MixTable.GLTF
         })
 
         // create a child entity to act as a collider
         const collider = engine.addEntity()
-        Transform.create(collider, {
+        Transform.createOrReplace(collider, {
             parent: this.entity,
             position: Vector3.create(-0.11, 0.465, 0.59),
             scale: Vector3.create(2.3, 0.93, 0.61)

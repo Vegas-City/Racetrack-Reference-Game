@@ -46,13 +46,13 @@ export class Emitter {
 
     /* constructor */
 
-    constructor(_parent:Entity,_position: Vector3 = Vector3.Zero(), _rotation: Quaternion = Quaternion.Identity(), _useGraphic: boolean = true) {
+    constructor(_parent: Entity, _position: Vector3 = Vector3.Zero(), _rotation: Quaternion = Quaternion.Identity(), _useGraphic: boolean = true) {
         // initialise the transform
         this.position = _position
         this.rotation = _rotation
 
         this.entity = engine.addEntity()
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             parent: _parent,
             position: Vector3.clone(_position),
             rotation: Quaternion.create(_rotation.x, _rotation.y, _rotation.z, _rotation.w)
@@ -75,7 +75,7 @@ export class Emitter {
 
         // ensure the shared emitter shape and apply it
         if (_useGraphic) {
-            GltfContainer.create(this.entity, {
+            GltfContainer.createOrReplace(this.entity, {
                 src: Emitter.EMITTER_GLTF
             })
         }
@@ -124,6 +124,9 @@ export class Emitter {
     }
 
     hide(): void {
-        Transform.getMutable(this.entity).scale = Vector3.Zero()
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.Zero()
+        }
     }
 }

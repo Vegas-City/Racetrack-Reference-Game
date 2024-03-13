@@ -81,7 +81,7 @@ export class BigScreen {
             if (this.leaderboard.playerScores.size > 2) {
                 let index: number = 0
                 for (let player of this.leaderboard.playerScores.keys()) {
-                    this.updateText(index, this.leaderboard.playerScores.get(player).name, this.leaderboard.playerScores.get(player).totalScore)
+                    this.updateText(index, this.leaderboard.playerScores.get(player)?.name ?? "", this.leaderboard.playerScores.get(player)?.totalScore ?? 0)
                     this.updateAvatar(index, player)
                     index++
                 }
