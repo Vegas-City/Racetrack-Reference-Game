@@ -87,7 +87,7 @@ export class GuideNPC {
                 isEndOfDialog: true
             },
             {
-                text: "Great news! I knew you had the guts to go for it!",
+                text: "Great news! Choose from the unlocked racing modes, tracks and cars with the help of this UI next to me and start racing!",
                 isEndOfDialog: true
             }
         ]
