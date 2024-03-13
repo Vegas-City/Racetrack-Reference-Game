@@ -53,14 +53,14 @@ export class RaceMenuManager {
 
     constructor(_position: Vector3) {
         this.baseEntity = engine.addEntity()
-        Transform.create(this.baseEntity, {
+        Transform.createOrReplace(this.baseEntity, {
             position: _position,
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
             scale: Vector3.Zero()
         })
 
         this.carContainer = engine.addEntity()
-        Transform.create(this.carContainer, {
+        Transform.createOrReplace(this.carContainer, {
             parent: this.baseEntity,
             position: Vector3.create(-2.4, 1.2, -0.4),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -78,39 +78,39 @@ export class RaceMenuManager {
 
     private initialiseMinimaps(): void {
         this.minimap1 = engine.addEntity()
-        Transform.create(this.minimap1, {
+        Transform.createOrReplace(this.minimap1, {
             parent: this.baseEntity
         })
-        GltfContainer.create(this.minimap1, { src: "models/selection/minimap1.glb" })
+        GltfContainer.createOrReplace(this.minimap1, { src: "models/selection/minimap1.glb" })
 
         this.minimap2 = engine.addEntity()
-        Transform.create(this.minimap2, {
+        Transform.createOrReplace(this.minimap2, {
             parent: this.baseEntity,
             scale: Vector3.Zero()
         })
-        GltfContainer.create(this.minimap2, { src: "models/selection/minimap2.glb" })
+        GltfContainer.createOrReplace(this.minimap2, { src: "models/selection/minimap2.glb" })
 
         this.minimap3 = engine.addEntity()
-        Transform.create(this.minimap3, {
+        Transform.createOrReplace(this.minimap3, {
             parent: this.baseEntity,
             scale: Vector3.Zero()
         })
-        GltfContainer.create(this.minimap3, { src: "models/selection/minimap3.glb" })
+        GltfContainer.createOrReplace(this.minimap3, { src: "models/selection/minimap3.glb" })
 
         this.minimap4 = engine.addEntity()
-        Transform.create(this.minimap4, {
+        Transform.createOrReplace(this.minimap4, {
             parent: this.baseEntity,
             scale: Vector3.Zero()
         })
-        GltfContainer.create(this.minimap4, { src: "models/selection/minimap4.glb" })
+        GltfContainer.createOrReplace(this.minimap4, { src: "models/selection/minimap4.glb" })
     }
 
     private initialiseMenu(): void {
         this.menuTitles = engine.addEntity()
-        Transform.create(this.menuTitles, {
+        Transform.createOrReplace(this.menuTitles, {
             parent: this.baseEntity
         })
-        GltfContainer.create(this.menuTitles, { src: "models/selection/menuTitles.glb" })
+        GltfContainer.createOrReplace(this.menuTitles, { src: "models/selection/menuTitles.glb" })
 
         this.initialiseGameModeMenu()
         this.initialiseTrackMenu()
@@ -120,19 +120,19 @@ export class RaceMenuManager {
 
     private initialiseGameModeMenu(): void {
         this.practiceIcon = engine.addEntity()
-        Transform.create(this.practiceIcon, {
+        Transform.createOrReplace(this.practiceIcon, {
             parent: this.baseEntity
         })
-        GltfContainer.create(this.practiceIcon, {
+        GltfContainer.createOrReplace(this.practiceIcon, {
             src: "models/selection/practice_icon.glb"
         })
 
         this.competitionIcon = engine.addEntity()
-        Transform.create(this.competitionIcon, {
+        Transform.createOrReplace(this.competitionIcon, {
             parent: this.baseEntity,
             scale: Vector3.Zero()
         })
-        GltfContainer.create(this.competitionIcon, {
+        GltfContainer.createOrReplace(this.competitionIcon, {
             src: "models/selection/competition_icon.glb"
         })
 
@@ -151,8 +151,16 @@ export class RaceMenuManager {
                 this.trackButton3.hide()
                 this.trackButton4.hide()
                 this.trackButton1.select()
-                Transform.getMutable(this.practiceIcon).scale = Vector3.One()
-                Transform.getMutable(this.competitionIcon).scale = Vector3.Zero()
+
+                let transformPractice = Transform.getMutableOrNull(this.practiceIcon)
+                if (transformPractice) {
+                    transformPractice.scale = Vector3.One()
+                }
+                let transformCompetition = Transform.getMutableOrNull(this.competitionIcon)
+                if (transformCompetition) {
+                    transformCompetition.scale = Vector3.Zero()
+                }
+
                 RaceMenuManager.update()
             }).bind(this)
         })
@@ -174,8 +182,16 @@ export class RaceMenuManager {
                 this.trackButton2.show()
                 this.trackButton3.show()
                 this.trackButton4.show()
-                Transform.getMutable(this.practiceIcon).scale = Vector3.Zero()
-                Transform.getMutable(this.competitionIcon).scale = Vector3.One()
+
+                let transformPractice = Transform.getMutableOrNull(this.practiceIcon)
+                if (transformPractice) {
+                    transformPractice.scale = Vector3.Zero()
+                }
+                let transformCompetition = Transform.getMutableOrNull(this.competitionIcon)
+                if (transformCompetition) {
+                    transformCompetition.scale = Vector3.One()
+                }
+
                 RaceMenuManager.update()
             }).bind(this),
             iconOffset: Vector3.create(-0.35, 0, 0),
@@ -198,10 +214,23 @@ export class RaceMenuManager {
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
                 this.currentTrackIndex = 1
-                Transform.getMutable(this.minimap1).scale = Vector3.One()
-                Transform.getMutable(this.minimap2).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap3).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap4).scale = Vector3.Zero()
+
+                let transformMinimap1 = Transform.getMutableOrNull(this.minimap1)
+                if (transformMinimap1) {
+                    transformMinimap1.scale = Vector3.One()
+                }
+                let transformMinimap2 = Transform.getMutableOrNull(this.minimap2)
+                if (transformMinimap2) {
+                    transformMinimap2.scale = Vector3.Zero()
+                }
+                let transformMinimap3 = Transform.getMutableOrNull(this.minimap3)
+                if (transformMinimap3) {
+                    transformMinimap3.scale = Vector3.Zero()
+                }
+                let transformMinimap4 = Transform.getMutableOrNull(this.minimap4)
+                if (transformMinimap4) {
+                    transformMinimap4.scale = Vector3.Zero()
+                }
             }).bind(this),
             iconOffset: Vector3.create(-0.16, 0, 0),
             iconScale: Vector3.create(0.9, 0.9, 0.9)
@@ -222,10 +251,23 @@ export class RaceMenuManager {
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
                 this.currentTrackIndex = 2
-                Transform.getMutable(this.minimap1).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap2).scale = Vector3.One()
-                Transform.getMutable(this.minimap3).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap4).scale = Vector3.Zero()
+
+                let transformMinimap1 = Transform.getMutableOrNull(this.minimap1)
+                if (transformMinimap1) {
+                    transformMinimap1.scale = Vector3.Zero()
+                }
+                let transformMinimap2 = Transform.getMutableOrNull(this.minimap2)
+                if (transformMinimap2) {
+                    transformMinimap2.scale = Vector3.One()
+                }
+                let transformMinimap3 = Transform.getMutableOrNull(this.minimap3)
+                if (transformMinimap3) {
+                    transformMinimap3.scale = Vector3.Zero()
+                }
+                let transformMinimap4 = Transform.getMutableOrNull(this.minimap4)
+                if (transformMinimap4) {
+                    transformMinimap4.scale = Vector3.Zero()
+                }
             }).bind(this),
             iconOffset: Vector3.create(-0.16, 0, 0),
             iconScale: Vector3.create(0.9, 0.9, 0.9)
@@ -246,10 +288,23 @@ export class RaceMenuManager {
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
                 this.currentTrackIndex = 3
-                Transform.getMutable(this.minimap1).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap2).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap3).scale = Vector3.One()
-                Transform.getMutable(this.minimap4).scale = Vector3.Zero()
+
+                let transformMinimap1 = Transform.getMutableOrNull(this.minimap1)
+                if (transformMinimap1) {
+                    transformMinimap1.scale = Vector3.Zero()
+                }
+                let transformMinimap2 = Transform.getMutableOrNull(this.minimap2)
+                if (transformMinimap2) {
+                    transformMinimap2.scale = Vector3.Zero()
+                }
+                let transformMinimap3 = Transform.getMutableOrNull(this.minimap3)
+                if (transformMinimap3) {
+                    transformMinimap3.scale = Vector3.One()
+                }
+                let transformMinimap4 = Transform.getMutableOrNull(this.minimap4)
+                if (transformMinimap4) {
+                    transformMinimap4.scale = Vector3.Zero()
+                }
             }).bind(this),
             iconOffset: Vector3.create(-0.16, 0, 0),
             iconScale: Vector3.create(0.9, 0.9, 0.9)
@@ -270,10 +325,23 @@ export class RaceMenuManager {
             deselectAllCallback: this.deselectAllTracks.bind(this),
             onSelectCallback: (() => {
                 this.currentTrackIndex = 4
-                Transform.getMutable(this.minimap1).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap2).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap3).scale = Vector3.Zero()
-                Transform.getMutable(this.minimap4).scale = Vector3.One()
+
+                let transformMinimap1 = Transform.getMutableOrNull(this.minimap1)
+                if (transformMinimap1) {
+                    transformMinimap1.scale = Vector3.Zero()
+                }
+                let transformMinimap2 = Transform.getMutableOrNull(this.minimap2)
+                if (transformMinimap2) {
+                    transformMinimap2.scale = Vector3.Zero()
+                }
+                let transformMinimap3 = Transform.getMutableOrNull(this.minimap3)
+                if (transformMinimap3) {
+                    transformMinimap3.scale = Vector3.Zero()
+                }
+                let transformMinimap4 = Transform.getMutableOrNull(this.minimap4)
+                if (transformMinimap4) {
+                    transformMinimap4.scale = Vector3.One()
+                }
             }).bind(this),
             iconOffset: Vector3.create(-0.16, 0, 0),
             iconScale: Vector3.create(0.9, 0.9, 0.9)
@@ -393,7 +461,11 @@ export class RaceMenuManager {
     private rotate(_dt: number): void {
         this.podiumRotation += _dt * this.podiumSpinSpeed
         if (this.podiumRotation > 360) { this.podiumRotation -= 360 }
-        Transform.getMutable(this.carContainer).rotation = Quaternion.fromEulerDegrees(0, this.podiumRotation, 0)
+
+        let carContainerTransform = Transform.getMutableOrNull(this.carContainer)
+        if (carContainerTransform) {
+            carContainerTransform.rotation = Quaternion.fromEulerDegrees(0, this.podiumRotation, 0)
+        }
     }
 
     private selectCar(_index: number): void {

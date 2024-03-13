@@ -1,6 +1,6 @@
 import { Entity, GltfContainer, InputAction, MeshCollider, MeshRenderer, Transform, engine, pointerEventsSystem } from "@dcl/sdk/ecs"
 import { popup, shopUI, wallet } from "../utils/ui-provider"
-import { getWearableData,wearable_boxes } from "./wearables"
+import { getWearableData, wearable_boxes } from "./wearables"
 import { Quaternion, Vector3 } from "@dcl/sdk/math"
 import Wearable from "../utils/interfaces/wearable"
 import { signedFetch } from "~system/SignedFetch"
@@ -24,7 +24,7 @@ export class ShopController {
 
     public setupClickables() {
         for (const wearable in wearable_boxes) {
-            
+
             if (wearable == "helmet" ||
                 wearable == "upperBody" ||
                 wearable == "lowerBody" ||
@@ -36,39 +36,39 @@ export class ShopController {
 
     private addClickable(model: { position: Vector3, rotation: Vector3, scale: number }, data: Wearable) {
         const plinth = engine.addEntity()
-        Transform.create(plinth, {
-            scale: Vector3.create(1,1,1),
+        Transform.createOrReplace(plinth, {
+            scale: Vector3.create(1, 1, 1),
             position: model.position,
             rotation: Quaternion.fromEulerDegrees(model.rotation.x, model.rotation.y, model.rotation.z)
         })
 
         const collider = engine.addEntity()
-        Transform.create(collider, {
+        Transform.createOrReplace(collider, {
             parent: plinth,
             position: Vector3.create(0, 1, 0),
-            scale: Vector3.create(2,3.5,2)
+            scale: Vector3.create(2, 3.5, 2)
         })
 
         MeshCollider.setCylinder(collider)
-        
+
         const linkEntity = engine.addEntity()
-        Transform.create(linkEntity, {
+        Transform.createOrReplace(linkEntity, {
             parent: plinth,
-            position: Vector3.create(0,data.posy,0)
+            position: Vector3.create(0, data.posy, 0)
         })
-        GltfContainer.create(linkEntity, {
+        GltfContainer.createOrReplace(linkEntity, {
             src: data.image_path
         })
 
         // make collectables spin to draw attention
-        utils.perpetualMotions.startRotation(linkEntity, Quaternion.fromEulerDegrees(0, 45, 0))   
+        utils.perpetualMotions.startRotation(linkEntity, Quaternion.fromEulerDegrees(0, 45, 0))
 
-    
+
     }
 
-    public async sendBuyRequest(id: string, price: number, collectionId:string) {
+    public async sendBuyRequest(id: string, price: number, collectionId: string) {
         shopUI.hide()
-        let priceS: string = price ? price.toString() : "0" 
+        let priceS: string = price ? price.toString() : "0"
         if (this.userKey == "zero") {
             console.log('shop is closed, player dont have a wallet')
             popup.show("Connect with your wallet to enjoy the full experience.")
@@ -81,16 +81,17 @@ export class ShopController {
             wearable_id: id
         }
         const response = await signedFetch({
-            url: ServerComms.getServerUrl() + "/api/missions/spend", 
+            url: ServerComms.getServerUrl() + "/api/missions/spend",
             init: {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        }})
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            }
+        })
         const data = response.body;
         console.log('send buy request data:', data);
         if (data !== "submitted") {
-            
+
             popup.show("Oops! It appears we have encountered an error.  Please try again later.")
             ShopController.logger.purchaseFail(id, collectionId, "", priceS, data)
         }
@@ -108,6 +109,6 @@ export class ShopController {
             return
         }
 
-   
+
     }
 }

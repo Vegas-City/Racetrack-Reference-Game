@@ -30,7 +30,7 @@ export class ShopButton {
 
     constructor(_position: Vector3, _modelPath: string, data: Wearable) {
         this.parentEntity = engine.addEntity()
-        Transform.create(this.parentEntity, {
+        Transform.createOrReplace(this.parentEntity, {
             position: _position
         })
 
@@ -39,15 +39,15 @@ export class ShopButton {
         this.lockEntity = engine.addEntity()
         this.data = data
 
-        Transform.create(this.buyEntity, { position: Vector3.Zero(), rotation: Quaternion.fromEulerDegrees(0, 180, 0), parent: this.parentEntity })
-        Transform.create(this.nameEntity, { position: Vector3.add(_position, Vector3.create(0, 0.25, 0)), rotation: Quaternion.fromEulerDegrees(0, 180, 0) })
-        Transform.create(this.lockEntity, { position: Vector3.create(0, 0, -0.03), parent: this.buyEntity })
-        GltfContainer.create(this.nameEntity, { src: _modelPath })
-        GltfContainer.create(this.buyEntity, { src: "models/wearables/buy_btn.glb" })
-        GltfContainer.create(this.lockEntity, { src: "models/wearables/lock.glb" })
+        Transform.createOrReplace(this.buyEntity, { position: Vector3.Zero(), rotation: Quaternion.fromEulerDegrees(0, 180, 0), parent: this.parentEntity })
+        Transform.createOrReplace(this.nameEntity, { position: Vector3.add(_position, Vector3.create(0, 0.25, 0)), rotation: Quaternion.fromEulerDegrees(0, 180, 0) })
+        Transform.createOrReplace(this.lockEntity, { position: Vector3.create(0, 0, -0.03), parent: this.buyEntity })
+        GltfContainer.createOrReplace(this.nameEntity, { src: _modelPath })
+        GltfContainer.createOrReplace(this.buyEntity, { src: "models/wearables/buy_btn.glb" })
+        GltfContainer.createOrReplace(this.lockEntity, { src: "models/wearables/lock.glb" })
 
         this.tooltip = engine.addEntity()
-        Transform.create(this.tooltip, {
+        Transform.createOrReplace(this.tooltip, {
             parent: this.parentEntity,
             position: Vector3.create(-0.8, 0, 0.1),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
@@ -69,7 +69,7 @@ export class ShopButton {
             emissiveIntensity: 1
         })
 
-        PointerEvents.create(this.buyEntity, {
+        PointerEvents.createOrReplace(this.buyEntity, {
             pointerEvents: [
                 {
                     eventType: PointerEventType.PET_HOVER_ENTER,
@@ -131,22 +131,28 @@ export class ShopButton {
                 }
             }
 
-            let parentTransform = Transform.getMutable(this.parentEntity)
-            let currentScale = parentTransform.scale.x - 1
-            if (this.isScalingUp) {
-                let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
-                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
-            }
-            else {
-                let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
-                parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+            let parentTransform = Transform.getMutableOrNull(this.parentEntity)
+            if (parentTransform) {
+                let currentScale = parentTransform.scale.x - 1
+                if (this.isScalingUp) {
+                    let newScale = 1 + Math.min(0.2, (currentScale + this.animSpeed * dt))
+                    parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
+                else {
+                    let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
+                    parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
             }
         })
     }
 
     lock() {
         this.locked = true
-        Transform.getMutable(this.lockEntity).scale = Vector3.One()
+
+        let transform = Transform.getMutableOrNull(this.lockEntity)
+        if (transform) {
+            transform.scale = Vector3.One()
+        }
 
         this.removeSelectPointerEvent()
     }
@@ -154,7 +160,11 @@ export class ShopButton {
     unlock(points: number) {
         if (points >= this.data.price) {
             this.locked = false
-            Transform.getMutable(this.lockEntity).scale = Vector3.Zero()
+
+            let transform = Transform.getMutableOrNull(this.lockEntity)
+            if (transform) {
+                transform.scale = Vector3.Zero()
+            }
 
             this.addAllPointerEvents()
         } else {
@@ -190,14 +200,18 @@ export class ShopButton {
     }
 
     private removeSelectPointerEvent(): void {
-        let pointerEvents = PointerEvents.getMutable(this.buyEntity).pointerEvents
+        let pointerEvents = PointerEvents.getMutableOrNull(this.buyEntity)?.pointerEvents
+
+        if (!pointerEvents) return
         if (pointerEvents.length < 3) return
 
         pointerEvents.splice(0, -1)
     }
 
     private addSelectPointerEvent(): void {
-        let pointerEvents = PointerEvents.getMutable(this.buyEntity).pointerEvents
+        let pointerEvents = PointerEvents.getMutableOrNull(this.buyEntity)?.pointerEvents
+
+        if (!pointerEvents) return
         if (pointerEvents.length > 2) return
 
         pointerEvents.push({

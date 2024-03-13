@@ -40,13 +40,13 @@ export class AvatarVisibilityManager {
     private static addArea(_pos: Vector3, _size: Vector3): void {
         const entity = engine.addEntity()
 
-        AvatarModifierArea.create(entity, {
+        AvatarModifierArea.createOrReplace(entity, {
             area: _size,
             modifiers: [AvatarModifierType.AMT_HIDE_AVATARS, AvatarModifierType.AMT_DISABLE_PASSPORTS],
             excludeIds: []
         })
 
-        Transform.create(entity, {
+        Transform.createOrReplace(entity, {
             position: _pos,
             scale: _size,
         })
