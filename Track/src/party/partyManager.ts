@@ -23,6 +23,9 @@ export class PartyManager {
 
     static instance:PartyManager
 
+    ceremonyMusicStart:number = Date.UTC(2024, 2, 17, 20, 31)
+    ceremonyMusicEnd:number = Date.UTC(2024, 2, 17, 20, 48)
+
     constructor() {
 
         PartyManager.instance = this
@@ -74,8 +77,8 @@ export class PartyManager {
 
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 20, 27, 0),
-                Date.UTC(2024, 2, 17, 20, 32, 59),
+                Date.UTC(2024, 2, 17, 20, 27, 0), 
+                Date.UTC(2024, 2, 17, 20, 32, 59), 
                 () => {
                     this.smallScreens.forEach(screen => {
                         screen.triggerWaiting()
@@ -132,13 +135,13 @@ export class PartyManager {
         // Ceremony Music
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 20, 31),
-                Date.UTC(2024, 2, 17, 20, 48),
+                this.ceremonyMusicStart,
+                this.ceremonyMusicEnd,
                 () => {
                     AudioManager.playMusic(5) //Ceremony music
                 }, 
                 () => {
-
+                    AudioManager.playMusic(4) //Back to background music
                 }
             )
         )
