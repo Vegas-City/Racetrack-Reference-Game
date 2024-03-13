@@ -1,10 +1,9 @@
-import ReactEcs, { Label, UiEntity } from "@dcl/sdk/react-ecs"
-import { Color4 } from "@dcl/sdk/math"
-import * as utils from '@dcl-sdk/utils'
+import ReactEcs, { UiEntity } from "@dcl/sdk/react-ecs"
 import { PlayerData } from "../Server/types/playerData"
 import { ServerComms } from "../Server/serverComms"
-import * as carConfiguration from "./../RaceMenu/carConfiguration.json"
 import { RaceMenuManager } from "../RaceMenu/raceMenuManager"
+import * as carConfiguration from "./../RaceMenu/carConfiguration.json"
+import * as utils from '@dcl-sdk/utils'
 
 export enum EventUIEnum {
     preEvent,
@@ -27,6 +26,7 @@ export class EventUIImage {
     static pointIncrease: number = 0
     static imageSource: string
     static points: string = ""
+    static pointStartingLeft: number = 265
 
     private static component = () => (
         <UiEntity
@@ -58,24 +58,137 @@ export class EventUIImage {
                 }}
             >
             </UiEntity>
-            <Label
-                key="NewCarEventLabel"
-                value={EventUIImage.points}
-                fontSize={60}
-                font="monospace"
-                textAlign="middle-center"
-                color={Color4.create(24 / 255, 110 / 255, 205 / 255, 1)}
+            <UiEntity
+                key="PointsUIImagePlus"
                 uiTransform={{
                     positionType: 'absolute',
-                    width: 512,
-                    height: 0,
                     position: {
-                        top: 325,
-                        left: 256,
+                        left: EventUIImage.pointStartingLeft,
+                        top: 295
                     },
+                    width: 75,
+                    height: 75,
+                    display: EventUIImage.points.length > 0 ? 'flex' : 'none',
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/numbersSpriteSheet.png",
+                        wrapMode: 'clamp'
+                    },
+                    uvs: EventUIImage.getCharacterUVs("+")
                 }}
             >
-            </Label>
+            </UiEntity>
+            <UiEntity
+                key="PointsUIImage0"
+                uiTransform={{
+                    positionType: 'absolute',
+                    position: {
+                        left: EventUIImage.pointStartingLeft + 51.2,
+                        top: 295
+                    },
+                    width: 75,
+                    height: 75,
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/numbersSpriteSheet.png",
+                        wrapMode: 'clamp'
+                    },
+                    uvs: EventUIImage.getDigitUVs(0)
+                }}
+            >
+            </UiEntity>
+            <UiEntity
+                key="PointsUIImage1"
+                uiTransform={{
+                    positionType: 'absolute',
+                    position: {
+                        left: EventUIImage.pointStartingLeft + (2 * 51.2),
+                        top: 295
+                    },
+                    width: 75,
+                    height: 75,
+                    display: EventUIImage.points.length > 1 ? 'flex' : 'none',
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/numbersSpriteSheet.png",
+                        wrapMode: 'clamp'
+                    },
+                    uvs: EventUIImage.getDigitUVs(1)
+                }}
+            >
+            </UiEntity>
+            <UiEntity
+                key="PointsUIImage2"
+                uiTransform={{
+                    positionType: 'absolute',
+                    position: {
+                        left: EventUIImage.pointStartingLeft + (3 * 51.2),
+                        top: 295
+                    },
+                    width: 75,
+                    height: 75,
+                    display: EventUIImage.points.length > 2 ? 'flex' : 'none',
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/numbersSpriteSheet.png",
+                        wrapMode: 'clamp'
+                    },
+                    uvs: EventUIImage.getDigitUVs(2)
+                }}
+            >
+            </UiEntity>
+            <UiEntity
+                key="PointsUIImage3"
+                uiTransform={{
+                    positionType: 'absolute',
+                    position: {
+                        left: EventUIImage.pointStartingLeft + (4 * 51.2),
+                        top: 295
+                    },
+                    width: 75,
+                    height: 75,
+                    display: EventUIImage.points.length > 3 ? 'flex' : 'none',
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/numbersSpriteSheet.png",
+                        wrapMode: 'clamp'
+                    },
+                    uvs: EventUIImage.getDigitUVs(3)
+                }}
+            >
+            </UiEntity>
+            <UiEntity
+                key="PointsUIImagePoints"
+                uiTransform={{
+                    positionType: 'absolute',
+                    position: {
+                        left: EventUIImage.pointStartingLeft + ((EventUIImage.points.length + 1) * 51.2) + 20,
+                        top: 288
+                    },
+                    width: 230,
+                    height: 80,
+                    display: EventUIImage.points.length > 0 ? 'flex' : 'none',
+                }}
+                uiBackground={{
+                    textureMode: 'stretch',
+                    texture: {
+                        src: "images/ui/numbersSpriteSheet.png",
+                        wrapMode: 'clamp'
+                    },
+                    uvs: EventUIImage.getCharacterUVs("points")
+                }}
+            >
+            </UiEntity>
         </UiEntity>
     )
 
@@ -123,6 +236,47 @@ export class EventUIImage {
         EventUIImage.eventsShownOrWaiting += 1
     }
 
+    static comparePlayerData() {
+
+        EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
+
+        if (EventUIImage.pointIncrease == 0) {
+            // Did the pb get quicker?
+            let oldPB: number = 0
+            let newPB: number = 0
+
+            EventUIImage.oldPlayerData.tracks.forEach(track => {
+                if (track.guid == ServerComms.currentTrack) {
+                    oldPB = track.pb
+                }
+            });
+
+            ServerComms.player.tracks.forEach(track => {
+                if (track.guid == ServerComms.currentTrack) {
+                    newPB = track.pb
+                    if (track.pb < track.targetTimeToUnlockNextTrack) {
+                        newPB = -1
+                    }
+                }
+            });
+
+            if (newPB < oldPB && oldPB != 0) {
+                EventUIImage.pointIncrease = -1 // We'll use this later
+            }
+        }
+
+        EventUIImage.triggerEvent(EventUIEnum.endEvent)
+
+        // Check for track unlock
+        if (ServerComms.player.tracks.length > EventUIImage.oldPlayerData.tracks.length) {
+            EventUIImage.triggerEvent(EventUIEnum.newTrackEvent)
+        }
+
+        if (ServerComms.player.cars.length > EventUIImage.oldPlayerData.cars.length) {
+            EventUIImage.triggerEvent(EventUIEnum.newCarEvent)
+        }
+    }
+
     private static getPreEventImage(): string {
         return "msg_instructions.png"
     }
@@ -154,10 +308,11 @@ export class EventUIImage {
         utils.timers.setTimeout(() => {
             for (let i: number = 1; i < 21; i++) {
                 utils.timers.setTimeout(() => {
-                    EventUIImage.points = "+" + Math.floor((EventUIImage.pointIncrease / 20) * i) + " PTS"
+                    EventUIImage.points = Math.floor((EventUIImage.pointIncrease / 20) * i).toString()
                     if (i == 20) {
-                        EventUIImage.points = "+" + EventUIImage.pointIncrease + " PTS"
+                        EventUIImage.points = EventUIImage.pointIncrease.toString()
                     }
+                    EventUIImage.pointStartingLeft = 265 + ((4 - EventUIImage.points.length) * 20)
                 }, 50 * i)
             }
         }, 250)
@@ -203,44 +358,60 @@ export class EventUIImage {
         return "msg_unlockedCompetition.png"
     }
 
-    static comparePlayerData() {
-
-        EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
-
-        if (EventUIImage.pointIncrease == 0) {
-            // Did the pb get quicker?
-            let oldPB: number = 0
-            let newPB: number = 0
-
-            EventUIImage.oldPlayerData.tracks.forEach(track => {
-                if (track.guid == ServerComms.currentTrack) {
-                    oldPB = track.pb
+    private static getDigitUVs(_index: number): number[] {
+        switch (_index) {
+            case 0: {
+                if (EventUIImage.points.length > 0) {
+                    return EventUIImage.getCharacterUVs(EventUIImage.points[0])
                 }
-            });
-
-            ServerComms.player.tracks.forEach(track => {
-                if (track.guid == ServerComms.currentTrack) {
-                    newPB = track.pb
-                    if (track.pb < track.targetTimeToUnlockNextTrack) {
-                        newPB = -1
-                    }
+            }
+            case 1: {
+                if (EventUIImage.points.length > 1) {
+                    return EventUIImage.getCharacterUVs(EventUIImage.points[1])
                 }
-            });
-
-            if (newPB < oldPB && oldPB != 0) {
-                EventUIImage.pointIncrease = -1 // We'll use this later
+            }
+            case 2: {
+                if (EventUIImage.points.length > 2) {
+                    return EventUIImage.getCharacterUVs(EventUIImage.points[2])
+                }
+            }
+            case 3: {
+                if (EventUIImage.points.length > 3) {
+                    return EventUIImage.getCharacterUVs(EventUIImage.points[3])
+                }
             }
         }
+        return EventUIImage.getUVs(0, 1, 0, 1)
+    }
 
-        EventUIImage.triggerEvent(EventUIEnum.endEvent)
-
-        // Check for track unlock
-        if (ServerComms.player.tracks.length > EventUIImage.oldPlayerData.tracks.length) {
-            EventUIImage.triggerEvent(EventUIEnum.newTrackEvent)
+    private static getCharacterUVs(_character: string): number[] {
+        switch (_character) {
+            case "0": return EventUIImage.getUVs(0, 0.2, 0, 0.33)
+            case "1": return EventUIImage.getUVs(0.2, 0.4, 0, 0.33)
+            case "2": return EventUIImage.getUVs(0.4, 0.6, 0, 0.33)
+            case "3": return EventUIImage.getUVs(0.6, 0.8, 0, 0.33)
+            case "4": return EventUIImage.getUVs(0.8, 1, 0, 0.33)
+            case "5": return EventUIImage.getUVs(0, 0.2, 0.33, 0.67)
+            case "6": return EventUIImage.getUVs(0.2, 0.4, 0.33, 0.67)
+            case "7": return EventUIImage.getUVs(0.4, 0.6, 0.33, 0.67)
+            case "8": return EventUIImage.getUVs(0.6, 0.8, 0.33, 0.67)
+            case "9": return EventUIImage.getUVs(0.8, 1, 0.33, 0.67)
+            case "+": return EventUIImage.getUVs(0, 0.2, 0.64, 1)
+            case "points": return EventUIImage.getUVs(0.25, 1, 0.64, 1)
         }
+        return EventUIImage.getUVs(0, 1, 0, 1)
+    }
 
-        if (ServerComms.player.cars.length > EventUIImage.oldPlayerData.cars.length) {
-            EventUIImage.triggerEvent(EventUIEnum.newCarEvent)
-        }
+    private static getUVs(_minX: number, _maxX: number, _minY: number, _maxY: number): number[] {
+        const minX = _minX
+        const maxX = _maxX
+        const minY = 1 - _maxY
+        const maxY = 1 - _minY
+        return [
+            minX, minY,
+            minX, maxY,
+            maxX, maxY,
+            maxX, minY,
+        ]
     }
 }

@@ -21,10 +21,10 @@ export class PartyManager {
     fireworkManager: FireWorkManager
     confettiManager: ConfettiManager
 
-    static instance:PartyManager
+    static instance: PartyManager
 
-    ceremonyMusicStart:number = Date.UTC(2024, 2, 17, 20, 31)
-    ceremonyMusicEnd:number = Date.UTC(2024, 2, 17, 20, 48)
+    ceremonyMusicStart: number = Date.UTC(2024, 2, 17, 20, 31)
+    ceremonyMusicEnd: number = Date.UTC(2024, 2, 17, 20, 48)
 
     constructor() {
 
@@ -37,12 +37,12 @@ export class PartyManager {
         this.leaderboard.hide()
 
         // Party starts in... 7:30-8:00 pm
-        new Countdown3d(new Date('2024-03-17T19:30:00'), 30 * 60, Vector3.create(87.8, 11.4, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
-        new Countdown3d(new Date('2024-03-17T19:30:00'), 30 * 60, Vector3.create(79.5, 11.4, 76.6), Quaternion.fromEulerDegrees(0, -47, 0), Vector3.create(2, 2, 2))
+        new Countdown3d(Date.UTC(2024, 2, 17, 19, 30), 30 * 60, Vector3.create(87.8, 11.4, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
+        new Countdown3d(Date.UTC(2024, 2, 17, 19, 30), 30 * 60, Vector3.create(79.5, 11.4, 76.6), Quaternion.fromEulerDegrees(0, -47, 0), Vector3.create(2, 2, 2))
 
         // Racing ends in... 8:00-8:27 pm
-        new Countdown3d(new Date('2024-03-17T20:00:00'), 27 * 60, Vector3.create(87.8, 11.4, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
-        new Countdown3d(new Date('2024-03-17T20:00:00'), 27 * 60, Vector3.create(79.5, 11.4, 76.6), Quaternion.fromEulerDegrees(0, -47, 0), Vector3.create(2, 2, 2))
+        new Countdown3d(Date.UTC(2024, 2, 17, 20, 0), 27 * 60, Vector3.create(87.8, 11.4, 103.1), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(2, 2, 2))
+        new Countdown3d(Date.UTC(2024, 2, 17, 20, 0), 27 * 60, Vector3.create(79.5, 11.4, 76.6), Quaternion.fromEulerDegrees(0, -47, 0), Vector3.create(2, 2, 2))
 
         this.bigScreen = new BigScreen(Vector3.create(85.55, 12.1, 89.17), Quaternion.fromEulerDegrees(0, 287.5, 0), Vector3.create(17.6, 9.8, 2), this.leaderboard)
         this.smallScreens.push(new SmallScreen(Vector3.create(87.85, 12.1, 102.97), Quaternion.fromEulerDegrees(0, 262.5, 0), Vector3.create(8.4, 4.5, 2)))
@@ -77,8 +77,8 @@ export class PartyManager {
 
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 20, 27, 0), 
-                Date.UTC(2024, 2, 17, 20, 32, 59), 
+                Date.UTC(2024, 2, 17, 20, 27, 0),
+                Date.UTC(2024, 2, 17, 20, 32, 59),
                 () => {
                     this.smallScreens.forEach(screen => {
                         screen.triggerWaiting()
@@ -123,7 +123,7 @@ export class PartyManager {
                 () => {
                     this.dj = new DJ()
                     AudioManager.stopAllMusic()
-                }, 
+                },
                 () => {
                     if (this.dj != undefined) {
                         this.dj.remove()
@@ -139,7 +139,7 @@ export class PartyManager {
                 this.ceremonyMusicEnd,
                 () => {
                     AudioManager.playMusic(5) //Ceremony music
-                }, 
+                },
                 () => {
                     AudioManager.playMusic(4) //Back to background music
                 }
