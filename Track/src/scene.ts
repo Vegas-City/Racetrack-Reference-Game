@@ -42,6 +42,9 @@ export class Scene {
 
         new ScheduleManager()
         new AudioManager()
+        utils.timers.setTimeout(()=>{
+            AudioManager.playMusic(4)
+        },2000)
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
