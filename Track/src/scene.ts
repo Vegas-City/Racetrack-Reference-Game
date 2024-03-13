@@ -11,7 +11,6 @@ import { ShopController } from './shop/shop-controller'
 import { UserData } from './Server/Helper'
 import { Buildings } from './Buildings/Buildings'
 import { Car } from '@vegascity/racetrack/src/car'
-import { NPCManager } from './NPCs/NPCManager'
 import { AvatarVisibilityManager } from './avatarVisibilityManager'
 import { ParticleSystem } from './particleSystem/particleSystem'
 import { ShopMenu } from './shop/ShopMenu'
@@ -20,25 +19,28 @@ import { InputAction, Material, MeshCollider, MeshRenderer, PointerEventType, Po
 import { DemoManager } from './DemoMode/DemoManager'
 import { CrowdNPC } from './NPCs/crowdNPC'
 import { AudioManager } from './audio/audioManager'
+import { LeaderboardUI } from './UI/leaderboardUI'
+import { ScheduleManager } from './party/scheduleManager'
 
 import * as trackConfig1 from "../data/track_01.json"
 import * as trackConfig2 from "../data/track_02.json"
 import * as trackConfig3 from "../data/track_03.json"
 import * as trackConfig4 from "../data/track_04.json"
 import * as utils from '@dcl-sdk/utils'
-import { ScheduleManager } from './party/scheduleManager'
+import { Config } from '@vegascity/racetrack/src/physics'
+import { Logger } from '@vegascity/vegas-city-logger'
 
 export class Scene {
 
     static loaded: boolean = false
     static shopController: ShopController
-
+    static logger: Logger = new Logger("RACETRACK", engine, Transform, null)
     static LoadBuildings(): void {
         new Buildings()
     }
 
     static LoadScene(): void {
-        setup(movePlayerTo, triggerSceneEmote) 
+        setup(movePlayerTo, triggerSceneEmote)
 
         new ScheduleManager()
         new AudioManager()
@@ -57,6 +59,7 @@ export class Scene {
             debugMode: false,
             eventCallbacks: {
                 onStartEvent: () => {
+                    Scene.logger.minigameStarted("RACETRACK", "RACE_STARTED")
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -76,6 +79,8 @@ export class Scene {
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
+                    Scene.logger.minigameCompleted("RACETRACK", "RACE_COMPLETED")
+                    AudioManager.playMusic(4) // background music
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -104,11 +109,14 @@ export class Scene {
                     }, 5000)
                 },
                 onQuitEvent: () => {
+                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_QUIT")
+                    AudioManager.playMusic(4) // background music
                     RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                     DemoManager.show()
                     CrowdNPC.instance.hide()
                 },
                 onCheckpointEvent: () => {
+                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_CHECKPOINT")
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -120,6 +128,7 @@ export class Scene {
                     })
                 },
                 onLapCompleteEvent: () => {
+                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_LAP_COMPLETE")
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -134,7 +143,7 @@ export class Scene {
 
                     if (TrackManager.isPractice) {
                         if (Math.round(lap.timeElapsed) < 50) {
-                            if(!ServerComms.player.practiceCompleted){
+                            if (!ServerComms.player.practiceCompleted) {
                                 EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
                             }
                             ServerComms.completePractice()
@@ -228,7 +237,8 @@ export class Scene {
         })
 
         new AvatarVisibilityManager()
-        Scene.InitialiseExperimentalMode()
+        new LeaderboardUI(Vector3.create(-46.3, 19, 26.6), Quaternion.fromEulerDegrees(0, -90, 0), Vector3.create(0.6, 0.6, 0.6), 6, 2.05)
+        //Scene.InitialiseExperimentalMode()
 
         Scene.loaded = true
     }
@@ -237,6 +247,13 @@ export class Scene {
         let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
         if (menuTransform) {
             menuTransform.scale = Vector3.One()
+        }
+    }
+
+    static RemoveMenu(): void {
+        let menuTransform = Transform.getMutableOrNull(RaceMenuManager.instance.baseEntity)
+        if (menuTransform) {
+            menuTransform.scale = Vector3.Zero()
         }
     }
 
