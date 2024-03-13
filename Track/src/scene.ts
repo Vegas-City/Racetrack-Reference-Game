@@ -1,5 +1,5 @@
 import { Color4, Quaternion, Vector3 } from '@dcl/sdk/math'
-import { GameMode, TrackManager } from "@vegascity/racetrack/src/racetrack"
+import { InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack"
 import { setup } from "@vegascity/racetrack/src/utils"
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { Minimap } from "@vegascity/racetrack/src/ui"
@@ -42,9 +42,9 @@ export class Scene {
 
         new ScheduleManager()
         new AudioManager()
-        utils.timers.setTimeout(()=>{
+        utils.timers.setTimeout(() => {
             AudioManager.playMusic(4)
-        },2000)
+        }, 2000)
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
@@ -53,8 +53,8 @@ export class Scene {
 
         new DemoManager()
 
+        new InputManager()
         new TrackManager({
-            gameMode: GameMode.RACE,
             position: Vector3.create(-32, 1, 16),
             rotation: Quaternion.fromEulerDegrees(0, 180, 0),
             debugMode: false,
