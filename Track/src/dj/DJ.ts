@@ -31,18 +31,18 @@ export class DJ {
         this.entity = engine.addEntity()
 
         // initialise the transform
-        Transform.create(this.entity, {
+        Transform.createOrReplace(this.entity, {
             position: Utils.coalesce(_config.position, Vector3.Zero()),
             rotation: Utils.coalesce(_config.rotation, Quaternion.Identity()),
             scale: Utils.coalesce(_config.scale, Vector3.One())
         })
-        GltfContainer.create(this.entity, {
+        GltfContainer.createOrReplace(this.entity, {
             src: DJ.GLTF
         })
 
         // create a child entity to act as a collider
         const collider = engine.addEntity()
-        Transform.create(collider, {
+        Transform.createOrReplace(collider, {
             parent: this.entity,
             position: Vector3.create(0.05, 0.875, 0.125),
             scale: Vector3.create(0.45, 1.75, 0.4)
@@ -53,7 +53,7 @@ export class DJ {
     }
 
     initialiseAnimator() {
-        Animator.create(this.entity, {
+        Animator.createOrReplace(this.entity, {
             states: [
                 {
                     clip: "Dance",

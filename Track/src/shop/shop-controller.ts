@@ -108,7 +108,5 @@ export class ShopController {
             console.log('shop is closed, player dont have a wallet')
             return
         }
-
-
     }
 }

@@ -48,7 +48,7 @@ export class Scene {
         Scene.shopController = new ShopController()
         new ShopMenu()
         new ServerComms()
-        Scene.shopController.updateCollection(UserData.cachedData.publicKey)
+        Scene.shopController.updateCollection(UserData.cachedData?.publicKey ?? "")
         Scene.shopController.setupClickables()
 
         new DemoManager()

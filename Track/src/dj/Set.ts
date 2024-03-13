@@ -21,17 +21,17 @@ export class Set {
     /* fields */
 
     // references
-    audioStream: AudioStream
+    audioStream: AudioStream | null
     dj: DJ
     mixTable: MixTable
 
     // config
-    position: Vector3
-    rotation: Quaternion
-    scale: Vector3
-    url: string
-    volume: number
-    showDJ: boolean
+    position: Vector3 = Vector3.Zero()
+    rotation: Quaternion = Quaternion.Identity()
+    scale: Vector3 = Vector3.Zero()
+    url: string = ""
+    volume: number = 1
+    showDJ: boolean = false
 
     iswhiteListed: boolean = false
 
@@ -42,19 +42,19 @@ export class Set {
     // bus
     private messageBus = new MessageBus()
     private hasResetDJ = false
-    private djBaseScale: Vector3 = null
+    private djBaseScale: Vector3 = Vector3.Zero()
 
     /* constructor */
 
     constructor(_config: SetConfig) {
 
         // parse the config
-        this.position = Utils.coalesce(_config.position, Vector3.Zero())
-        this.rotation = Utils.coalesce(_config.rotation, Quaternion.Identity())
-        this.scale = Utils.coalesce(_config.scale, Vector3.One())
-        this.url = Utils.coalesce(_config.url, null)
-        this.volume = Utils.coalesce(_config.volume, 1)
-        this.showDJ = Utils.coalesce(_config.showDJ, true)
+        this.position = _config.position ?? Vector3.Zero()
+        this.rotation = _config.rotation ?? Quaternion.Identity()
+        this.scale = _config.scale ?? Vector3.One()
+        this.url = _config.url ?? ""
+        this.volume = _config.volume ?? 1
+        this.showDJ = _config.showDJ ?? true
 
         // initialise state
         this.intensity = "NORMAL"
@@ -187,41 +187,6 @@ export class Set {
     }
 
     /* methods */
-
-    addControlPad() {
-        this.iswhiteListed = true
-        const controlPad = new ControlPad({
-            position: this.pointToSetSpace(Vector3.create(0, -1.5, 6)),
-            rotation: this.rotationToSetSpace(Quaternion.multiply(Quaternion.fromEulerDegrees(0, 90, 0), Quaternion.fromEulerDegrees(0, 0, 15))),
-            scale: this.scaleToSetSpace(Vector3.create(0.25, 0.25, 0.25))
-        })
-        controlPad.onAction(
-            ((_target) => {
-                return (_action) => {
-                    switch (_action) {
-                        case "ARMS OUT": {
-                            this.messageBus.emit("DJ_RaisedHand", null)
-                        } break
-                        case "HORNS": {
-                            this.messageBus.emit("DJ_TurnTableLoop", null)
-                        } break
-                        default: {
-                            console.log("Unsupported action = " + _action)
-                        }
-                    }
-                }
-            })(this)
-        )
-        controlPad.onIntensity(
-            ((_target) => {
-                return (_intensity) => {
-                    _target.intensity = _intensity
-                    this.messageBus.emit("intensity", { intensity: _intensity })
-                }
-            })(this)
-        )
-    }
-
     onBeat(_isPrimary: boolean, _beat: number): void {
 
         //console.log(_beat + (_isPrimary ? "!" : ""))

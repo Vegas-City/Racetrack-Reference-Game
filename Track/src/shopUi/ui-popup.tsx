@@ -56,7 +56,7 @@ export default class Popup {
                     display: this.visible ? 'flex' : 'none',
                     justifyContent: 'center',
                 }}
-                uiBackground={{ textureMode: "stretch", texture: { src: 'images/ui/wearablesUI/2d_forAnyText.png'  } }}
+                uiBackground={{ textureMode: "stretch", texture: { src: 'images/ui/wearablesUI/2d_forAnyText.png' } }}
             >
                 <UiEntity
                     uiTransform={{
@@ -93,7 +93,7 @@ export default class Popup {
 
     public show(text: string) {
         let paragraphs = text.split("\n");
-        let lines = [];
+        let lines: string[] = [];
 
         for (let str of paragraphs) {
             while (str.length > 0) {
@@ -120,7 +120,7 @@ export default class Popup {
 
     public hide() {
         utils.timers.setTimeout(() => {
-            
+
             this._currentText = "";
             this.visible = false;
         }, 200)

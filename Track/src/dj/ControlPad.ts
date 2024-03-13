@@ -26,10 +26,10 @@ class ControlPadLCDCharacter {
         this.entity = engine.addEntity()
 
         // set up the transform
-        Transform.create(this.entity, {
-            parent: Utils.coalesce(_config.parent, null),
+        Transform.createOrReplace(this.entity, {
+            parent: Utils.coalesce(_config.parent, undefined),
             position: Utils.coalesce(_config.position, Vector3.Zero()),
-            rotation: Quaternion.multiply(Utils.coalesce(_config.rotation, Quaternion.Identity()), Quaternion.fromEulerDegrees(0, 0, -90)),
+            rotation: Quaternion.multiply(_config.rotation ?? Quaternion.Identity(), Quaternion.fromEulerDegrees(0, 0, -90)),
             scale: Utils.coalesce(_config.scale, Vector3.One())
         })
 
@@ -80,7 +80,7 @@ class ControlPadLCD {
     constructor(_config: ControlPadLCDConfig) {
 
         // parse the config
-        _config.parent = Utils.coalesce(_config.parent, null)
+        _config.parent = Utils.coalesce(_config.parent, undefined)
         _config.position = Utils.coalesce(_config.position, Vector3.Zero())
         _config.rotation = Utils.coalesce(_config.rotation, Quaternion.Identity())
         _config.scale = Utils.coalesce(_config.scale, Vector3.One())
@@ -90,13 +90,13 @@ class ControlPadLCD {
 
         // create the characters
         this.characters = []
-        for (let i = 0; i < _config.characterCount; i++) {
+        for (let i = 0; i < (_config.characterCount ?? 0); i++) {
 
             // create the new character and register it
-            const offset = ((_config.characterCount - 1) / 2) - i
+            const offset = (((_config.characterCount ?? 0) - 1) / 2) - i
             const character = new ControlPadLCDCharacter({
                 parent: _config.parent,
-                position: Vector3.add(_config.position, Vector3.create(0, 0, offset * (_config.scale.x + (_config.scale.x * _config.characterSpacing)))),
+                position: Vector3.add(_config.position ?? Vector3.Zero(), Vector3.create(0, 0, offset * ((_config.scale?.x ?? 0) + ((_config.scale?.x ?? 0) * (_config.characterSpacing ?? 0))))),
                 rotation: _config.rotation,
                 scale: _config.scale
             })
@@ -104,7 +104,7 @@ class ControlPadLCD {
         }
 
         // set the initial value
-        this.setValue(_config.value)
+        this.setValue(_config.value ?? 0)
     }
 
     /* methods */
@@ -164,14 +164,14 @@ export class ControlPad {
         this.entity = engine.addEntity()
 
         // initialise the transform
-        const transform = Transform.create(this.entity, {
+        const transform = Transform.createOrReplace(this.entity, {
             position: Utils.coalesce(_config.position, Vector3.Zero()),
             rotation: Utils.coalesce(_config.rotation, Quaternion.Identity()),
             scale: Utils.coalesce(_config.scale, Vector3.One())
         })
 
         // initialise the shape
-        GltfContainer.create(this.entity, {
+        GltfContainer.createOrReplace(this.entity, {
             src: ControlPad.GLTF
         })
 
@@ -220,22 +220,22 @@ export class ControlPad {
 
         // show a beat tracker above the control pad
         this.beatDisplayEntity = engine.addEntity()
-        Transform.create(this.beatDisplayEntity, {
+        Transform.createOrReplace(this.beatDisplayEntity, {
             parent: this.entity,
             position: Vector3.create(1.2, 1.2, 0),
             rotation: Quaternion.multiply(Utils.getInverseQuaternion(transform.rotation), Quaternion.fromEulerDegrees(0, 180, 0)),
             scale: Vector3.create(0.75, 0.75, 0.75)
         })
-        TextShape.create(this.beatDisplayEntity, {
+        TextShape.createOrReplace(this.beatDisplayEntity, {
             text: "<size=150%>1</b>",
             font: Font.F_SANS_SERIF,
             outlineColor: Color3.create(0, 0, 0),
             outlineWidth: 0.25
         })
-        Billboard.create(this.beatDisplayEntity)
+        Billboard.createOrReplace(this.beatDisplayEntity)
 
         // set up the click events
-        PointerEvents.create(this.entity, {
+        PointerEvents.createOrReplace(this.entity, {
             pointerEvents: [
                 {
                     eventType: PointerEventType.PET_DOWN,
@@ -256,7 +256,7 @@ export class ControlPad {
                 this.entity
             )
             if (cmd) {
-                switch (cmd.hit.meshName.toLowerCase()) {
+                switch (cmd.hit?.meshName?.toLowerCase()) {
                     case "btnapplytempo": {
                         SyncSystem.getInstance().setBPM(this.bpm)
                         this.messageBus.emit("djSetBPM", { bpm: this.bpm, timestamp: new Date().getTime(), beatNumber: 0 })
@@ -326,7 +326,7 @@ export class ControlPad {
                         // ignore - non interactive
                     } break
                     default: {
-                        console.log("Unrecognised button = " + cmd.hit.meshName)
+                        console.log("Unrecognised button = " + cmd.hit?.meshName)
                     } break
                 }
             }

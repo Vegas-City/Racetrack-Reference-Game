@@ -352,6 +352,7 @@ export class EventUIImage {
                 return "msg_unlockedCar2.png"
             case 3:
                 return "msg_unlockedCar3.png"
+            default: return ""
         }
     }
 

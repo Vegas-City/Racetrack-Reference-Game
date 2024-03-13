@@ -1,6 +1,6 @@
 import { AnimatorState } from "./AnimatorState"
 import { IAnimatorState } from "./IAnimatorState"
-import { Animator, Entity, PBAnimationState } from "@dcl/ecs";
+import { Animator, Entity } from "@dcl/ecs";
 
 export class AnimatorController {
 
@@ -15,7 +15,7 @@ export class AnimatorController {
     states: IAnimatorState
 
     // runtime
-    activeState: string
+    activeState: string | null
 
     /* constructor */
 
@@ -26,7 +26,7 @@ export class AnimatorController {
         // check if the entity has an Animator - if not, create one
         const animator = Animator.getMutableOrNull(this.entity)
         if (animator === undefined || animator === null) {
-            Animator.create(this.entity, {
+            Animator.createOrReplace(this.entity, {
                 states: []
             })
         }
@@ -44,7 +44,7 @@ export class AnimatorController {
     addState(_name: string, _startFrame: number, _endFrame: number, _beats?: number, _leadFrames?: number, _tailFrames?: number, _offsetFrames?: number): AnimatorController {
 
         // grab the clip
-        let clip: PBAnimationState = Animator.getClipOrNull(this.entity, _name)
+        let clip = Animator.getClipOrNull(this.entity, _name)
         if (clip === undefined || clip === null) {
             clip = { clip: _name }
             Animator.getMutable(this.entity).states = Animator.getMutable(this.entity).states.concat(clip)
@@ -58,7 +58,9 @@ export class AnimatorController {
         clip.loop = false
 
         // set up the new state
-        this.states[_name] = new AnimatorState(this.entity, _name, _startFrame, _endFrame, _beats, _leadFrames, _tailFrames, _offsetFrames)
+        if (this.states) {
+            this.states[_name] = new AnimatorState(this.entity, _name, _startFrame, _endFrame, _beats, _leadFrames, _tailFrames, _offsetFrames)
+        }
 
         // return self for chaining
         return this
@@ -73,7 +75,7 @@ export class AnimatorController {
         return false
     }
 
-    play(_name: string, _takePriority: boolean = false): AnimatorController {
+    play(_name: string, _takePriority: boolean = false): void {
 
         // handle priorities
         if (!_takePriority) {
@@ -86,10 +88,9 @@ export class AnimatorController {
         //this.states[_name].weight = this.hasPlayingState() ? this.states[_name].weight : 1
         this.states[_name].isLooping = false
         this.states[_name].play()
-        return this
     }
 
-    loop(_name: string, _takePriority: boolean = false, _nativeLoop: boolean = false): AnimatorController {
+    loop(_name: string, _takePriority: boolean = false, _nativeLoop: boolean = false): void {
 
         // handle priorities
         if (!_takePriority) {
@@ -98,16 +99,12 @@ export class AnimatorController {
             }
         }
 
-        //this.states[_name].weight = this.hasPlayingState() ? this.states[_name].weight : 1
-        this.states[_name].isLooping = true
-        if (true || _nativeLoop) {
+        if (this.states) {
+            //this.states[_name].weight = this.hasPlayingState() ? this.states[_name].weight : 1
+            this.states[_name].isLooping = true
             this.states[_name].loop()
+            this.activeState = _name
         }
-        else {
-            this.states[_name].play()
-        }
-        this.activeState = _name
-        return this
     }
 
     stop(_name: string): AnimatorController {

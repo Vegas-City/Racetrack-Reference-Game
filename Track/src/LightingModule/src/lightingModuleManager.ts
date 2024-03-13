@@ -61,7 +61,7 @@ export class LightingModuleManager {
             EmitterPattern.search | EmitterPattern.flicker
         ]
 
-        let currentPattern: EmitterPattern = null
+        let currentPattern: EmitterPattern | null = null
         let currentTimeOffset: boolean = false
         let colorMode: number = 0 // 0 = set color on pattern change, 1 = alternating colours, 2 = moving gradient
         let colorOffset: number = 0
@@ -81,10 +81,10 @@ export class LightingModuleManager {
                     if (_isPrimary) {
                         colorMode = Math.floor(Math.random() * 3 - 0.0001)
                         colorOffset = Math.floor(Math.random() * colorBank.length - 0.0001)
-                        let pattern = Math.random() > 0.5 ? Utils.getRandomItem(patterns) : null
+                        let pattern = (Math.random() > 0.5 ? Utils.getRandomItem(patterns) : null) ?? 0
                         console.log(pattern)
                         let setTimeOffset = Utils.hasFlag(pattern, EmitterPattern.burst) ? Math.random() < 0.75 : Math.random() < 0.25
-                        if (Utils.hasFlag(currentPattern, EmitterPattern.burst)) {
+                        if (currentPattern && Utils.hasFlag(currentPattern, EmitterPattern.burst)) {
                             if (currentTimeOffset) {
                                 setTimeOffset = false
                                 pattern = currentPattern
@@ -93,8 +93,10 @@ export class LightingModuleManager {
                                 pattern = currentPattern
                             }
                         }
-                        while (Utils.hasFlag(currentPattern, EmitterPattern.off) && (pattern === null || Utils.hasFlag(pattern, EmitterPattern.off))) {
-                            pattern = Math.random() > 0.5 ? Utils.getRandomItem(patterns) : null
+                        if (currentPattern) {
+                            while (Utils.hasFlag(currentPattern, EmitterPattern.off) && (pattern === null || Utils.hasFlag(pattern, EmitterPattern.off))) {
+                                pattern = (Math.random() > 0.5 ? Utils.getRandomItem(patterns) : null) ?? 0
+                            }
                         }
                         let i: number = 0
                         for (let emitter of Emitter.instances) {
@@ -189,29 +191,12 @@ export class LightingModuleManager {
         colorBank.push(Color3.fromHexString("#ac163f"))
         colorBank.push(Color3.fromHexString("#e62a3d"))
 
-        //const staticEmitter1 = new Emitter(
-        //    Vector3.create(37.7931, 23.1432, 64 - 36.5664),
-        //    Quaternion.fromEulerDegrees(35, 0, 0),
-        //    false
-        //)
-        //staticEmitter1.useBob = false
-        //staticEmitter1.useKickback = false
-        //staticEmitter1.setBeamLength(8)
-        //const staticEmitter2 = new Emitter(
-        //    Vector3.create(64 - 37.7931, 23.1432, 64 - 36.5664),
-        //    Quaternion.fromEulerDegrees(35, 0, 0),
-        //    false
-        //)
-        //staticEmitter2.useBob = false
-        //staticEmitter2.useKickback = false
-        //staticEmitter2.setBeamLength(8)
-
         //const djEmitterCount = 0
         const djEmitterCount = 6
-        const djPosition: Vector3 = Vector3.create(76-3, 16, 71+1.2)
+        const djPosition: Vector3 = Vector3.create(76 - 3, 16, 71 + 1.2)
 
         let parent: Entity = engine.addEntity()
-        Transform.create(parent, {position:djPosition, rotation: Quaternion.fromEulerDegrees(50,-73,0)})
+        Transform.createOrReplace(parent, { position: djPosition, rotation: Quaternion.fromEulerDegrees(50, -73, 0) })
         const emitterSpacing: number = 2
         for (let i = 0; i < djEmitterCount; i++) {
 
@@ -223,27 +208,11 @@ export class LightingModuleManager {
 
             let emitter: Emitter = new Emitter(
                 parent,
-                Vector3.create((emitterSpacing * djEmitterCount / 2) + (i * emitterSpacing) + shiftEmitter,Math.sin(Math.PI * i / (djEmitterCount - 1)) * 2, Math.sin(Math.PI * i / (djEmitterCount - 1)) * 1),
+                Vector3.create((emitterSpacing * djEmitterCount / 2) + (i * emitterSpacing) + shiftEmitter, Math.sin(Math.PI * i / (djEmitterCount - 1)) * 2, Math.sin(Math.PI * i / (djEmitterCount - 1)) * 1),
                 Quaternion.fromEulerDegrees(-60, 0, 0)
             )
             emitter.timeOffset = (1 * 60 / SyncSystem.getInstance().getBPM()) * Math.floor(Math.abs((djEmitterCount - 1) / 2 - i)) / Math.floor((djEmitterCount - 1) / 2)
         }
-
-        const djBeamLength = 30
-        const djEmitterPitch = 120
-        const djEmitterYaw = 30
-
-        //let djEmitter1: Emitter = new Emitter(Vector3.create(38, 20, -10), Quaternion.multiply(Quaternion.fromEulerDegrees(0, 90 - djEmitterYaw, 0), Quaternion.fromEulerDegrees(djEmitterPitch, 0, 0)))
-        //djEmitter1.setBeamLength(djBeamLength)
-
-        //let djEmitter2: Emitter = new Emitter(Vector3.create(26, 20, -10), Quaternion.multiply(Quaternion.fromEulerDegrees(0, -90 + djEmitterYaw, 0), Quaternion.fromEulerDegrees(djEmitterPitch, 0, 0)))
-        //djEmitter2.setBeamLength(djBeamLength)
-
-        //let djEmitter3: Emitter = new Emitter(Vector3.create(38, 22, -42), Quaternion.multiply(Quaternion.fromEulerDegrees(0, 180 - djEmitterYaw, 0), Quaternion.fromEulerDegrees(djEmitterPitch, 0, 0)))
-        //djEmitter3.setBeamLength(djBeamLength)
-
-        //let djEmitter4: Emitter = new Emitter(Vector3.create(26, 22, -42), Quaternion.multiply(Quaternion.fromEulerDegrees(0, -180 + djEmitterYaw, 0), Quaternion.fromEulerDegrees(djEmitterPitch, 0, 0)))
-        //djEmitter4.setBeamLength(djBeamLength)
 
         // "game loop" for the scene
         const targetDeltaRot: number = 70

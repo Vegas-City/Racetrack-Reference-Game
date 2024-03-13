@@ -33,11 +33,13 @@ export class Particle {
         transform.position = _position
         transform.scale = Vector3.create(this.size, this.size, this.size)
 
-        let base: Entity = Car.instances[0].data.carEntity
+        let base = Car.instances[0].data.carEntity
 
-        let baseTransform = Transform.getMutableOrNull(base)
-        if (baseTransform) {
-            this.originalY = Quaternion.toEulerAngles(baseTransform.rotation).y
+        if (base) {
+            let baseTransform = Transform.getMutableOrNull(base)
+            if (baseTransform) {
+                this.originalY = Quaternion.toEulerAngles(baseTransform.rotation).y
+            }
         }
 
         transform.rotation = Quaternion.fromEulerDegrees(Math.random() * 360, Math.random() * 360, Math.random() * 360)

@@ -29,8 +29,8 @@ export class PodiumNPCs {
             if (this.leaderboard.playerScores.size > 0) {
                 let index: number = 0
                 for (let player of this.leaderboard.playerScores.keys()) {
-                    let name = this.leaderboard.playerScores.get(player).name
-                    let totalScore = this.leaderboard.playerScores.get(player).totalScore
+                    let name = this.leaderboard.playerScores.get(player)?.name ?? ""
+                    let totalScore = this.leaderboard.playerScores.get(player)?.totalScore ?? 0
 
                     if (index == 0) {
                         this.gold.updateText(name, totalScore)
