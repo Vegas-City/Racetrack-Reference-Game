@@ -269,7 +269,7 @@ export class EventUIImage {
                 }
             });
 
-            if (newPB < oldPB && oldPB != 0) {
+            if (newPB < oldPB) {
                 EventUIImage.pointIncrease = -1 // We'll use this later
             }
         }
