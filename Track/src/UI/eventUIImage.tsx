@@ -237,7 +237,7 @@ export class EventUIImage {
         EventUIImage.eventsShownOrWaiting += 1
     }
 
-    static comparePlayerData(_trackGuid: string) {
+    static comparePlayerData(_trackGuid: string, _carGuid: string) {
 
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
@@ -248,15 +248,23 @@ export class EventUIImage {
 
             EventUIImage.oldPlayerData.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
-                    oldPB = track.pb
+                    for (let carPB of track.carPbsPerTrack) {
+                        if (carPB.car == _carGuid) {
+                            oldPB = carPB.PB
+                        }
+                    }
                 }
             });
 
             ServerComms.player.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
-                    newPB = track.pb
-                    if (track.pb < track.targetTimeToUnlockNextTrack) {
-                        newPB = -1 // we want it to say "well done" when we get the qualification time or lower, even if we don't break our PB
+                    for (let carPB of track.carPbsPerTrack) {
+                        if (carPB.car == _carGuid) {
+                            newPB = carPB.PB
+                            if (newPB < track.targetTimeToUnlockNextTrack) {
+                                newPB = -1 // we want it to say "well done" when we get the qualification time or lower, even if we don't break our PB
+                            }
+                        }
                     }
                 }
             });
