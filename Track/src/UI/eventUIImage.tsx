@@ -238,9 +238,6 @@ export class EventUIImage {
     }
 
     static comparePlayerData(_trackGuid: string, _carGuid: string) {
-        let numberOfCarsForCurrentTrack_old: number = 0
-        let numberOfCarsForCurrentTrack_new: number = 0
-
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
         if (EventUIImage.pointIncrease == 0) {
@@ -250,7 +247,6 @@ export class EventUIImage {
 
             EventUIImage.oldPlayerData.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
-                    numberOfCarsForCurrentTrack_old = track.cars.length
                     for (let carPB of track.carPbsPerTrack) {
                         if (carPB.car == _carGuid) {
                             oldPB = carPB.PB
@@ -261,7 +257,6 @@ export class EventUIImage {
 
             ServerComms.player.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
-                    numberOfCarsForCurrentTrack_new = track.cars.length
                     for (let carPB of track.carPbsPerTrack) {
                         if (carPB.car == _carGuid) {
                             newPB = carPB.PB
@@ -281,7 +276,26 @@ export class EventUIImage {
         EventUIImage.triggerEvent(EventUIEnum.endEvent)
 
         // Check for track unlock
-        if (numberOfCarsForCurrentTrack_new > numberOfCarsForCurrentTrack_old) {
+        let numberOfTracksUnlockedForCurrentCar_old: number = 0
+        let numberOfTracksUnlockedForCurrentCar_new: number = 0
+
+        for (let track of EventUIImage.oldPlayerData.tracks) {
+            for (let car of track.cars) {
+                if (car.guid == _carGuid) {
+                    numberOfTracksUnlockedForCurrentCar_old++
+                }
+            }
+        }
+
+        for (let track of ServerComms.player.tracks) {
+            for (let car of track.cars) {
+                if (car.guid == _carGuid) {
+                    numberOfTracksUnlockedForCurrentCar_new++
+                }
+            }
+        }
+
+        if (numberOfTracksUnlockedForCurrentCar_new > numberOfTracksUnlockedForCurrentCar_old) {
             EventUIImage.triggerEvent(EventUIEnum.newTrackEvent)
         }
 
