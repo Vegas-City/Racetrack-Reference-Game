@@ -85,6 +85,8 @@ export class Scene {
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
+                    let trackToCompare:string = String(ServerComms.currentTrack)
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -92,7 +94,7 @@ export class Scene {
                         time: Math.round(lap.timeElapsed * 1000)
                     }).then(() => {
                         ServerComms.setTrack(ServerComms.currentTrack)
-                        ServerComms.getPlayerData(true)
+                        ServerComms.getPlayerData(true,trackToCompare)
                     })
 
                     // Send the ghost to the server at game end
