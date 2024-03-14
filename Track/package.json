@@ -25,7 +25,7 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@vegascity/racetrack": "^1.0.112",
+    "@vegascity/racetrack": "^1.0.113",
     "@vegascity/vegas-city-logger": "^3.0.10",
     "dcl-npc-toolkit": "^1.2.2",
     "show-manager": "^1.0.8"
