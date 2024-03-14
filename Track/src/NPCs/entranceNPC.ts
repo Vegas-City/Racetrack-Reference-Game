@@ -35,12 +35,11 @@ export class EntranceNPC {
                     npc.playAnimation(this.entranceNPC, "Idle")
                 },
                 faceUser: true,
-                reactDistance: 3,
                 idleAnim: 'idle1',
                 walkingAnim: 'walk1',
                 hoverText: 'Talk',
                 continueOnWalkAway: true,
-                onlyClickTrigger: false,
+                onlyClickTrigger: true,
                 onlyExternalTrigger: false,
                 darkUI: true,
                 portrait: "images/portraits/entrance_crop.png"
