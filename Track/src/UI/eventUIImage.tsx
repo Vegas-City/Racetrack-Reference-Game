@@ -227,12 +227,12 @@ export class EventUIImage {
                     EventUIImage.imageSource = this.getNewTrackEventImage()
                     break
             }
-        }, (EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting) + (_event == EventUIEnum.preEvent ? 2000 : 0))
+        }, EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting)
 
         utils.timers.setTimeout(() => {
             EventUIImage.eventVisibility = false
             EventUIImage.eventsShownOrWaiting -= 1
-        }, EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting + EventUIImage.notificationTime)
+        }, (EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting) + EventUIImage.notificationTime + (_event == EventUIEnum.preEvent ? 2000 : 0))
 
         EventUIImage.eventsShownOrWaiting += 1
     }
