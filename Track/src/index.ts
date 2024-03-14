@@ -18,75 +18,21 @@ const passwordDev: string = "letsgodev"
 
 export function main() {
   setupUi()
- 
+
   // wait for the realm and user data to be available
   Helper.init(() => {
 
-    new IntervalLogger("RACETRACK",ecs.engine,ecs.Transform,10)
+    new IntervalLogger("RACETRACK", ecs.engine, ecs.Transform, 10)
 
     UserData.getUserData(() => {
       executeTask(async () => {
-        const { realmInfo } = await getRealm({})
-        if (realmInfo != undefined) {
-          console.log(`You are in the realm: `, realmInfo.realmName)
-          if (realmInfo.isPreview) {
-            Scene.LoadBuildings()
-            utils.timers.setTimeout(() => {
-              Scene.LoadScene()
-              new PartyManager()
-              DebugUI.debugUIShow = true
-            }, 1500)
-          }
-          else {
-            Scene.LoadBuildings()
-            utils.timers.setTimeout(() => {
-              Scene.LoadScene()
-              if (passwordProtected) {
-                showPrompt()
-              }
-              else {
-                new PartyManager()
-              }
-            }, 1500)
-          }
-        }
+        Scene.LoadBuildings()
+        utils.timers.setTimeout(() => {
+          Scene.LoadScene()
+          new PartyManager()
+        }, 1500)
       })
     })
+
   })
-
-  function showPrompt() {
-    const prompt = ui.createComponent(ui.FillInPrompt, {
-      title: 'Enter password',
-      onAccept: (value: string) => {
-        if (value.toLocaleLowerCase() == password) {
-          prompt.hide()
-        } else if (value.toLocaleLowerCase() == passwordDev) {
-          prompt.hide()
-          utils.timers.setTimeout(function () {
-            new PartyManager()
-            DebugUI.debugUIShow = true
-          }, 1000)
-        }
-      }
-    })
-
-    prompt.inputElement.onChange = (value: string) => {
-      if (value.toLocaleLowerCase() == password) {
-        prompt.hide()
-        utils.timers.setTimeout(function () {
-          new PartyManager()
-          prompt.hide()
-        }, 1000)
-      } else if (value.toLocaleLowerCase() == passwordDev) {
-        prompt.hide()
-        utils.timers.setTimeout(function () {
-          new PartyManager()
-          prompt.hide()
-          DebugUI.debugUIShow = true
-        }, 1000)
-      }
-    }
-
-    prompt.show()
-  }
 }
