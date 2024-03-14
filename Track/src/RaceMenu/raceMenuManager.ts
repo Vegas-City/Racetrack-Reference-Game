@@ -483,7 +483,7 @@ export class RaceMenuManager {
 
             let self = this
             let trackNumber = RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex
-            AudioManager.playMusic(trackNumber)
+            AudioManager.playMusic(Math.max(0, trackNumber - 1))
             RaceMenuManager.LoadTrack(trackNumber)
             utils.timers.setTimeout(() => {
                 RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()

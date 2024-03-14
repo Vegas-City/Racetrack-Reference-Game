@@ -112,7 +112,7 @@ export class ServerComms {
         }
     }
 
-    public static async getPlayerData(_raceEnded: boolean = false, _trackToCompare:string = "") {
+    public static async getPlayerData(_raceEnded: boolean = false, _trackToCompare: string = "") {
         if (ServerComms.TEST_MODE) {
             ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
             RaceMenuManager.update()

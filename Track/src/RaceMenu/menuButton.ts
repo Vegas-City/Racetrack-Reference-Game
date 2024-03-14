@@ -24,7 +24,7 @@ export type MenuConfig = {
 }
 
 export class MenuButton {
-    private static readonly SHOW_BUTTON_MESH: boolean = false
+    private static readonly TOOLTIP_DEATH_TIME: number = 10
 
     animSpeed: number = 1.2
     isScalingUp: boolean = false
@@ -42,6 +42,8 @@ export class MenuButton {
     whiteCup?: Entity
     goldCup?: Entity
     tooltip?: Entity
+    tooltipHoverAlive: boolean = false
+    tooltipAliveTime: number = 0
 
     selected: boolean = false
     locked: boolean = false
@@ -70,7 +72,6 @@ export class MenuButton {
             rotation: _config.rotation,
             scale: _config.scale
         })
-        //if (MenuButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
         PointerEvents.createOrReplace(this.buttonEntity, {
             pointerEvents: [
@@ -189,6 +190,7 @@ export class MenuButton {
             if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_ENTER, this.buttonEntity)) {
                 if (this.locked) {
                     if (this.tooltip) {
+                        this.tooltipHoverAlive = true
                         let tooltipTransform = Transform.getMutableOrNull(this.tooltip)
                         if (tooltipTransform) {
                             tooltipTransform.scale = Vector3.create(3.5, 3.5, 3.5)
@@ -203,6 +205,7 @@ export class MenuButton {
             if (inputSystem.isTriggered(InputAction.IA_POINTER, PointerEventType.PET_HOVER_LEAVE, this.buttonEntity)) {
                 if (this.locked) {
                     if (this.tooltip) {
+                        this.tooltipHoverAlive = false
                         let tooltipTransform = Transform.getMutableOrNull(this.tooltip)
                         if (tooltipTransform) {
                             tooltipTransform.scale = Vector3.Zero()
@@ -224,6 +227,33 @@ export class MenuButton {
                 else {
                     let newScale = 1 + Math.max(0, (currentScale - this.animSpeed * dt))
                     parentTransform.scale = Vector3.create(newScale, newScale, newScale)
+                }
+            }
+
+            if (this.tooltip) {
+                // hide tooltip when unlocked
+                if (this.locked == false) {
+                    let tooltipTransform = Transform.getMutableOrNull(this.tooltip)
+                    if (tooltipTransform) {
+                        tooltipTransform.scale = Vector3.Zero()
+                    }
+                }
+
+                // handle tooltip death
+                if (this.tooltipHoverAlive) {
+                    this.tooltipAliveTime += dt
+                    if (this.tooltipAliveTime > MenuButton.TOOLTIP_DEATH_TIME) {
+                        this.tooltipHoverAlive = false
+                        this.tooltipAliveTime = 0
+                        
+                        let tooltipTransform = Transform.getMutableOrNull(this.tooltip)
+                        if (tooltipTransform) {
+                            tooltipTransform.scale = Vector3.Zero()
+                        }
+                    }
+                }
+                else {
+                    this.tooltipAliveTime = 0
                 }
             }
         })
