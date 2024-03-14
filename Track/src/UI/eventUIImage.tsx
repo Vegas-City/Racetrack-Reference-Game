@@ -227,7 +227,7 @@ export class EventUIImage {
                     EventUIImage.imageSource = this.getNewTrackEventImage()
                     break
             }
-        }, EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting)
+        }, (EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting) + (_event == EventUIEnum.preEvent ? 2000 : 0))
 
         utils.timers.setTimeout(() => {
             EventUIImage.eventVisibility = false
