@@ -112,7 +112,7 @@ export class ServerComms {
         }
     }
 
-    public static async getPlayerData(_raceEnded: boolean = false, _trackToCompare: string = "") {
+    public static async getPlayerData(_raceEnded: boolean = false) {
         if (ServerComms.TEST_MODE) {
             ServerComms.player = Object.assign(new PlayerData(), JSON.parse(JSON.stringify(examplePlayerData.result)))
             RaceMenuManager.update()
@@ -136,7 +136,7 @@ export class ServerComms {
                         RaceMenuManager.update()
                         CarSpecsMenuManager.update()
                         if (_raceEnded) {
-                            EventUIImage.comparePlayerData(_trackToCompare)
+                            EventUIImage.comparePlayerData(ServerComms.currentTrack, ServerComms.currentCar)
                         }
                         ShopMenu.items.forEach(wearable => {
                             wearable.unlock(ServerComms.player.points)
