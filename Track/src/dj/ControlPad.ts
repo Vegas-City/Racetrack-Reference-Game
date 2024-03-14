@@ -5,7 +5,6 @@ import { SyncSystem } from "./SyncSystem"
 import { TransformConfig } from "./TransformConfig"
 import { Utils } from "./Utils"
 import { Color3, Quaternion, Vector3 } from "@dcl/sdk/math"
-import { MessageBus } from '@dcl/sdk/message-bus'
 
 /* private types */
 
@@ -155,8 +154,6 @@ export class ControlPad {
     private onActionListeners: ((_action: ControlPadAction) => void)[] = []
     private onIntensityListeners: ((_intensity: ControlPadIntensity) => void)[] = []
 
-    private messageBus = new MessageBus()
-
     /* constructor */
 
     constructor(_config: TransformConfig) {
@@ -183,7 +180,6 @@ export class ControlPad {
                 return (_bpm: number): void => {
                     _target.bpm = _bpm
                     _target.tempoDisplay.setValue(this.bpm)
-                    this.messageBus.emit("djSetBPM", { bpm: this.bpm, timestamp: new Date().getTime() - (3 * 60 / _target.bpm * 1000) })
                 }
             })(this))
         this.bpmNoteFraction = syncSystem.getBPMNoteFraction()
@@ -259,7 +255,6 @@ export class ControlPad {
                 switch (cmd.hit?.meshName?.toLowerCase()) {
                     case "btnapplytempo": {
                         SyncSystem.getInstance().setBPM(this.bpm)
-                        this.messageBus.emit("djSetBPM", { bpm: this.bpm, timestamp: new Date().getTime(), beatNumber: 0 })
                     } break
                     case "btnapplytimesignature": {
                         SyncSystem.getInstance().setTimeSignature(this.beatsPerBar, this.beatUnit)

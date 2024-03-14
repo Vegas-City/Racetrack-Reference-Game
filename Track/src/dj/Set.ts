@@ -2,7 +2,6 @@
 
 import { AnimatorSystem } from "./AnimatorSystem"
 import { AudioStream } from "./AudioStream"
-import { ControlPad } from "./ControlPad"
 import { ControlPadIntensity } from "./ControlPad"
 import { DJ } from "./DJ"
 import { MixTable } from "./MixTable"
@@ -11,7 +10,6 @@ import { SyncSystem } from "./SyncSystem"
 import { Utils } from "./Utils"
 import { Quaternion, Vector3 } from "@dcl/sdk/math"
 import { Transform, engine } from "@dcl/sdk/ecs"
-import { MessageBus } from "@dcl/sdk/message-bus"
 import * as utils from '@dcl-sdk/utils'
 
 /* class definition */
@@ -40,7 +38,6 @@ export class Set {
     bpmBeenSet: boolean = false
 
     // bus
-    private messageBus = new MessageBus()
     private hasResetDJ = false
     private djBaseScale: Vector3 = Vector3.Zero()
 
@@ -105,28 +102,6 @@ export class Set {
         // hook into beat detection
         SyncSystem.getInstance().onBeat(((_target) => (_isPrimary: boolean, _beat: number) => _target.onBeat(_isPrimary, _beat))(this))
 
-        this.messageBus.on("djSetBPM", (_value: any, _sender: string) => {
-            this.bpmBeenSet = true
-            SyncSystem.getInstance().setBPM(_value.bpm).setLastBeat(_value.timestamp, _value.beatNumber)
-            if (this.dj !== undefined && this.dj !== null && !this.hasResetDJ) {
-                this.hasResetDJ = true
-                utils.timers.setTimeout(() => {
-                    let djTransform = Transform.getMutableOrNull(this.dj.entity)
-                    if (djTransform) {
-                        djTransform.scale = this.djBaseScale
-                    }
-                    this.dj.initialiseAnimator()
-                    if (this.dj.animator !== undefined && this.dj.animator !== null) {
-                        this.dj.animator.loop("DJ_TurnTableLoop", false)
-                        console.log("looping DJ_TurnTableLoop")
-                    }
-                    else {
-                        console.log("unable to DJ_TurnTableLoop")
-                    }
-                }, 10000)
-            }
-        })
-
         if (this.showDJ) {
             utils.timers.setTimeout(() => {
                 ((_target: Set) => {
@@ -152,38 +127,6 @@ export class Set {
                 })(this)
             }, 15000)
         }
-
-        this.messageBus.on("djGetBPM", (_value: any, _sender: string) => {
-            if (this.iswhiteListed && this.bpmBeenSet) {
-                this.messageBus.emit("djSetBPM", { bpm: SyncSystem.getInstance().getBPM(), timestamp: new Date().getTime() })
-            }
-        })
-
-        this.messageBus.on("armsOut", (_value: any, _sender: string) => {
-            if (this.intensity === "OFF" || this.dj.animator === undefined || this.dj.animator === null) {
-                return
-            }
-            if (this.dj !== undefined && this.dj !== null) {
-                this.dj.animator.play("ArmsOut", true)
-            }
-        })
-
-        this.messageBus.on("horns", (_value: any, _sender: string) => {
-            if (this.intensity === "OFF" || this.dj.animator === undefined || this.dj.animator === null) {
-                return
-            }
-            if (this.dj !== undefined && this.dj !== null) {
-                this.dj.animator.play("Horns", true)
-            }
-        })
-
-        this.messageBus.on("intensity", (_value: any, _sender: string) => {
-            this.intensity = _value.intensity
-        })
-
-        utils.timers.setTimeout(() => {
-            this.messageBus.emit("djGetBPM", { bpm: SyncSystem.getInstance().getBPM(), timestamp: new Date().getTime() })
-        }, 1000)
     }
 
     /* methods */
