@@ -39,7 +39,7 @@ export class CarSpecsButton {
             rotation: _config.rotation,
             scale: _config.scale
         })
-        if (CarSpecsButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
+        if (CarSpecsButton.SHOW_BUTTON_MESH) MeshRenderer.setSphere(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
         PointerEvents.createOrReplace(this.buttonEntity, {
             pointerEvents: [

@@ -30,7 +30,7 @@ export class AudioEntity {
                 volume: _volume,
                 loop: _followPlayer
             })
-            MeshRenderer.setBox(entity)
+            MeshRenderer.setSphere(entity)
             this.entities.push(entity)
         }
     }

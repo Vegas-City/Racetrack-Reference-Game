@@ -70,7 +70,7 @@ export class MenuButton {
             rotation: _config.rotation,
             scale: _config.scale
         })
-        if (MenuButton.SHOW_BUTTON_MESH) MeshRenderer.setBox(this.buttonEntity)
+        if (MenuButton.SHOW_BUTTON_MESH) MeshRenderer.setSphere(this.buttonEntity)
         MeshCollider.setBox(this.buttonEntity)
         PointerEvents.createOrReplace(this.buttonEntity, {
             pointerEvents: [
