@@ -96,7 +96,10 @@ export class AvatarVisibilityManager {
     }
 
     private static update(_dt: number): void {
-        let inside = Car.instances.length > 0 && Car.instances[0].data?.occupied
+        let activeCar = Car.getActiveCar()
+        if(!activeCar) return
+
+        let inside = activeCar.data?.occupied
         if (!AvatarVisibilityManager.insideCar && inside) {
             AvatarVisibilityManager.hideAll()
         }

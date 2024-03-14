@@ -2,7 +2,6 @@ import { Scene } from "./scene";
 import { setupUi } from "./UI/ui";
 import { getRealm } from '~system/Runtime'
 import { executeTask } from "@dcl/ecs";
-import { DebugUI } from "./UI/debugUI";
 import * as utils from '@dcl-sdk/utils'
 import * as ui from 'dcl-ui-toolkit'
 import * as ecs from "@dcl/sdk/ecs"
