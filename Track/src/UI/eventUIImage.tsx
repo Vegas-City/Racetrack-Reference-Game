@@ -237,7 +237,7 @@ export class EventUIImage {
         EventUIImage.eventsShownOrWaiting += 1
     }
 
-    static comparePlayerData(_trackGuid:string) {
+    static comparePlayerData(_trackGuid: string) {
 
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
@@ -256,7 +256,7 @@ export class EventUIImage {
                 if (track.guid == _trackGuid) {
                     newPB = track.pb
                     if (track.pb < track.targetTimeToUnlockNextTrack) {
-                        newPB = -1
+                        newPB = -1 // we want it to say "well done" when we get the qualification time or lower, even if we don't break our PB
                     }
                 }
             });
