@@ -43,7 +43,7 @@ export class AvatarVisibilityManager {
         AvatarModifierArea.createOrReplace(entity, {
             area: _size,
             modifiers: [AvatarModifierType.AMT_HIDE_AVATARS, AvatarModifierType.AMT_DISABLE_PASSPORTS],
-            excludeIds: []
+            excludeIds: [UserData.cachedData?.publicKey]
         })
 
         Transform.createOrReplace(entity, {
