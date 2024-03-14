@@ -227,7 +227,7 @@ export class EventUIImage {
                     EventUIImage.imageSource = this.getNewTrackEventImage()
                     break
             }
-        }, EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting)
+        }, (EventUIImage.notificationTime * EventUIImage.eventsShownOrWaiting) + (_event == EventUIEnum.preEvent ? 2000 : 0))
 
         utils.timers.setTimeout(() => {
             EventUIImage.eventVisibility = false
@@ -269,7 +269,7 @@ export class EventUIImage {
                 }
             });
 
-            if (newPB < oldPB && oldPB != 0) {
+            if (newPB < oldPB) {
                 EventUIImage.pointIncrease = -1 // We'll use this later
             }
         }
