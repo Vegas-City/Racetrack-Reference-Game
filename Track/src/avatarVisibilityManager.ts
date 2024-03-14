@@ -52,7 +52,7 @@ export class AvatarVisibilityManager {
         })
 
         if (AvatarVisibilityManager.DEBUG_MODE) {
-            MeshRenderer.setSphere(entity)
+            MeshRenderer.setBox(entity)
             Material.setPbrMaterial(entity, { albedoColor: Color4.create(0.5, 0.5, 0.5, 0.5) })
         }
 
