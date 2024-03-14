@@ -1,6 +1,5 @@
-import { AvatarModifierArea, AvatarModifierType, Entity, Material, MeshRenderer, Transform, engine } from "@dcl/ecs";
-import { Color4, Vector3 } from "@dcl/sdk/math";
-import { MessageBus } from '@dcl/sdk/message-bus'
+import { AvatarModifierArea, AvatarModifierType, Entity, Transform, engine } from "@dcl/ecs";
+import { Vector3 } from "@dcl/sdk/math";
 import { UserData } from "./Server/Helper";
 import { Car } from "@vegascity/racetrack/src/car";
 
@@ -8,7 +7,6 @@ export class AvatarVisibilityManager {
     private static readonly DEBUG_MODE: boolean = false
     private static readonly UPDATE_FREQUENCY: number = 5
 
-    private static messageBus = new MessageBus()
     private static entities: Entity[] = []
     private static sizes: Vector3[] = []
     private static elapsed: number = 0
@@ -24,6 +22,7 @@ export class AvatarVisibilityManager {
 
         engine.addSystem(AvatarVisibilityManager.update)
 
+        /*
         AvatarVisibilityManager.messageBus.on('user_outside_car', (_info: { userId: string }) => {
             if(AvatarVisibilityManager.insideCar) return
 
@@ -35,6 +34,7 @@ export class AvatarVisibilityManager {
 
             AvatarVisibilityManager.removeExcludeId(_info.userId)
         })
+        */
     }
 
     private static addArea(_pos: Vector3, _size: Vector3): void {
@@ -100,12 +100,13 @@ export class AvatarVisibilityManager {
         if (!AvatarVisibilityManager.insideCar && inside) {
             AvatarVisibilityManager.hideAll()
         }
-        else if(AvatarVisibilityManager.insideCar && !inside) {
+        else if (AvatarVisibilityManager.insideCar && !inside) {
             AvatarVisibilityManager.updateVisibility()
         }
 
         AvatarVisibilityManager.insideCar = inside
 
+        /*
         AvatarVisibilityManager.elapsed -= _dt
         if (AvatarVisibilityManager.elapsed <= 0) {
             AvatarVisibilityManager.elapsed = AvatarVisibilityManager.UPDATE_FREQUENCY
@@ -113,5 +114,6 @@ export class AvatarVisibilityManager {
                 AvatarVisibilityManager.messageBus.emit(AvatarVisibilityManager.insideCar ? 'user_inside_car' : 'user_outside_car', { userId: UserData.cachedData?.publicKey })
             }
         }
+        */
     }
 }
