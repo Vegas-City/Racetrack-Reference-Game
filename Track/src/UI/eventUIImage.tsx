@@ -237,7 +237,7 @@ export class EventUIImage {
         EventUIImage.eventsShownOrWaiting += 1
     }
 
-    static comparePlayerData() {
+    static comparePlayerData(_trackGuid:string) {
 
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
@@ -247,13 +247,13 @@ export class EventUIImage {
             let newPB: number = 0
 
             EventUIImage.oldPlayerData.tracks.forEach(track => {
-                if (track.guid == ServerComms.currentTrack) {
+                if (track.guid == _trackGuid) {
                     oldPB = track.pb
                 }
             });
 
             ServerComms.player.tracks.forEach(track => {
-                if (track.guid == ServerComms.currentTrack) {
+                if (track.guid == _trackGuid) {
                     newPB = track.pb
                     if (track.pb < track.targetTimeToUnlockNextTrack) {
                         newPB = -1
