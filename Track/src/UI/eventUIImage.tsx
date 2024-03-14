@@ -238,6 +238,8 @@ export class EventUIImage {
     }
 
     static comparePlayerData(_trackGuid: string, _carGuid: string) {
+        let numberOfCarsForCurrentTrack_old: number = 0
+        let numberOfCarsForCurrentTrack_new: number = 0
 
         EventUIImage.pointIncrease = ServerComms.player.points - EventUIImage.oldPlayerData.points
 
@@ -248,6 +250,7 @@ export class EventUIImage {
 
             EventUIImage.oldPlayerData.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
+                    numberOfCarsForCurrentTrack_old = track.cars.length
                     for (let carPB of track.carPbsPerTrack) {
                         if (carPB.car == _carGuid) {
                             oldPB = carPB.PB
@@ -258,6 +261,7 @@ export class EventUIImage {
 
             ServerComms.player.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
+                    numberOfCarsForCurrentTrack_new = track.cars.length
                     for (let carPB of track.carPbsPerTrack) {
                         if (carPB.car == _carGuid) {
                             newPB = carPB.PB
@@ -277,7 +281,7 @@ export class EventUIImage {
         EventUIImage.triggerEvent(EventUIEnum.endEvent)
 
         // Check for track unlock
-        if (ServerComms.player.tracks.length > EventUIImage.oldPlayerData.tracks.length) {
+        if (numberOfCarsForCurrentTrack_new > numberOfCarsForCurrentTrack_old) {
             EventUIImage.triggerEvent(EventUIEnum.newTrackEvent)
         }
 
