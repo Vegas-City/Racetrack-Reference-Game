@@ -34,12 +34,11 @@ export class PitstopNPC {
                     npc.playAnimation(this.pitstopNPC, "Idle")
                 },
                 faceUser: true,
-                reactDistance: 3,
                 idleAnim: 'Idle',
                 walkingAnim: 'Walk',
                 hoverText: 'Talk',
                 continueOnWalkAway: true,
-                onlyClickTrigger: false,
+                onlyClickTrigger: true,
                 onlyExternalTrigger: false,
                 darkUI: true,
                 portrait: "images/portraits/pitstop_crop.png"
