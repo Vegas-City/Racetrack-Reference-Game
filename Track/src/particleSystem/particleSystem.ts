@@ -20,20 +20,22 @@ export class ParticleSystem {
     }
 
     update(_dt: number) {
-        if (Car.instances.length > 0) {
+        let activeCar = Car.getActiveCar()
+
+        if (activeCar) {
 
             this.currentSpawn += _dt
             if (this.currentSpawn > this.spawnSpeed) {
                 try {
                     // Get tyre positions
-                    if (Car.instances[0].data.wheelL2 != null) {
-                        this.typePosition1 = Transform.getMutableOrNull(Car.instances[0].data.wheelL2)?.position ?? Vector3.Zero()
+                    if (activeCar.data.wheelL2 != null) {
+                        this.typePosition1 = Transform.getMutableOrNull(activeCar.data.wheelL2)?.position ?? Vector3.Zero()
                         this.spawnParticle(this.typePosition1)
                         this.spawnParticle(this.typePosition1)
                         this.spawnParticle(this.typePosition1)
                     }
-                    if (Car.instances[0].data.wheelR2 != null) {
-                        this.typePosition2 = Transform.getMutableOrNull(Car.instances[0].data.wheelR2)?.position ?? Vector3.Zero()
+                    if (activeCar.data.wheelR2 != null) {
+                        this.typePosition2 = Transform.getMutableOrNull(activeCar.data.wheelR2)?.position ?? Vector3.Zero()
                         this.spawnParticle(this.typePosition2)
                         this.spawnParticle(this.typePosition2)
                         this.spawnParticle(this.typePosition2)

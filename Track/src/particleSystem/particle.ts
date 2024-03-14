@@ -18,22 +18,24 @@ export class Particle {
     }
 
     spawn(_position: Vector3) {
-        if (Car.instances.length < 1) return
-        if (Car.instances[0].data.speed <= 7) return
+        let activeCar = Car.getActiveCar()
+        if(!activeCar) return
+
+        if (activeCar.data.speed <= 7) return
 
         let transform = Transform.getMutableOrNull(this.entity)
         if (!transform) return
 
         this.dead = false
-        if (!Car.instances[0].data.isDrifting) {
-            this.size = Math.abs(Car.instances[0].data.speed) / 325
+        if (!activeCar.data.isDrifting) {
+            this.size = Math.abs(activeCar.data.speed) / 325
         } else {
-            this.size = Math.abs(Car.instances[0].data.speed) / 120
+            this.size = Math.abs(activeCar.data.speed) / 120
         }
         transform.position = _position
         transform.scale = Vector3.create(this.size, this.size, this.size)
 
-        let base = Car.instances[0].data.carEntity
+        let base = activeCar.data.carEntity
 
         if (base) {
             let baseTransform = Transform.getMutableOrNull(base)
