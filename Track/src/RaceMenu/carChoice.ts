@@ -34,7 +34,7 @@ export class CarChoice {
         // Load attributes from the JSON
         let carStats = carConfiguration.cars[this.carIndex]
         ServerComms.currentCar = carStats.guid
-        CarFactory.create(Vector3.create(8.45, 1.4, 23.7), 90,
+        CarFactory.create(
             {
                 mass: carStats.attributes.mass,
                 accelerationF: carStats.attributes.accelerationF,
@@ -70,7 +70,7 @@ export class CarChoice {
                 firstPersonCagePosition: this.extractVectorFromString(carStats.positions.firstPersonCagePosition),
                 thirdPersonCagePosition: this.extractVectorFromString(carStats.positions.thirdPersonCagePosition),
                 carIcon: carStats.images.carIcon
-            })
+            }, Vector3.create(8.45, 1.4, 23.7), 90)
     }
 
     extractVectorFromString(_data: string): Vector3 {
