@@ -19,7 +19,6 @@ export class SyncSystem {
     private lastBeat: number
     private bpmTapTimes: number[] = []
     private isBPMTapHeld: boolean = false
-    //private messageBus = new MessageBus()
 
     // events
     private onBeatListeners: ((_isPrimary: boolean, _beat: number) => void)[]
@@ -134,7 +133,6 @@ export class SyncSystem {
                     l(this.bpm)
                 }
             }
-            //messageBus.emit("djSetBPM", { bpm: emitterSystem.bpm, timestamp: new Date().getTime() })
         }
 
         // return self for chaining
