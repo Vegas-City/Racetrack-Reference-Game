@@ -421,21 +421,21 @@ export class RaceMenuManager {
             position: Vector3.Zero(),
             rotation: Quaternion.Identity(),
             scale: Vector3.One()
-        }))
+        }, Vector3.create(-41, 1.4, 20)))
 
         this.carChoices.push(new CarChoice(1, "models/selection/car2.glb", {
             parent: this.carContainer,
             position: Vector3.Zero(),
             rotation: Quaternion.Identity(),
             scale: Vector3.One()
-        }))
+        }, Vector3.create(-41, 1.4, 30)))
 
         this.carChoices.push(new CarChoice(2, "models/selection/car1.glb", {
             parent: this.carContainer,
             position: Vector3.Zero(),
             rotation: Quaternion.Identity(),
             scale: Vector3.One()
-        }))
+        }, Vector3.create(-41, 1.4, 40)))
 
         this.carChoices[0].show()
     }
@@ -485,9 +485,13 @@ export class RaceMenuManager {
             let trackNumber = RaceMenuManager.instance?.practiceButton.selected ? 0 : this.currentTrackIndex
             AudioManager.playMusic(Math.max(0, trackNumber - 1))
             RaceMenuManager.LoadTrack(trackNumber)
+            RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
+            
             utils.timers.setTimeout(() => {
-                RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
-                CarPerspectives.enterCar(Car.instances[0].data)
+                let activeCar = Car.getActiveCar()
+                if (activeCar) {
+                    CarPerspectives.enterCar(activeCar.data)
+                }
                 self.raceButton.deselect()
                 EventUIImage.triggerEvent(EventUIEnum.preEvent)
             }, 500)

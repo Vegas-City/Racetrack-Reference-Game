@@ -104,7 +104,11 @@ export class Scene {
                     TrackManager.ghostCar.endGhost() // Hide the ghost car if there is one
 
                     utils.timers.setTimeout(() => {
-                        Car.unload()
+                        let activeCar = Car.getActiveCar()
+                        if (activeCar) {
+                            activeCar.hide()
+                        }
+                        Car.activeCarIndex = -1
                         RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                         DemoManager.show()
                         CrowdNPC.instance.hide()

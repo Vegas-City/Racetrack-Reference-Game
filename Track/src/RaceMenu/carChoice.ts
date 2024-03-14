@@ -1,6 +1,6 @@
 import { Entity, GltfContainer, Transform, TransformType, engine } from "@dcl/ecs";
 import { Vector3 } from "@dcl/ecs-math";
-import { CarFactory } from "@vegascity/racetrack/src/car";
+import { Car, CarFactory } from "@vegascity/racetrack/src/car";
 import { ServerComms } from "../Server/serverComms";
 import { Animator } from "@dcl/sdk/ecs";
 import * as carConfiguration from "./carConfiguration.json"
@@ -9,8 +9,9 @@ export class CarChoice {
     entity: Entity
     originalScale: Vector3 = Vector3.Zero()
     carIndex: number = 0
+    car: Car
 
-    constructor(_carIndex: number, _model: string, _transform: TransformType) {
+    constructor(_carIndex: number, _model: string, _transform: TransformType, _hidePos: Vector3) {
         this.carIndex = _carIndex
         this.entity = engine.addEntity()
 
@@ -28,13 +29,9 @@ export class CarChoice {
         Transform.createOrReplace(this.entity, _transform)
         this.originalScale = Vector3.clone(_transform.scale)
         this.hide()
-    }
 
-    LoadCar() {
-        // Load attributes from the JSON
         let carStats = carConfiguration.cars[this.carIndex]
-        ServerComms.currentCar = carStats.guid
-        CarFactory.create(
+        this.car = CarFactory.create(
             {
                 mass: carStats.attributes.mass,
                 accelerationF: carStats.attributes.accelerationF,
@@ -70,7 +67,17 @@ export class CarChoice {
                 firstPersonCagePosition: this.extractVectorFromString(carStats.positions.firstPersonCagePosition),
                 thirdPersonCagePosition: this.extractVectorFromString(carStats.positions.thirdPersonCagePosition),
                 carIcon: carStats.images.carIcon
-            }, Vector3.create(8.5, 1.4, 23.7), 90)
+            }, Vector3.create(8.5, 1.4, 23.7), 90, _hidePos)
+
+        this.car.hide()
+    }
+
+    LoadCar() {
+        // Load attributes from the JSON
+        Car.activeCarIndex = this.carIndex
+        this.car.show()
+        let carStats = carConfiguration.cars[this.carIndex]
+        ServerComms.currentCar = carStats.guid
     }
 
     extractVectorFromString(_data: string): Vector3 {
