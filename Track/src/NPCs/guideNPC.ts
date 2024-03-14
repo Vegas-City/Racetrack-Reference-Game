@@ -32,12 +32,11 @@ export class GuideNPC {
 
                 },
                 faceUser: true,
-                reactDistance: 2,
                 idleAnim: 'idle1',
                 walkingAnim: 'walk1',
                 hoverText: 'Talk',
                 continueOnWalkAway: true,
-                onlyClickTrigger: false,
+                onlyClickTrigger: true,
                 onlyExternalTrigger: false,
                 darkUI: true,
                 portrait: "images/portraits/guide_crop.png"
