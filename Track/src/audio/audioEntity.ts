@@ -1,5 +1,5 @@
-import { AudioSource, Entity, MeshRenderer, Transform, engine } from "@dcl/ecs"
-import { Vector3 } from "@dcl/ecs-math"
+import { AudioSource, Entity, Material, MaterialTransparencyMode, MeshRenderer, Transform, engine } from "@dcl/ecs"
+import { Color4, Vector3 } from "@dcl/ecs-math"
 import { AvatarAnchorPointType, AvatarAttach } from "@dcl/sdk/ecs"
 
 export class AudioEntity {
@@ -24,6 +24,11 @@ export class AudioEntity {
             } else {
                 Transform.createOrReplace(entity, { position: Vector3.create(2, 2, 2), scale: Vector3.create(0.001, 0.001, 0.001) })
             }
+            Material.setPbrMaterial(entity, {
+                albedoColor: Color4.create(0, 0, 0, 0),
+                transparencyMode: MaterialTransparencyMode.MTM_ALPHA_TEST,
+                alphaTest: 0
+            })
             AudioSource.createOrReplace(entity, {
                 audioClipUrl: _audioPath,
                 playing: false,
