@@ -254,16 +254,15 @@ export class EventUIImage {
                     }
                 }
             });
-
             ServerComms.player.tracks.forEach(track => {
                 if (track.guid == _trackGuid) {
                     for (let carPB of track.carPbsPerTrack) {
                         if (carPB.car == _carGuid) {
                             newPB = carPB.PB
-                            if (newPB < track.targetTimeToUnlockNextTrack) {
+                            if (newPB < track.targetTimeToUnlockNextTrack/1000 && newPB != 0) {
                                 newPB = -1 // we want it to say "well done" when we get the qualification time or lower, even if we don't break our PB
                             }
-                        }
+                        } 
                     }
                 }
             });
@@ -320,7 +319,7 @@ export class EventUIImage {
             return "msg_wellDone.png"
         } else {
             // But did the pb get quicker?
-            if (EventUIImage.pointIncrease == -1) { // No new points but we got a better PB
+            if (EventUIImage.pointIncrease == -1) { // No new points but got under qualification
                 return "2D_wellDone.png"
             } else {
                 return "msg_tryAgain.png"

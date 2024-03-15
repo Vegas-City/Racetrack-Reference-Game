@@ -5,7 +5,6 @@ import { Schedule, ScheduleManager } from "./scheduleManager";
 import { Countdown3d } from "../UI/countdown3d";
 import { PodiumNPCs } from "./podiumNPC";
 import { FireWorkManager } from "../Fireworks/fireworkManager";
-import { ConfettiManager } from "../Confetti/confettiManager";
 import { Scene } from "../scene";
 import { BigScreen } from "./bigScreen";
 import { SmallScreen } from "./smallScreen";
@@ -23,7 +22,6 @@ export class PartyManager {
     bigScreen: BigScreen
     smallScreens: SmallScreen[] = []
     fireworkManager: FireWorkManager
-    confettiManager: ConfettiManager
     lightingModuleManager: LightingModuleManager
 
     ceremonyMusicStart: number = Date.UTC(2024, 2, 17, 20, 31)
@@ -35,9 +33,6 @@ export class PartyManager {
 
         if(!this.fireworkManager){
             this.fireworkManager = new FireWorkManager()
-        }
-        if(!this.confettiManager){
-            this.confettiManager = new ConfettiManager()
         }
 
         if(!this.leaderboard){
@@ -180,7 +175,6 @@ export class PartyManager {
                 () => {
                     // LAUNCH! pew pew pew
                     this.fireworkManager.startDisplay()
-                    this.confettiManager.start()
                 },
                 () => {
                     // It'll end itself.

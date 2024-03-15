@@ -60,7 +60,12 @@ export class Scene {
             debugMode: false,
             eventCallbacks: {
                 onStartEvent: () => {
-                    Scene.logger.minigameStarted("RACETRACK", "RACE_STARTED")
+                    try {
+                        Scene.logger.minigameStarted("RACETRACK", "RACE_STARTED")
+                    } catch (error) {
+                        console.log("Logger error: " + error)
+                    }
+
                     ServerComms.recordAttempt({
                         car: ServerComms.currentCar,
                         track: ServerComms.currentTrack,
@@ -80,7 +85,12 @@ export class Scene {
                     TrackManager.ghostRecorder.start(ServerComms.currentTrack)
                 },
                 onEndEvent: () => {
-                    Scene.logger.minigameCompleted("RACETRACK", "RACE_COMPLETED")
+                    try {
+                        Scene.logger.minigameCompleted("RACETRACK", "RACE_COMPLETED")
+                    } catch (error) {
+                        console.log("Logger error: " + error)
+                    }
+                    
                     AudioManager.playMusic(4) // background music
                     let lap = TrackManager.GetLap()
                     if (!lap) return
@@ -115,14 +125,24 @@ export class Scene {
                     }, 5000)
                 },
                 onQuitEvent: () => {
-                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_QUIT")
+                    
+                    try {
+                        Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_QUIT")
+                    } catch (error) {
+                        console.log("Logger error: " + error)
+                    }
                     AudioManager.playMusic(4) // background music
                     RaceMenuManager.LoadTrack(2) // The demo cars need to drive around track 2
                     DemoManager.show()
                     CrowdNPC.instance.hide()
                 },
                 onCheckpointEvent: () => {
-                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_CHECKPOINT")
+                    try {
+                        Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_CHECKPOINT")
+                    } catch (error) {
+                        console.log("Logger error: " + error)
+                    }
+                    
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -133,8 +153,12 @@ export class Scene {
                         time: Math.round(lap.timeElapsed * 1000)
                     })
                 },
-                onLapCompleteEvent: () => {
-                    Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_LAP_COMPLETE")
+                onLapCompleteEvent: () => {   
+                    try {
+                        Scene.logger.minigameTriggerEvent("RACETRACK", "RACE_LAP_COMPLETE")
+                    } catch (error) {
+                        console.log("Logger error: " + error)
+                    }
                     let lap = TrackManager.GetLap()
                     if (!lap) return
 
@@ -148,7 +172,7 @@ export class Scene {
                     })
 
                     if (TrackManager.isPractice) {
-                        if (Math.round(lap.timeElapsed) < 50) {
+                        if (Math.round(lap.timeElapsed) < 40) {
                             if (!ServerComms.player.practiceCompleted) {
                                 EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
                             }
