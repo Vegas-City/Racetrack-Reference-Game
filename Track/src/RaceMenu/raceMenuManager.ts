@@ -486,7 +486,7 @@ export class RaceMenuManager {
             AudioManager.playMusic(Math.max(0, trackNumber - 1))
             RaceMenuManager.LoadTrack(trackNumber)
             RaceMenuManager.instance.carChoices[this.currentCarIndex].LoadCar()
-            
+
             utils.timers.setTimeout(() => {
                 let activeCar = Car.getActiveCar()
                 if (activeCar) {
@@ -545,7 +545,8 @@ export class RaceMenuManager {
             })
 
             track.carPbsPerTrack.forEach(carPb => {
-                if (carPb.car == selectedCarGuid && carPb.PB > 0 && carPb.PB < track.targetTimeToUnlockNextTrack) {
+                const carPbInMilli = carPb.PB * 1000
+                if (carPb.car == selectedCarGuid && carPbInMilli > 0 && carPbInMilli < track.targetTimeToUnlockNextTrack) {
                     if (track.guid == "6a0a3950-bcfb-4eb4-9166-61edc233b82b" && RaceMenuManager.instance.competitionButton.selected) {
                         RaceMenuManager.instance.trackButton1.setQualified()
                     }

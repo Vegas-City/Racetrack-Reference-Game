@@ -172,7 +172,7 @@ export class Scene {
                     })
 
                     if (TrackManager.isPractice) {
-                        if (Math.round(lap.timeElapsed) < 50) {
+                        if (Math.round(lap.timeElapsed) < 40) {
                             if (!ServerComms.player.practiceCompleted) {
                                 EventUIImage.triggerEvent(EventUIEnum.competitionUnlockEvent)
                             }

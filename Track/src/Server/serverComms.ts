@@ -272,16 +272,16 @@ export class ServerComms {
             let track = ServerComms.player.tracks.find(track => track.guid === _guid)
             if (track && track.carPbsPerTrack != undefined) {
                 let pb = track.carPbsPerTrack.find(car => car.car === ServerComms.currentCar)
-                let bool = true;
-                if (pb != null) {
-                    bool = pb.PB == 0
+                let firstTime: boolean = true
+                if (pb !== undefined && pb !== null) {
+                    firstTime = pb.PB == 0
                 }
 
                 if (TrackManager.isPractice) {
-                    TimeUI.showQualOrPbTime("Qualification", 50000)
+                    TimeUI.showQualOrPbTime("Qualification", 40000)
                 }
                 else {
-                    TimeUI.showQualOrPbTime(bool ? "Qualification" : "PB", bool ? track.targetTimeToUnlockNextTrack : track.pb)
+                    TimeUI.showQualOrPbTime(firstTime ? "Qualification" : "PB", firstTime ? track.targetTimeToUnlockNextTrack : track.pb)
                 }
             }
         })
