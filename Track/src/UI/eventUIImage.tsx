@@ -259,10 +259,10 @@ export class EventUIImage {
                     for (let carPB of track.carPbsPerTrack) {
                         if (carPB.car == _carGuid) {
                             newPB = carPB.PB
-                            if (newPB < track.targetTimeToUnlockNextTrack/1000) {
+                            if (newPB < track.targetTimeToUnlockNextTrack/1000 && newPB != 0) {
                                 newPB = -1 // we want it to say "well done" when we get the qualification time or lower, even if we don't break our PB
                             }
-                        }
+                        } 
                     }
                 }
             });
