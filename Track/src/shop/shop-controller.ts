@@ -93,11 +93,21 @@ export class ShopController {
         if (data !== "submitted") {
 
             popup.show("Oops! It appears we have encountered an error.  Please try again later.")
-            ShopController.logger.purchaseFail(id, collectionId, "", priceS, data)
+            
+            try{
+                ShopController.logger.purchaseFail(id, collectionId, "", priceS, data)
+            } catch (error){
+              console.log("Logger error: " + error)
+            }
         }
         else {
             popup.show("Your Purchase has been made and we are sending the wearable to your wallet. This may take a short while.")
-            ShopController.logger.purchaseSuccess(id, collectionId, "", priceS, data)
+            
+            try{
+                ShopController.logger.purchaseSuccess(id, collectionId, "", priceS, data)
+            } catch (error){
+              console.log("Logger error: " + error)
+            }
             ServerComms.getPlayerData()
         }
     }

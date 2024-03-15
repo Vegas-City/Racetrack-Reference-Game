@@ -21,7 +21,11 @@ export function main() {
   // wait for the realm and user data to be available
   Helper.init(() => {
 
-    new IntervalLogger("RACETRACK", ecs.engine, ecs.Transform, 10)
+    try{
+      new IntervalLogger("RACETRACK", ecs.engine, ecs.Transform, 10)
+    } catch (error){
+      console.log("Interval logger error: " + error)
+    }
 
     UserData.getUserData(() => {
       executeTask(async () => {
