@@ -24,6 +24,8 @@ export class PartyManager {
     fireworkManager: FireWorkManager
     lightingModuleManager: LightingModuleManager
 
+    djStartTime: number = Date.UTC(2024, 2, 17, 20, 0)
+    djEndTime: number = Date.UTC(2024, 2, 17, 20, 30)
     ceremonyMusicStart: number = Date.UTC(2024, 2, 17, 20, 31)
     ceremonyMusicEnd: number = Date.UTC(2024, 2, 17, 20, 48)
 
@@ -124,8 +126,8 @@ export class PartyManager {
         // DJ
         ScheduleManager.instance.registerSchedule(
             new Schedule(
-                Date.UTC(2024, 2, 17, 20, 0),
-                Date.UTC(2024, 2, 17, 20, 30),
+                this.djStartTime,
+                this.djEndTime,
                 () => {
                     this.dj = new DJ()
                     AudioManager.stopAllMusic()
