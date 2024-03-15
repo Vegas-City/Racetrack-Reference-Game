@@ -27,12 +27,14 @@ export function main() {
       console.log("Interval logger error: " + error)
     }
 
+    let partyManager = new PartyManager()
+
     UserData.getUserData(() => {
       executeTask(async () => {
         Scene.LoadBuildings()
         utils.timers.setTimeout(() => {
           Scene.LoadScene()
-          new PartyManager()
+          partyManager.create()
         }, 1500)
       })
     })
