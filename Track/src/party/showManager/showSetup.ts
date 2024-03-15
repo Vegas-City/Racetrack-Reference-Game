@@ -10,7 +10,12 @@ export function setupShow() {
     //creating a logger for this file
     const logger: showMgmt.Logger = showMgmt.LoggerFactory.getLogger("MyScene.ShowSetup.ts")
     //set logger for a specific logger
-    logger.setLevel(showMgmt.LogLevel.DEBUG)
+    try {
+        logger.setLevel(showMgmt.LogLevel.DEBUG)
+    } catch (error) {
+        console.log("Logger error: " + error)
+    }
+
 
     //will set default logging level for all loggers
     showMgmt.LoggingConfiguration.getInstance().defaultLevel = showMgmt.LogLevel.DEBUG
@@ -22,7 +27,12 @@ export function setupShow() {
     SHOW_MGR.showSchedule.setData(showData)
 
     function resetStage() {
-        logger.debug("SHOW_MGR.resetStage", "ENTRY")
+        try {
+            logger.debug("SHOW_MGR.resetStage", "ENTRY")
+        } catch (error) {
+            console.log("Logger error: " + error)
+        }
+
         for (const p of ["model-whiterabbit-1", "model-whiterabbit-2"]) {
             const model = SHOW_MGR.actionMgr.getShowEntityByName(p)
             if (model) {
@@ -34,7 +44,12 @@ export function setupShow() {
 
     let currentVideoPlayer: PBVideoPlayer
     SHOW_MGR.addStopShowListeners((event: showMgmt.StopShowEvent) => {
-        logger.debug("SHOW_MGR.addStopShowListeners", " fired", event)
+        try {
+            logger.debug("SHOW_MGR.addStopShowListeners", " fired", event)
+        } catch (error) {
+            console.log("Logger error: " + error)
+        }
+
         if (currentVideoPlayer) {
             let currentVideoTexuture = currentVideoPlayer
             currentVideoTexuture.playing = false
@@ -42,14 +57,24 @@ export function setupShow() {
     })
 
     SHOW_MGR.addPlayVideoListeners((event: showMgmt.PlayShowEvent) => {
-        logger.debug("SHOW_MGR.addPlayVideoListeners", " fired", event)
 
+        try {
+            logger.debug("SHOW_MGR.addPlayVideoListeners", " fired", event)
+        } catch (error) {
+            console.log("Logger error: " + error)
+        }
         resetStage()
 
         if (event.showData.id == -1) {
             //   debugger 
             const showRange = SHOW_MGR.showSchedule.findShowToPlayByDate(new Date())
-            logger.info("SHOW_MGR.addPlayVideoListeners", "START COUNTDOWN TO NEXT SHOW", event)
+            try {
+                logger.info("SHOW_MGR.addPlayVideoListeners", "START COUNTDOWN TO NEXT SHOW", event)
+            } catch (error) {
+                console.log("Logger error: " + error)
+            }
+
+
             const showArr: showMgmt.ShowType[] = []
             if (showRange.nextShow && showRange.nextShow.show) {
                 showArr.push(showRange.nextShow.show)
@@ -114,7 +139,12 @@ export function setupShow() {
     })
 
     SHOW_MGR.addVideoStatusChangeListener(new showMgmt.VideoChangeStatusListener((oldStatus: number, newStatus: number) => {
-        logger.debug("SHOW_MGR.addVideoStatusChangeListener", " fired", oldStatus, newStatus)
+
+        try {
+            logger.debug("SHOW_MGR.addVideoStatusChangeListener", " fired", oldStatus, newStatus)
+        } catch (error) {
+            console.log("Logger error: " + error)
+        }
 
         switch (newStatus) {
             case VideoState.VS_LOADING:
@@ -129,7 +159,12 @@ export function setupShow() {
 
     pauseHandler.addOnProcessListener((action: showMgmt.ActionParams<string>, showActionMgr: showMgmt.ShowActionManager): boolean => {
         const METHOD_NAME = "addOnProcessListener"
-        pauseHandler.logger.debug(METHOD_NAME, "called", action)
+
+        try {
+            pauseHandler.logger.debug(METHOD_NAME, "called", action)
+        } catch (error) {
+            console.log("Logger error: " + error)
+        }
 
         //pause actions goes here
         //some actions "stop" is a play or hide or show or stop
@@ -143,7 +178,12 @@ export function setupShow() {
 
     stopHandler.addOnProcessListener((action: showMgmt.ActionParams<string>, showActionMgr: showMgmt.ShowActionManager): boolean => {
         const METHOD_NAME = "addOnProcessListener"
-        stopHandler.logger.debug(METHOD_NAME, "called", action)
+
+        try {
+            stopHandler.logger.debug(METHOD_NAME, "called", action)
+        } catch (error) {
+            console.log("Logger error: " + error)
+        }
 
         //stop actions goes here
         //some actions "stop" is a play or hide or show or stop
