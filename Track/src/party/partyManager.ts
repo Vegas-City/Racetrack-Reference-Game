@@ -70,6 +70,10 @@ export class PartyManager {
             this.podiumNPCs = new PodiumNPCs(this.leaderboard)
         }
 
+        if (!dj) {
+            this.dj = new DJ()
+        }
+
         // Small screens
         ScheduleManager.instance.registerSchedule(
             new Schedule(
@@ -139,13 +143,11 @@ export class PartyManager {
                 this.djStartTime,
                 this.djEndTime,
                 () => {
-                    this.dj = new DJ()
+                    this.dj.show()
                     AudioManager.stopAllMusic()
                 },
                 () => {
-                    if (this.dj != undefined) {
-                        this.dj.remove()
-                    }
+                    this.dj.hide()
                 }
             )
         )
