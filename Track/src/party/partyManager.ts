@@ -70,7 +70,7 @@ export class PartyManager {
             this.podiumNPCs = new PodiumNPCs(this.leaderboard)
         }
 
-        if (!dj) {
+        if (!this.dj) {
             this.dj = new DJ()
         }
 
