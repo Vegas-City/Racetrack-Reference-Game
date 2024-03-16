@@ -9,6 +9,7 @@ export class PodiumNPCs {
     leaderboard: LeaderboardUI
     updateSpeed: number = 5
     currentUpdateSpeed: number = 0
+    active: boolean = false
 
     constructor(_leaderBoard: LeaderboardUI) {
         this.leaderboard = _leaderBoard
@@ -21,6 +22,8 @@ export class PodiumNPCs {
     }
 
     update(_dt: number) {
+        if (!this.active) return
+
         this.currentUpdateSpeed += _dt
 
         if (this.currentUpdateSpeed >= this.updateSpeed) {
@@ -45,10 +48,20 @@ export class PodiumNPCs {
         }
     }
 
-    remove() {
-        engine.removeEntity(this.gold.entity)
-        engine.removeEntity(this.silver.entity)
-        engine.removeEntity(this.bronze.entity)
+    start() {
+        this.gold.show()
+        this.silver.show()
+        this.bronze.show()
+
+        this.active = true
+    }
+
+    end() {
+        this.gold.hide()
+        this.silver.hide()
+        this.bronze.hide()
+
+        this.active = false
     }
 }
 
@@ -61,9 +74,9 @@ export class PodiumNPC {
         this.textEntity = engine.addEntity()
 
         GltfContainer.createOrReplace(this.entity, { src: _modelPath })
-        Transform.createOrReplace(this.entity, { position: _position, rotation: _rotation })
+        Transform.createOrReplace(this.entity, { position: _position, rotation: _rotation, scale: Vector3.Zero() })
 
-        Transform.createOrReplace(this.textEntity, { rotation: Quaternion.fromEulerDegrees(0, 108, 0), position: _textPosition, scale: Vector3.create(0.25, 0.25, 0.25) })
+        Transform.createOrReplace(this.textEntity, { rotation: Quaternion.fromEulerDegrees(0, 108, 0), position: _textPosition, scale: Vector3.Zero() })
         TextShape.createOrReplace(this.textEntity, {
             text: "",
             outlineColor: Color3.White(),
@@ -72,30 +85,34 @@ export class PodiumNPC {
         })
     }
 
-    updateText(_name: string, _time: number) {
+    updateText(_name: string, _time: number): void {
         let textShape = TextShape.getMutableOrNull(this.textEntity)
         if (textShape) {
             textShape.text = _name.substring(0, 12).toLocaleUpperCase()// + "\n" + this.formatTime(_time) + this.formatTimeMilli(_time) // no score for now
         }
     }
 
-    private formatTime(_time: number): string {
-        // cap at 99:59
-        let roundedTime = Math.floor(Math.min(_time / 1000, 5999))
-        let sec = roundedTime % 60
-        let min = (roundedTime - sec) / 60
+    show(): void {
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.One()
+        }
 
-        let secStr = (sec < 10 ? "0" : "") + sec.toString()
-        let minStr = (min < 10 ? "0" : "") + min.toString()
-        let timeStr = minStr + ":" + secStr
-        return timeStr
+        let textTransform = Transform.getMutableOrNull(this.textEntity)
+        if (textTransform) {
+            textTransform.scale = Vector3.create(0.25, 0.25, 0.25)
+        }
     }
 
-    private formatTimeMilli(_time: number): string {
-        let timeStr = "." + (_time % 1000).toString()
-        while (timeStr.length < 4) {
-            timeStr += "0"
+    hide(): void {
+        let transform = Transform.getMutableOrNull(this.entity)
+        if (transform) {
+            transform.scale = Vector3.Zero()
         }
-        return timeStr
+
+        let textTransform = Transform.getMutableOrNull(this.textEntity)
+        if (textTransform) {
+            textTransform.scale = Vector3.Zero()
+        }
     }
 }       
