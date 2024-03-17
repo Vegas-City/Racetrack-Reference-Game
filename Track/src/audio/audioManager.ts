@@ -62,18 +62,27 @@ export class AudioManager {
     // Stop all other background music tracks
     AudioManager.stopAllMusic()
 
-    if (_trackNumber == 4) {
-      // Check to see if the ceremony music is playing
-      let currentDate: number = Date.now()
+    let playMusic:boolean = true
 
-      if (PartyManager.instance) {
-        if (PartyManager.instance.ceremonyMusicStart > currentDate && PartyManager.instance.ceremonyMusicEnd < currentDate) {
-          // play ceremony instead of background
-          _trackNumber = 5
-        }
+
+    // Check to see if the ceremony music is playing
+    let currentDate: number = Date.now()
+
+    if (PartyManager.instance) {
+      if (currentDate > PartyManager.instance.ceremonyMusicStart && currentDate < PartyManager.instance.ceremonyMusicEnd && _trackNumber == 4) {
+        // play ceremony instead of background
+        _trackNumber = 5
+      }
+
+      if (currentDate> PartyManager.instance.djStartTime && currentDate < PartyManager.instance.djEndTime) {
+        //block all music
+        playMusic = false
       }
     }
-    AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())
+
+    if(playMusic){
+      AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())
+    }
   }
 
   static stopAllMusic(): void {

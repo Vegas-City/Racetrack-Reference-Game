@@ -5,7 +5,7 @@ export class DJ {
     entity: Entity
     constructor() {
         this.entity = engine.addEntity()
-        Transform.createOrReplace(this.entity, { position: Vector3.create(75, 4, 81), rotation: Quaternion.fromEulerDegrees(0, -30, 0), scale: Vector3.create(1, 1, 1) })
+        Transform.createOrReplace(this.entity, { position: Vector3.create(82.25,4,90.3), rotation: Quaternion.fromEulerDegrees(0, -75, 0), scale: Vector3.create(1.5,1.5,1.5) })
         GltfContainer.createOrReplace(this.entity, { src: "models/npcs/dj.glb" })
     }
 
