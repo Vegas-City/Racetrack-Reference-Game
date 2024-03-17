@@ -64,24 +64,21 @@ export class AudioManager {
 
     let playMusic:boolean = true
 
-    if (_trackNumber == 4) {
-      // Check to see if the ceremony music is playing
-      let currentDate: number = Date.now()
 
-      if (PartyManager.instance) {
-        if (PartyManager.instance.ceremonyMusicStart > currentDate && PartyManager.instance.ceremonyMusicEnd < currentDate) {
-          // play ceremony instead of background
-          _trackNumber = 5
-        }
+    // Check to see if the ceremony music is playing
+    let currentDate: number = Date.now()
 
-        if (PartyManager.instance.djStartTime > currentDate && PartyManager.instance.djEndTime < currentDate) {
-          //block all music
-          playMusic = false
-        }
+    if (PartyManager.instance) {
+      if (currentDate > PartyManager.instance.ceremonyMusicStart && currentDate < PartyManager.instance.ceremonyMusicEnd && _trackNumber == 4) {
+        // play ceremony instead of background
+        _trackNumber = 5
+      }
+
+      if (currentDate> PartyManager.instance.djStartTime && currentDate < PartyManager.instance.djEndTime) {
+        //block all music
+        playMusic = false
       }
     }
-
-
 
     if(playMusic){
       AudioManager.musicTracks[_trackNumber].playSound(Vector3.One())

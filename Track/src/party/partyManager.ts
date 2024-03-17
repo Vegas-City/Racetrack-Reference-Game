@@ -33,6 +33,9 @@ export class PartyManager {
 
         PartyManager.instance = this
 
+    }
+    create(){
+
         if(!this.fireworkManager){
             this.fireworkManager = new FireWorkManager()
         }
